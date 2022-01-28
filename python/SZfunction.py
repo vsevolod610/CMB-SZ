@@ -18,7 +18,7 @@ coef1 = (h * 1e9) / k
 coef2 = (1e3 * 1.6e-12) / (m * c ** 2)
 
 
-def model(T0, kTe, beta, Tau, nu):
+def SZfunction(T0, kTe, beta, Tau, nu):
     x = coef1 * nu / T0
     theta = coef2 * kTe
     X = x * (np.exp(x) + 1) / (np.exp(x) - 1)
