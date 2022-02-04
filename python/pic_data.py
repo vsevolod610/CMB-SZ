@@ -5,7 +5,7 @@ require:   data.py, SZfunction.py
            LFI_RIMO_R3.31.fits, HFI_RIMO_R3.00.fits, trans_function.py
 make:      none
 
-coments:   spectral transmission functions can be normalized with 1 or max
+coments:
 """
 
 
@@ -35,6 +35,6 @@ ax.plot(nu, 0 * nu, 'k')
 ax.errorbar(nu_data, SZ_data, SZ_data_errors, capsize=3.5, mew=1.5, fmt='.k')
 ax.plot(nu, SZfunction(T0, kTe, beta, Tau, nu))
 SZ = np.array([SZ_tr(T0, kTe, beta, Tau)[wave] for wave in filtrs])
-ax.plot(nu_data, SZ, '*b')
+ax.plot(nu_data, SZ, 'ob')
 
 plt.show()

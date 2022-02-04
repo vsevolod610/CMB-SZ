@@ -25,6 +25,6 @@ for wave in filtrs:
     ax.plot(nu, tr, label=r'${}$ GHz'.format(wave))
 ax.set_xlabel(r'$\nu$ GHz')
 ax.set_ylabel(r'$t_{\nu_0}(\nu)$')
-ax.legend(frameon=False, loc='upper right')
+ax.legend(frameon=False, loc='upper right', fontsize=10)
 
 plt.show()
