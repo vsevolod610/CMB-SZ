@@ -30,10 +30,15 @@ for wave in filtrs:
     # 1 GHz = 30 * 1/cm
     nu = nu * 30 if (wave > 70) else nu
     tr = np.array([el[1] for el in spec_data[wave]])
+
+    # sp. trans. functions have long tails of zero(1e-34) values, speed of calculus need amputation
     amputate = 1
     if amputate:
-        nu = nu[tr > 1e-4]
-        tr = tr[tr > 1e-4]
+        tr = tr / max(tr)
+        nu = nu[tr > 1e-3]
+        tr = tr[tr > 1e-3]
+
     S = np.trapz(tr, nu)
     tr = tr / S
+
     spec_trans[wave] = {'nu': nu, 'tr': tr}
