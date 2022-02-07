@@ -38,7 +38,7 @@ subroutine MCMCfit(calc_fit,calculate_chi)
      readMC = 0  ! readMC = 1 - read last MC file/ else readMC = 0
 
 !############################# START MPI #######>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    
-    
+    print*, 'start mpi'
     call MPI_INIT( ierr )
     call MPI_COMM_RANK( MPI_COMM_WORLD, myid, IERR )
     call MPI_COMM_SIZE( MPI_COMM_WORLD, numprocs, IERR )
@@ -485,9 +485,9 @@ subroutine SynParall
     
     external calc_fit_CI,calculate_chi_CI,calc_fit_CO,calculate_chi_CO,calc_fit_H2,calculate_chi_H2, calc_fit_all,calculate_chi_all,calc_fit_HD,calculate_chi_HD,calc_fit_SZ,calculate_chi_SZ
     ! set probability function 
-    call SetFunction_CO   
-    call SetFunction_CI
-    call SetFunction_HD    
+    !call SetFunction_CO   
+    !call SetFunction_CI
+    !call SetFunction_HD    
     call SetFunction_SZ
     
     file_name = TRIM(ADJUSTL('startSZ.sss'))

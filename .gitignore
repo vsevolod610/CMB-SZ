@@ -1,2 +1,11 @@
 .*
 __*
+fortran/Debug
+fortran/fortran*
+fortran/Autocorr.dat
+fortran/chainconsum.dat
+fortran/GRvalues.dat
+fortran/GRvalues2.dat
+fortran/MC.dat
+fortran/MCchain.dat
+fortran/resMC.dat

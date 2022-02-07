@@ -1,6 +1,6 @@
 program main
     character *100 buf
-    buf = 'calc_exc'
+    buf = 'mcmc'
     if (buf=='mcmc') then 
         call  SynParall
     else if (buf=='plot_exc') then
