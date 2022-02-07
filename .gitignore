@@ -2,6 +2,7 @@
 __*
 fortran/Debug
 fortran/fortran*
+fortran/MCMC_for_CMB_fortranCODE*
 fortran/Autocorr.dat
 fortran/chainconsum.dat
 fortran/GRvalues.dat
