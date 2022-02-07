@@ -37,4 +37,7 @@ ax.plot(nu, SZfunction(T0, kTe, beta, Tau, nu))
 SZ = np.array([SZ_tr(T0, kTe, beta, Tau)[wave] for wave in filtrs])
 ax.plot(nu_data, SZ, 'ob')
 
+ax.set_xlabel(r'$\nu$ GHz')
+ax.set_ylabel(r'SZ')
+
 plt.show()
