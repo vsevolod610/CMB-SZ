@@ -6,6 +6,7 @@ subroutine OpenAnalysis(file_name)
     use hd_data
     use MCMC
     use synth_param
+    !use ParamIteration
 
     integer num, k, i, pos, ver, s, str_num,str,ioer
     character*4 chara
@@ -119,13 +120,37 @@ subroutine SetPrior
     use synth_param
     use CI_data
     use H2_data
+    use ParamIteration
     
     character*50 str
     character(len=50), dimension(6) :: args
+    character(len=5) :: charind
+    character(len=100) :: namepriorfile
     integer el_num
     
-    open(47, file='prior.dat')
+    
+    !if (ind == 0) then
+    !    nameSZdatafile = 'SZ_data.txt'
+    !else 
+    !    write(charind,'(1I5)') ind
+    !    nameSZdatafile = 'SZdatas\SZ_data'//TRIM(ADJUSTL(charind))//'.txt'c
+    !end if
+    
+    
+    if (ind == 0) then
+        namepriorfile = 'prior.dat'
+    else 
+        write(charind,'(1I5)') ind
+        namepriorfile = 'priors\prior'//TRIM(ADJUSTL(charind))//'.dat'
+    end if
+    
+    print*, "Open the "//TRIM(ADJUSTL(namepriorfile))//" file"
+    
+    open(47, file=namepriorfile) !'prior.dat'
     read(47,*) num_prior
+    if (allocated(prior)) then 
+        deallocate (prior)
+	end if
     allocate(prior(num_prior))
     do i=1, num_prior
         read(47,'(1A50)') str

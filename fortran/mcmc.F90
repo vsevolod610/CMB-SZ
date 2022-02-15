@@ -12,11 +12,13 @@
 !! <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-subroutine MCMCfit(calc_fit,calculate_chi)
+subroutine MCMCfit(calc_fit,calculate_chi)!, ind, min, max)
 
     use synth_param
     use MCMC
     use CO_data
+    use ParamIteration
+    
     implicit none
     include 'mpif.h'
 
@@ -27,9 +29,11 @@ subroutine MCMCfit(calc_fit,calculate_chi)
     double precision x, chix, chi, z, koef, q, drandm,  ln, lprior
     double precision, allocatable :: vari(:)
     
-    integer i,j,r,k,f, t ,l, pp, readMC, corr_limit
+    integer i,j,r,k,f, t ,l, pp, readMC, corr_limit!, ind, max, min
     character*4000 buf 
     character*20 tmp
+    character (len = 100) :: nameMCchain
+    character (len = 5) :: charind
     
     INTEGER  ierr,rc, numprocs, myid                       ! mpi_var
     
@@ -39,17 +43,28 @@ subroutine MCMCfit(calc_fit,calculate_chi)
 
 !############################# START MPI #######>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    
     print*, 'start mpi'
-    call MPI_INIT( ierr )
+    
+    
+	if ((ind == 0) .or. (ind == min)) then
+        call MPI_INIT( ierr )
+    end if
+    
     call MPI_COMM_RANK( MPI_COMM_WORLD, myid, IERR )
-    call MPI_COMM_SIZE( MPI_COMM_WORLD, numprocs, IERR )
+	call MPI_COMM_SIZE( MPI_COMM_WORLD, numprocs, IERR )
+    
     print *, "Process ", myid, " of ", numprocs, " is alive"
     !call seed(1+9*myid)
     call RANDOM_SEED()
 ! >>>>>>>>>>>>>>>>>>>>>>>>>>> initialize Monte Carlo module >>>>>>>>>>>>>>>>>>>>>>>
 
-    if (allocated(MC)) deallocate (MC)
+    if (allocated(MC)) then 
+        deallocate (MC)
+	end if
     allocate (MC(num_MC))
     !allocate (random(4,num_MC))
+    if (allocated(random)) then 
+        deallocate (random)
+	end if
     allocate (random(6,num_MC))
     
     call calc_fit
@@ -61,7 +76,9 @@ subroutine MCMCfit(calc_fit,calculate_chi)
     end do
     
     ! >>>>>>>>> MCres -auxiliary array for data transfer of MC array and others
-    
+    if (allocated(MCres)) then
+        deallocate (MCres)
+	end if
     allocate (MCres(num_of_var+1))  
     
     if(myid == 0) then                      
@@ -79,6 +96,7 @@ subroutine MCMCfit(calc_fit,calculate_chi)
            close(101)
         end if 
         
+        if (allocated(time)) deallocate (time)
         allocate(time(numprocs))
         
         if (allocated(MCsave)) deallocate (MCsave)
@@ -93,6 +111,7 @@ subroutine MCMCfit(calc_fit,calculate_chi)
 	    chi_min = MCmin(1)%chi
 
         ! >>>>>>>>> create MCchain
+        if (allocated(MCchain)) deallocate (MCchain)
         allocate (MCchain(iter_MC))
         do i=1,iter_MC
             allocate (MCchain(i)%par(num_MC,num_of_var))
@@ -105,6 +124,11 @@ subroutine MCMCfit(calc_fit,calculate_chi)
             MCchain(i)%auto = 1
         enddo
         
+        if (allocated(GRvalue)) deallocate (GRvalue)
+        if (allocated(Autocorr)) deallocate (Autocorr)
+        if (allocated(vari)) deallocate (vari)
+        if (allocated(MC_prev_chi)) deallocate (MC_prev_chi)
+        
         allocate(GRvalue(3,num_of_var))           !Gelman-Rubin test
         allocate(Autocorr(401,num_of_var))
         allocate (vari(num_of_var*2))
@@ -113,10 +137,17 @@ subroutine MCMCfit(calc_fit,calculate_chi)
         
         f = 0
         
-    
+        
+        
+        if (ind == 0) then
+            nameMCchain = "MCchain.dat"
+        else 
+            write(charind,'(1I5)') ind
+            nameMCchain = 'OUT\MCchain'//TRIM(ADJUSTL(charind))//'.dat'c
+        end if
         
         open (18, file="resMC.dat")
-        open (19, file="MCchain.dat")
+        open (19, file=nameMCchain)
         open (20, file="GRvalues.dat")
         open (21, file="GRvalues2.dat")
 
@@ -169,7 +200,7 @@ subroutine MCMCfit(calc_fit,calculate_chi)
         start_time = MPI_WTIME(IERR)
         step_time = start_time
         
-        if(( i == 1 ) .and. ( myid == 0 )) call calcMC_stats ! calc stats for the first iteration
+        if(( i == 1 ) .and. ( myid == 0 )) call calcMC_stats(ind) ! calc stats for the first iteration
         if(myid == 0) then      !  save MC(k)%chi values for the last iteration
             MC_prev_chi = 0
             do k = 1, num_MC
@@ -402,7 +433,7 @@ subroutine MCMCfit(calc_fit,calculate_chi)
 
         if(myid == 0) then 
             
-            call calcMC_stats
+            call calcMC_stats(ind)
 
             x = 1.0d0
             do k=1,num_of_var
@@ -471,28 +502,30 @@ subroutine MCMCfit(calc_fit,calculate_chi)
        close(20)
        close(21)
     endif  
-
-    call MPI_FINALIZE(rc)     
+    
+    if ((ind == 0) .or. (ind == max)) then
+        call MPI_FINALIZE(rc)
+	end if
 end subroutine
 
 
-subroutine SynParall
+subroutine SynParall !(ind, min, max)
     use MCMC
     use synth_param   
     use CO_data
     use SZ_data
+    !integer ind, max
     character*200 file_name
+    
     
     external calc_fit_CI,calculate_chi_CI,calc_fit_CO,calculate_chi_CO,calc_fit_H2,calculate_chi_H2, calc_fit_all,calculate_chi_all,calc_fit_HD,calculate_chi_HD,calc_fit_SZ,calculate_chi_SZ
     ! set probability function 
     !call SetFunction_CO   
     !call SetFunction_CI
     !call SetFunction_HD    
-    call SetFunction_SZ
+    call SetFunction_SZ!(ind)
     
     file_name = TRIM(ADJUSTL('startSZ.sss'))
-    call OpenAnalysis(file_name)
-    call MCMCfit(calc_fit_SZ,calculate_chi_SZ)         ! start Monte Carlo Markov Chain calculation 
+    call OpenAnalysis(file_name)!, ind)
+    call MCMCfit(calc_fit_SZ,calculate_chi_SZ)!, ind, min, max)         ! start Monte Carlo Markov Chain calculation 
 end 
-
-

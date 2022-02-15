@@ -103,4 +103,12 @@ module constants
     double precision, parameter :: mu = 1820
     
 end module
+    
+module ParamIteration
+    save
+    integer :: ind = 0 
+    integer :: max = 0
+    integer :: min = 0
+end module
+
 

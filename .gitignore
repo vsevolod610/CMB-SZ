@@ -1,10 +1,10 @@
 .*
 __*
-python/test.py
-INput/*
-OUT/*
+fortran/OUT/*
+fortran/SZdatas/*.txt
+fortran/priors/*.dat
 Result/*
-fortran/Debug
+fortran/Debug/*
 fortran/fortran*
 fortran/Autocorr.dat
 fortran/chainconsum.dat

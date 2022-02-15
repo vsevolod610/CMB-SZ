@@ -91,16 +91,18 @@ subroutine sortMCmin
 end subroutine
 
 
-subroutine calcMC_stats
+subroutine calcMC_stats(ind)
     
     use MCMC
     use synth_param
     implicit none 
      
-    integer i,j,k,l,i_min,f,t,i_max, n,iter_border
+    integer i,j,k,l,i_min,f,t,i_max, n,iter_border, ind
     double precision x,y, koef
     character*20 fmt1,fmt2,fmt3
     character*4000 buffer 
+    character (len = 100) :: nameChainfile
+    character (len = 5) :: charind
     
     logical :: exist
 ! >>>>>>>>>>>>> Calc first two moments of Chi^2 distributions
@@ -278,11 +280,20 @@ subroutine calcMC_stats
             !enddo
             !close(668)
             
-            inquire(file="chainconsum.dat", exist=exist)
+            
+            
+            if (ind == 0) then
+                nameChainfile = "chainconsum.dat"
+            else 
+                write(charind,'(1I5)') ind
+                nameChainfile = 'OUT\chainconsum'//TRIM(ADJUSTL(charind))//'.dat'c
+            end if
+            
+            inquire(file=nameChainfile, exist=exist)
             if (exist) then
-              open(667, file="chainconsum.dat", status="old", position="append", action="write")
+              open(667, file=nameChainfile, status="old", position="append", action="write")
             else
-              open(667, file="chainconsum.dat", status="new", action="write")
+              open(667, file=nameChainfile, status="new", action="write")
             end if
 !            open(667, file="chainconsum.dat")
 !            open(667, file="chainconsum.dat", status="old", position="append", action="write")

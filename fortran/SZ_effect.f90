@@ -21,16 +21,20 @@ module SZ_data
 end
 
        
-subroutine SetFunction_SZ
-    
+subroutine SetFunction_SZ!(ind)    
     use SZ_data
     use constants
+    use ParamIteration
     
+    !integer ind
     integer i,j,k_s,k
     character*500 buf, str 
     character(len=50), dimension(6) :: args
+    character(len=100) :: nameSZdatafile
+    character(len=5) :: charind
     double precision x
-  
+    
+    
     
     !###################################    set parameters for SZ function 
     coeff1 = h/k_bol*1e9      ! in K/GHz
@@ -49,7 +53,15 @@ subroutine SetFunction_SZ
     open(70, file='data/Planck_bands/fits-70.txt')
     !# Это здесь определяется band70_num?
     call READ_EOF(70,  band70_num)
+    
+    if (allocated(band70_l)) then 
+        deallocate (band70_l)
+	end if
     allocate(band70_l(band70_num))
+    
+    if (allocated(band70_f)) then 
+        deallocate (band70_f)
+	end if
     allocate(band70_f(band70_num))
     
     do i = 1,band70_num
@@ -70,7 +82,11 @@ subroutine SetFunction_SZ
     open(100, file='data/Planck_bands/fits-100.txt')
     !# Это здесь определяется band70_num?
     call READ_EOF(100,  band100_num)
+    
+    if (allocated(band100_l)) deallocate (band100_l)
     allocate(band100_l(band100_num))
+    
+    if (allocated(band100_f)) deallocate (band100_f)
     allocate(band100_f(band100_num))
     
     do i = 1,band100_num
@@ -91,7 +107,11 @@ subroutine SetFunction_SZ
     open(143, file='data/Planck_bands/fits-143.txt')
     !# Это здесь определяется band70_num?
     call READ_EOF(143,  band143_num)
+    
+    if (allocated(band143_l)) deallocate (band143_l)
     allocate(band143_l(band143_num))
+    
+    if (allocated(band143_f)) deallocate (band143_f)
     allocate(band143_f(band143_num))
     
     do i = 1,band143_num
@@ -112,7 +132,11 @@ subroutine SetFunction_SZ
     open(217, file='data/Planck_bands/fits-217.txt')
     !# Это здесь определяется band70_num?
     call READ_EOF(217,  band217_num)
+    
+    if (allocated(band217_l)) deallocate (band217_l)
     allocate(band217_l(band217_num))
+    
+    if (allocated(band217_f)) deallocate (band217_f)
     allocate(band217_f(band217_num))
     
     do i = 1,band217_num
@@ -133,7 +157,11 @@ subroutine SetFunction_SZ
     open(353, file='data/Planck_bands/fits-353.txt')
     !# Это здесь определяется band70_num?
     call READ_EOF(353,  band353_num)
+    
+    if (allocated(band353_l)) deallocate (band353_l)
     allocate(band353_l(band353_num))
+    
+    if (allocated(band353_f)) deallocate (band353_f)
     allocate(band353_f(band353_num))
     
     do i = 1,band353_num
@@ -151,8 +179,17 @@ subroutine SetFunction_SZ
     close(353)
     
     
+    
     !###################################    Read observations
-    open(17, file='SZ_data.txt')
+    if (ind == 0) then
+        nameSZdatafile = 'SZ_data.txt'
+    else 
+        write(charind,'(1I5)') ind
+        nameSZdatafile = 'SZdatas\SZ_data'//TRIM(ADJUSTL(charind))//'.txt'c
+    end if
+    
+    print*, "Open the "//TRIM(ADJUSTL(nameSZdatafile))//" file"
+    open(17, file=nameSZdatafile)
     read(17, *)   
     read(17,*) num_of_obs
     print*, 'read SZ data in', num_of_obs, 'bands' 
@@ -162,9 +199,8 @@ subroutine SetFunction_SZ
         !# end do или enddo ?
     end do  
     close(17)
-
-    
-    end subroutine 
+        
+end subroutine 
 
     
     
@@ -261,6 +297,8 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
         Int_s = Int_s + 0.5 * (band353_f(j)*s + band353_f(j + 1)*ss )*(band353_l(j+1)-band353_l(j))
     end do
     sz_flux(i) = Int_s
+    
+    
     
     
     end subroutine    

@@ -38,7 +38,7 @@ def SZtr(T0, kTe, beta, Tau):
 
 
 for i in range(N):
-    with open("../INput/SZdatas/SZ_data{}.txt".format(i + 1), 'w') as File:
+    with open("../fortran/SZdatas/SZ_data{}.txt".format(i + 1), 'w') as File:
         File.write('SZ data for freq. {} GHz | '.format(str(filtrs[1:-1])))
         line_params = 'T0 = {}, kTe = {:.2}, beta = {:.1e}, Tau = {:.2}'
         File.write(line_params.format(T0, Te[i], beta[i], Tau[i]))
@@ -49,7 +49,7 @@ for i in range(N):
             s = '{: .2e}  {:.2e}  {:.2e}\n'.format(sz[wave], sz_sigma[0], sz_sigma[1])
             File.write(s)
     
-    with open("../INput/priors/prior{}.dat".format(i + 1), 'w') as File:
+    with open("../fortran/priors/prior{}.dat".format(i + 1), 'w') as File:
         File.write('1 ! Num of priors\n')
         s = '1 2 Te {:.2} {:.2} {:.2} ! 2 index of arg Te name of arg'
         Te_mean = np.random.normal(Te[i], 0.01 * Te[i])
