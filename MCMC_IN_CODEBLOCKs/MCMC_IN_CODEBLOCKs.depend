@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1645014583 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/emcee_module.f90
+
+1645002538 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/modules.f90
+
+1645025592 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/main.f90
+
+1644875650 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/plot_figure.f90
+
+1644875650 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/SetFunction_CI.f90
+
+1644875650 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/SetFunction_HD.f90
+
+1644875650 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/SetFunctionH2.f90
+
+1644875650 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/uv_intensity.f90
+
+1644949249 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/OpenAnalysis.f90
+
+1645282548 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/additional.f90
+
+1644883127 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/SetFunction_CO.f90
+
+1644947264 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/SetFunctionHD.f90
+
+1645200509 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/SZ_effect.f90
+
+1645022974 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/Main_Code.F90
+
+1645019586 source:/home/ilya/Documents/SSW_NIR/CMB/MyProj/MCMC_IN_CODEBLOCKs/mcmc.F90
+
