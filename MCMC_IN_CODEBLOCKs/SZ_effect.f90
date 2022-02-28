@@ -222,7 +222,7 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     double precision x, xx, theta
     double precision Int_s, s, ss
     double precision T0_test, Tau_test, theta_test, x_test, beta_test, s_test, xx_test, ss_test
-
+    double precision, allocatable :: bandarray_l(:), bandarray_f(:)
 
     T0  = syn(1)%val(1) ! in K
     Te = syn(1)%val(2)  ! in Kev
@@ -234,74 +234,110 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     !###################################    set sz_flux
 
     !# 70
-    i = 1
-    Int_s = 0.0
-    x = coeff1*sz_wave(i)/T0
-    sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
-    do j = 1, size(band70_f)-1
-        x = coeff1*band70_l(j)/T0
-        xx = coeff1*band70_l(j + 1)/T0
-        s = sz_signal(T0, tau, theta, x, beta)
-        ss = sz_signal(T0, tau, theta, xx, beta)
-        Int_s = Int_s +  0.5 * (band70_f(j)*s + band70_f(j + 1)*ss )*(band70_l(j+1)-band70_l(j))
+    !i = 1
+
+
+    do i = 1, 5
+        select case (i)
+            case (1)
+                allocate (bandarray_f(size(band70_f)))
+                bandarray_f(:)= band70_f(:)
+                allocate (bandarray_l(size(band70_l)))
+                bandarray_l(:) = band70_l(:)
+            case (2)
+                allocate (bandarray_f(size(band100_f)))
+                bandarray_f(:) = band100_f(:)
+                allocate (bandarray_l(size(band100_l)))
+                bandarray_l(:) = band100_l(:)
+            case (3)
+                allocate (bandarray_f(size(band143_f)))
+                bandarray_f(:) = band143_f(:)
+                allocate (bandarray_l(size(band143_l)))
+                bandarray_l(:) = band143_l(:)
+            case (4)
+                allocate (bandarray_f(size(band217_f)))
+                bandarray_f(:) = band217_f(:)
+                allocate (bandarray_l(size(band217_l)))
+                bandarray_l(:) = band217_l(:)
+            case (5)
+                allocate (bandarray_f(size(band353_f)))
+                bandarray_f(:) = band353_f(:)
+                allocate (bandarray_l(size(band353_l)))
+                bandarray_l(:) = band353_l(:)
+        end select
+
+        Int_s = 0.0
+        x = coeff1*sz_wave(i)/T0
+        sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
+        do j = 1, size(bandarray_f)-1
+            x = coeff1*bandarray_l(j)/T0
+            xx = coeff1*bandarray_l(j + 1)/T0
+            s = sz_signal(T0, tau, theta, x, beta)
+            ss = sz_signal(T0, tau, theta, xx, beta)
+            Int_s = Int_s +  0.5 * (bandarray_f(j)*s + bandarray_f(j + 1)*ss )*(bandarray_l(j+1)-bandarray_l(j))
+        end do
+        sz_flux(i) = Int_s
+
+        deallocate (bandarray_f)
+        deallocate (bandarray_l)
     end do
-    sz_flux(i) = Int_s
+
 
     !# 100
-    i = 2
-    Int_s = 0.0
-    x = coeff1*sz_wave(i)/T0
-    sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
-    do j = 1, size(band100_f)-1
-        x = coeff1*band100_l(j)/T0
-        xx = coeff1*band100_l(j + 1)/T0
-        s = sz_signal(T0, tau, theta, x, beta)
-        ss = sz_signal(T0, tau, theta, xx, beta)
-        Int_s = Int_s +   0.5 * (band100_f(j)*s + band100_f(j + 1)*ss )*(band100_l(j+1)-band100_l(j))
-    end do
-    sz_flux(i) = Int_s
+    !i = 2
+    !Int_s = 0.0
+    !x = coeff1*sz_wave(i)/T0
+    !sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
+    !do j = 1, size(band100_f)-1
+    !    x = coeff1*band100_l(j)/T0
+    !    xx = coeff1*band100_l(j + 1)/T0
+    !    s = sz_signal(T0, tau, theta, x, beta)
+    !    ss = sz_signal(T0, tau, theta, xx, beta)
+    !    Int_s = Int_s +   0.5 * (band100_f(j)*s + band100_f(j + 1)*ss )*(band100_l(j+1)-band100_l(j))
+    !end do
+    !sz_flux(i) = Int_s
 
     !# 143
-    i = 3
-    Int_s = 0.0
-    x = coeff1*sz_wave(i)/T0
-    sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
-    do j = 1, size(band143_f)-1
-        x = coeff1*band143_l(j)/T0
-        xx = coeff1*band143_l(j + 1)/T0
-        s = sz_signal(T0, tau, theta, x, beta)
-        ss = sz_signal(T0, tau, theta, xx, beta)
-        Int_s = Int_s +   0.5 * (band143_f(j)*s + band143_f(j + 1)*ss )*(band143_l(j+1)-band143_l(j))
-    end do
-    sz_flux(i) = Int_s
+    !i = 3
+    !Int_s = 0.0
+    !x = coeff1*sz_wave(i)/T0
+    !sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
+    !do j = 1, size(band143_f)-1
+    !    x = coeff1*band143_l(j)/T0
+    !    xx = coeff1*band143_l(j + 1)/T0
+    !    s = sz_signal(T0, tau, theta, x, beta)
+    !    ss = sz_signal(T0, tau, theta, xx, beta)
+    !    Int_s = Int_s +   0.5 * (band143_f(j)*s + band143_f(j + 1)*ss )*(band143_l(j+1)-band143_l(j))
+    !end do
+    !sz_flux(i) = Int_s
 
     !# 217
-    i = 4
-    Int_s = 0.0
-    x = coeff1*sz_wave(i)/T0
-    sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
-    do j = 1, size(band217_f)-1
-        x = coeff1*band217_l(j)/T0
-        xx = coeff1*band217_l(j + 1)/T0
-        s = sz_signal(T0, tau, theta, x, beta)
-        ss = sz_signal(T0, tau, theta, xx, beta)
-        Int_s = Int_s +   0.5 * (band217_f(j)*s + band217_f(j + 1)*ss )*(band217_l(j+1)-band217_l(j))
-    end do
-    sz_flux(i) = Int_s
+    !i = 4
+    !Int_s = 0.0
+    !x = coeff1*sz_wave(i)/T0
+    !sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
+    !do j = 1, size(band217_f)-1
+    !    x = coeff1*band217_l(j)/T0
+    !    xx = coeff1*band217_l(j + 1)/T0
+    !    s = sz_signal(T0, tau, theta, x, beta)
+    !    ss = sz_signal(T0, tau, theta, xx, beta)
+    !    Int_s = Int_s +   0.5 * (band217_f(j)*s + band217_f(j + 1)*ss )*(band217_l(j+1)-band217_l(j))
+    !end do
+    !sz_flux(i) = Int_s
 
     !# 353
-    i = 5
-    Int_s = 0.0
-    x = coeff1*sz_wave(i)/T0
-    sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
-    do j = 1, size(band353_f)-1
-        x = coeff1*band353_l(j)/T0
-        xx = coeff1*band353_l(j + 1)/T0
-        s = sz_signal(T0, tau, theta, x, beta)
-        ss = sz_signal(T0, tau, theta, xx, beta)
-        Int_s = Int_s + 0.5 * (band353_f(j)*s + band353_f(j + 1)*ss )*(band353_l(j+1)-band353_l(j))
-    end do
-    sz_flux(i) = Int_s
+    !i = 5
+    !Int_s = 0.0
+    !x = coeff1*sz_wave(i)/T0
+    !sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
+    !do j = 1, size(band353_f)-1
+    !    x = coeff1*band353_l(j)/T0
+    !    xx = coeff1*band353_l(j + 1)/T0
+    !    s = sz_signal(T0, tau, theta, x, beta)
+    !    ss = sz_signal(T0, tau, theta, xx, beta)
+    !    Int_s = Int_s + 0.5 * (band353_f(j)*s + band353_f(j + 1)*ss )*(band353_l(j+1)-band353_l(j))
+    !end do
+    !sz_flux(i) = Int_s
 
 
 
