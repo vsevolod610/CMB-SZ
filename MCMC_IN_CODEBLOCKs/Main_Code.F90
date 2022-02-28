@@ -95,11 +95,12 @@ subroutine calcMC_stats !(ind)
 
     use MCMC
     use synth_param
+    use ParamIteration
     IMPLICIT NONE
 
 
 
-    integer i,j,k,l,i_min,f,t,i_max, n,iter_border, ind
+    integer i,j,k,l,i_min,f,t,i_max, n,iter_border
     double precision x,y, koef
     character*20 fmt1,fmt2,fmt3
     character*4000 buffer
