@@ -213,8 +213,14 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
 
     IMPLICIT NONE
 
-    real (kind = 8), external :: sz_signal
-
+    !real (kind = 8), external :: sz_signal
+    !double precision :: sz_signal
+    INTERFACE
+        double precision FUNCTION sz_signal(T0_var, tau, theta, x, beta, alpha_var, z_var)
+            double precision, optional, intent (in) :: alpha_var, T0_var, z_var
+            double precision, intent (in) :: theta, x, beta, tau
+        END FUNCTION  sz_signal
+    END INTERFACE
 
 
     integer i,j
@@ -272,8 +278,8 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
         do j = 1, size(bandarray_f)-1
             x = coeff1*bandarray_l(j)/T0
             xx = coeff1*bandarray_l(j + 1)/T0
-            s = sz_signal(T0, tau, theta, x, beta)
-            ss = sz_signal(T0, tau, theta, xx, beta)
+            s = sz_signal(T0_var=T0, tau=tau, theta=theta, x=x, beta=beta)
+            ss = sz_signal(T0_var=T0, tau=tau, thetha=theta, x=xx, beta=beta)
             Int_s = Int_s +  0.5 * (bandarray_f(j)*s + bandarray_f(j + 1)*ss )*(bandarray_l(j+1)-bandarray_l(j))
         end do
         sz_flux(i) = Int_s
@@ -344,17 +350,38 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
 
     end subroutine
 
-double precision function sz_signal(T0, tau, theta, x, beta) !################################### Changeble
+double precision function sz_signal(T0_var, tau, theta, x, beta, alpha_var, z_var) !################################### Changeble
 
-    double precision T0, alpha, z,  theta, x, beta, tau, koeff
+    double precision z, koeff, T0, alpha, xx
+    double precision, optional, intent (in) :: alpha_var, T0_var, z_var
+    double precision, intent (in) :: theta, x, beta, tau
     double precision X0, S, Y0, Y1, Y2, Y3, Y4, C1, C2, P0, P1, R
 
-    z = 0.0518
-    !################################### Changeble
+    if (present(alpha_var)) then
+        alpha = alpha_var
+    else
+        alpha = 0
+    end if
 
-    X0 = x * (dexp(x) + 1.0) / (dexp(x) - 1.0)
-    S = 2.0 * x / (dexp(- x / 2.0) * (dexp(x) - 1))
-    Y0 = x * (dexp(x)+1.0)/(dexp(x)-1.0) - 4.0
+    if (present(T0_var)) then
+        T0 = T0_var
+    else
+        T0 = 2.7255
+    end if
+
+    if (present(z_var)) then
+        z = z_var
+    else
+        z = 0
+    end if
+
+
+    z = 0.0518
+    xx = x * (1 + z)**alpha!################################### Changeble
+
+    X0 = xx * (dexp(xx) + 1.d0) / (dexp(xx) - 1.d0)
+    S = 2.0 * xx / (dexp(- xx / 2.d0) * (dexp(xx) - 1.d0))
+    Y0 = xx * (dexp(xx)+1.d0)/(dexp(xx)-1.d0) - 4.d0
     Y1 = - 10.0 + 47.0 / 2.0 * X0 - 42.0 / 5.0 * X0 ** 2 + 7.0 / 10.0 * X0 ** 3 + S ** 2 * (- 21.0 / 5.0 + 7.0 / 5.0 * X0)
 
     Y2 = - 15.0 / 2.0 + 1023.0 / 8.0 * X0 - 868.0 / 5.0 * X0 ** 2 + 329.0 / 5.0 * X0 ** 3 - &
