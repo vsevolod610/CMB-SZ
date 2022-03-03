@@ -17,7 +17,7 @@ from chainconsumer import ChainConsumer
 parameters = [r'$T_0$', '$kT_e$', r'$\beta$', r'$\mathcal{T}$']
 num_par = len(parameters)
 
-def MCcain_analyze(filename='MCchain.dat', picname=False):
+def MCcain_analyze(filename, picname=False):
     # Read MCcain
     MCchain = []
     with open(filename) as f:
@@ -37,7 +37,7 @@ def MCcain_analyze(filename='MCchain.dat', picname=False):
 
 
 
-def chainconsum_analize(filename='chainconsum.dat', amputate=0 , picname=False):
+def chainconsum_analize(filename, amputate=0 , picname=False):
     #Read cainconsum
     chain = []
     with open(filename) as f:
