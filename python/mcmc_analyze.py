@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 """"
-Analyze one cluster (ChainConsumer)
-
-require:    MCchain.dat, chainconsum.dat
-make:       none
-
-coments:
+set MCMC Analyze cluster
 """
 
 

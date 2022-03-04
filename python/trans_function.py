@@ -1,8 +1,7 @@
 """"
 Read spectral transmission functions of Plank telescope for 70, 100, 143, 217, 353 GHz
 
-require:   LFI_RIMO_R3.31.fits, HFI_RIMO_R3.00.fits
-make:      none
+require:    LFI_RIMO_R3.31.fits, HFI_RIMO_R3.00.fits
 
 coments:    LFI: wavenubers in GHz, normalized, amputate is not need
             HFI: wavenubers in 1/cm, not normalized, amputate is need

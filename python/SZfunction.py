@@ -1,9 +1,6 @@
 """"
 set SZfunction(T0, kTe, beta, Tau, nu)
 
-require:    none
-make:       none
-
 coments:    Full (with relativistic corrections)
 """
 

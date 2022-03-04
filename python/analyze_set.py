@@ -3,11 +3,9 @@
 set clusters --> set of T0_i temperature
 
 require:    mcmc_analyze.py
-            ../OUT/MCchain{1-77}.dat, ../OUT/chainconsum{1-77}.dat
-make:       ../Result/MCcain_analyze{1-77}.png, ../Result/chainconsum_analyze{1-77}.png
+            ../OUT/MCchain{1-N}.dat, ../OUT/chainconsum{1-N}.dat
+make:       ../Result/MCcain_analyze{1-N}.png, ../Result/chainconsum_analyze{1-N}.png
             ../Result/Result.txt
-
-coments:
 """
 
 

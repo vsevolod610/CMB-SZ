@@ -3,10 +3,6 @@
 set of T0_i temperature --> Estimate T0
 
 require:    ../Result/Result.txt
-make:       none
-            
-
-coments:    
 """
 
 import numpy as np
@@ -47,9 +43,9 @@ def log_probability(v, y, yerr, prior=lambda v: 0):
     return - 0.5 * np.sum([(yi - v) ** 2 / sigma2[i] + 2 * np.pi * s2[i]for i, yi in enumerate(y)]) + prior(v)
 
 # setting of mcmc
-nwalkers = 100
-nsteps = 200
-amputete = 50 # int(0.5 * nsteps)
+nwalkers = 200
+nsteps = 500
+amputete = 100 # int(0.5 * nsteps)
 ndim = 1
 names_of_params = [r'T0']
 pos = [2.72] +  0.5 * np.random.randn(nwalkers, ndim)
