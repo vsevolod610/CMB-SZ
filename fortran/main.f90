@@ -6,7 +6,7 @@ program main
     min = 1!28
     max = 77
     ind = 0 
-    buf = 'mcmcNtimes'
+    buf = 'mcmc'
     if (buf=='mcmc') then
         call  SynParall   !(0, 0, 0)
     else if (buf=='mcmcNtimes') then

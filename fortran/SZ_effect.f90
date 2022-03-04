@@ -216,121 +216,104 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     double precision R, T0, Te, beta, tau, nu , heta           ! Model parameters
     double precision x, xx, theta
     double precision Int_s, s, ss
-    double precision T0_test, Tau_test, theta_test, x_test, beta_test, s_test, xx_test, ss_test
+    double precision, allocatable :: bandarray_l(:), bandarray_f(:)
     
     
     T0  = syn(1)%val(1) ! in K
     Te = syn(1)%val(2)  ! in Kev
     beta = syn(1)%val(3) ! vz/c
     tau = syn(1)%val(4) ! optical depth
-    
+
     theta  = coeff2*Te
-    
+
     !###################################    set sz_flux
-    
+
     !# 70
-    i = 1
-    Int_s = 0.0
-    x = coeff1*sz_wave(i)/T0
-    sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
-    do j = 1, size(band70_f)-1
-        x = coeff1*band70_l(j)/T0
-        xx = coeff1*band70_l(j + 1)/T0
-        s = sz_signal(T0, tau, theta, x, beta)
-        ss = sz_signal(T0, tau, theta, xx, beta)
-        Int_s = Int_s +  0.5 * (band70_f(j)*s + band70_f(j + 1)*ss )*(band70_l(j+1)-band70_l(j))
+    !i = 1
+
+
+    do i = 1, 5
+        select case (i)
+            case (1)
+                allocate (bandarray_f(size(band70_f)))
+                bandarray_f(:)= band70_f(:)
+                allocate (bandarray_l(size(band70_l)))
+                bandarray_l(:) = band70_l(:)
+            case (2)
+                allocate (bandarray_f(size(band100_f)))
+                bandarray_f(:) = band100_f(:)
+                allocate (bandarray_l(size(band100_l)))
+                bandarray_l(:) = band100_l(:)
+            case (3)
+                allocate (bandarray_f(size(band143_f)))
+                bandarray_f(:) = band143_f(:)
+                allocate (bandarray_l(size(band143_l)))
+                bandarray_l(:) = band143_l(:)
+            case (4)
+                allocate (bandarray_f(size(band217_f)))
+                bandarray_f(:) = band217_f(:)
+                allocate (bandarray_l(size(band217_l)))
+                bandarray_l(:) = band217_l(:)
+            case (5)
+                allocate (bandarray_f(size(band353_f)))
+                bandarray_f(:) = band353_f(:)
+                allocate (bandarray_l(size(band353_l)))
+                bandarray_l(:) = band353_l(:)
+        end select
+
+        Int_s = 0.0
+        !x = coeff1*sz_wave(i)/T0
+        !sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
+        do j = 1, size(bandarray_f)-1
+            x = coeff1*bandarray_l(j)/T0
+            xx = coeff1*bandarray_l(j + 1)/T0
+            s = sz_signal(T0, tau, theta, x, beta)
+            ss = sz_signal(T0, tau, theta, xx, beta)
+            Int_s = Int_s +  0.5 * (bandarray_f(j)*s + bandarray_f(j + 1)*ss )*(bandarray_l(j+1)-bandarray_l(j))
+        end do
+        sz_flux(i) = Int_s
+
+        deallocate (bandarray_f)
+        deallocate (bandarray_l)
     end do
-    sz_flux(i) = Int_s
-    
-    !# 100
-    i = 2
-    Int_s = 0.0
-    x = coeff1*sz_wave(i)/T0
-    sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
-    do j = 1, size(band100_f)-1
-        x = coeff1*band100_l(j)/T0
-        xx = coeff1*band100_l(j + 1)/T0
-        s = sz_signal(T0, tau, theta, x, beta)
-        ss = sz_signal(T0, tau, theta, xx, beta)
-        Int_s = Int_s +   0.5 * (band100_f(j)*s + band100_f(j + 1)*ss )*(band100_l(j+1)-band100_l(j))
-    end do
-    sz_flux(i) = Int_s
-    
-    !# 143
-    i = 3
-    Int_s = 0.0
-    x = coeff1*sz_wave(i)/T0
-    sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
-    do j = 1, size(band143_f)-1
-        x = coeff1*band143_l(j)/T0
-        xx = coeff1*band143_l(j + 1)/T0
-        s = sz_signal(T0, tau, theta, x, beta)
-        ss = sz_signal(T0, tau, theta, xx, beta)
-        Int_s = Int_s +   0.5 * (band143_f(j)*s + band143_f(j + 1)*ss )*(band143_l(j+1)-band143_l(j))
-    end do
-    sz_flux(i) = Int_s
-    
-    !# 217
-    i = 4
-    Int_s = 0.0
-    x = coeff1*sz_wave(i)/T0
-    sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
-    do j = 1, size(band217_f)-1
-        x = coeff1*band217_l(j)/T0
-        xx = coeff1*band217_l(j + 1)/T0
-        s = sz_signal(T0, tau, theta, x, beta)
-        ss = sz_signal(T0, tau, theta, xx, beta)
-        Int_s = Int_s +   0.5 * (band217_f(j)*s + band217_f(j + 1)*ss )*(band217_l(j+1)-band217_l(j))
-    end do
-    sz_flux(i) = Int_s
-    
-    !# 353
-    i = 5
-    Int_s = 0.0
-    x = coeff1*sz_wave(i)/T0
-    sz_flux(i) = sz_signal(T0, tau, theta, x, beta)
-    do j = 1, size(band353_f)-1
-        x = coeff1*band353_l(j)/T0
-        xx = coeff1*band353_l(j + 1)/T0
-        s = sz_signal(T0, tau, theta, x, beta)
-        ss = sz_signal(T0, tau, theta, xx, beta)
-        Int_s = Int_s + 0.5 * (band353_f(j)*s + band353_f(j + 1)*ss )*(band353_l(j+1)-band353_l(j))
-    end do
-    sz_flux(i) = Int_s
-    
-    
-    
-    
+
+
+
     end subroutine    
 
-double precision function sz_signal(T0, tau, theta, x, beta) !################################### Changeble
-    
-    double precision T0, alpha, z,  theta, x, beta, tau, koeff
+double precision function sz_signal(T0, tau, theta, x, beta)
+
+    double precision koeff, T0, tau, theta, x, beta
     double precision X0, S, Y0, Y1, Y2, Y3, Y4, C1, C2, P0, P1, R
-    
-    z = 0.0518
-    !################################### Changeble
-    
+
     X0 = x * (dexp(x) + 1.0) / (dexp(x) - 1.0)
-    S = 2.0 * x / (dexp(- x / 2.0) * (dexp(x) - 1))
-    Y0 = x * (dexp(x)+1.0)/(dexp(x)-1.0) - 4.0
+    S = 2.0 * x / (dexp(- x / 2.0) * (dexp(x) - 1.0))
+    Y0 = x * (dexp(x) + 1.0)/(dexp(x) - 1.0) - 4.0
     Y1 = - 10.0 + 47.0 / 2.0 * X0 - 42.0 / 5.0 * X0 ** 2 + 7.0 / 10.0 * X0 ** 3 + S ** 2 * (- 21.0 / 5.0 + 7.0 / 5.0 * X0)
-    Y2 = - 15.0 / 2.0 + 1023.0 / 8.0 * X0 - 868.0 / 5.0 * X0 ** 2 + 329.0 / 5.0 * X0 ** 3 - 44.0 / 5.0 * X0 ** 4 + 11.0 / 30.0 * X0 ** 5 + S ** 2 * (- 434.0 / 5.0 + 658.0 / 5.0 * X0 - 242.0 / 5.0 * X0 ** 2 + 143.0 / 30.0 * X0 ** 3) + S ** 4 * ( - 44.0 / 5.0 + 187.0 / 60.0 * X0)
-    Y3 = 15.0 / 2.0 + 2505.0 / 8.0 * X0 - 7098.0 / 5.0 * X0 ** 2 + 14253.0 / 10.0 * X0 ** 3 - 18594.0 / 35.0 * X0 ** 4 + 12059.0 / 140.0 * X0 ** 5 - 128.0 / 21.0 * X0 ** 6 + 16.0 / 105.0 * X0 ** 7 + S ** 2 * (- 7098.0 / 10.0 + 14253.0 / 5.0 * X0 - 102267.0 / 35.0 * X0 ** 2 + 156767.0 / 140.0 * X0 ** 3 - 1216.0 / 7.0 * X0 ** 4 + 64.0 / 7.0 * X0 ** 5) + S ** 4 * (- 18594.0 / 35.0 + 205003.0 / 280.0 * X0 - 1920.0 / 7.0 * X0 ** 2 + 1024.0 / 35.0 * X0 ** 3) + S ** 6 * (- 544.0 / 21.0 + 992.0 / 105.0 * X0)
-    !Y4 = - 135.0 / 32.0 + 30375.0 / 128.0 * X0 - 62391.0 / 10.0 * X0 ** 2 + 614727.0 / 40.0 * X0 ** 3 - 124389.0 / 10.0 * X0 ** 4 + 355703.0 / 80.0 * X0 ** 5 - 16568.0 / 21.0 * X0 ** 6 + 7516.0 / 105.0 * X0 ** 7 - 22.0 / 7.0 * X0 ** 8 + 11.0 / 210.0 * X0 ** 9 + S ** 2 * (- 62391.0 / 20.0 + 614727.0 / 20.0 * X0 - 1368279.0 / 20.0 * X0 ** 2 + 4624139.0 / 80.0 * X0 ** 3 - 157396.0 / 7.0 * X0 ** 4 + 30064.0 / 7.0 * X0 ** 5 - 2717.0 / 7.0 * X0 ** 6 + 2761.0 / 210.0 * X0 ** 7) + S ** 4 * (- 124389.0 / 10.0 + 6046951.0 / 160.0 * X0 - 248520.0 / 7.0 * X0 ** 2 + 481024.0 / 35.0 * X0 ** 3 - 15972.0 / 7.0 * X0 ** 4 + 18689.0 / 140.0 * X0 ** 5) + S ** 6 * (- 70414.0 / 21.0 + 465992.0 / 105.0 * X0 - 11792.0 / 7.0 * X0 ** 2 + 19778.0 / 105.0 * X0 ** 3) + S ** 8 * (- 682.0 / 7.0 + 7601.0 / 210.0 * X0)
-    C1 = 10.0 - 47.0 / 5.0 * X0 + 7.0 / 5.0 * X0 ** 2 + 7.0 / 10.0 * S ** 2
-    C2 = 25.0 - 1117.0 / 10.0 * X0 + 847.0 / 10.0 * X0 ** 2 - 183.0 / 10.0 * X0 ** 3 + 11.0 / 10.0 * X0 ** 4 + S ** 2 * (847.0 / 20.0 - 183.0 / 5.0 * X0 + 121.0 / 20.0 * X0 ** 2) + 11.0 / 10.0 * S ** 4
-    !P0 = - 2.0 / 3.0 + 11.0 / 30.0 * X0
-    !P1 = - 4.0 + 12.0 * X0 - 6.0 * X0 ** 2 + 19.0 / 30.0 * X0 ** 3 + S ** 2 * (- 3.0 + 19.0 / 15.0 * X0)
-    !R = theta ** 2 * Y1 + theta ** 3 * Y2 + theta ** 4 * Y3 + theta ** 5 * Y4 + beta ** 2 * (1.0 / 3.0 * Y0 + theta * (5.0 / 6.0 * Y0 + 2.0 / 3.0 * Y1)) - beta * (1.0 + theta * C1 + theta ** 2 * C2) + beta ** 2 * (P0 + theta * P1)
-    R = theta ** 2 * Y1 + theta ** 3 * Y2 + theta ** 4 * Y3 - beta * (1.0 + theta * C1 + theta ** 2 * C2)
+
+    Y2 = - 15.0 / 2.0 + 1023.0 / 8.0 * X0 - 868.0 / 5.0 * X0 ** 2 + 329.0 / 5.0 * X0 ** 3 - &
+        44.0 / 5.0 * X0 ** 4 + 11.0 / 30.0 * X0 ** 5 + S ** 2 * (- 434.0 / 5.0 + 658.0 / 5.0 * X0 - &
+        242.0 / 5.0 * X0 ** 2 + 143.0 / 30.0 * X0 ** 3) + S ** 4 * ( - 44.0 / 5.0 + 187.0 / 60.0 * X0)
+
+    Y3 = 15.0 / 2.0 + 2505.0 / 8.0 * X0 - 7098.0 / 5.0 * X0 ** 2 + 14253.0 / 10.0 * X0 ** 3 - &
+        18594.0 / 35.0 * X0 ** 4 + 12059.0 / 140.0 * X0 ** 5 - 128.0 / 21.0 * X0 ** 6 + 16.0 / 105.0 * X0 ** 7 + &
+        S ** 2 * (- 7098.0 / 10.0 + 14253.0 / 5.0 * X0 - 102267.0 / 35.0 * X0 ** 2 + 156767.0 / 140.0 * X0 ** 3 - &
+        1216.0 / 7.0 * X0 ** 4 + 64.0 / 7.0 * X0 ** 5) + S ** 4 * (- 18594.0 / 35.0 + 205003.0 / 280.0 * X0 - &
+        1920.0 / 7.0 * X0 ** 2 + 1024.0 / 35.0 * X0 ** 3) + S ** 6 * (- 544.0 / 21.0 + 992.0 / 105.0 * X0)
     
+    C1 = 10.0 - 47.0 / 5.0 * X0 + 7.0 / 5.0 * X0 ** 2 + 7.0 / 10.0 * S ** 2
+
+    C2 = 25.0 - 1117.0 / 10.0 * X0 + 847.0 / 10.0 * X0 ** 2 - 183.0 / 10.0 * X0 ** 3 + 11.0 / 10.0 * X0 ** 4 + &
+        S ** 2 * (847.0 / 20.0 - 183.0 / 5.0 * X0 + 121.0 / 20.0 * X0 ** 2) + 11.0 / 10.0 * S ** 4
+    R = theta ** 2 * Y1 + theta ** 3 * Y2 + theta ** 4 * Y3 - beta * (1.0 + theta * C1 + theta ** 2 * C2)
+
     koeff = 1.0e+006                    ! signal in MicroK ??
 
-    sz_signal = koeff*T0*tau*(theta*Y0 + R) 
+    sz_signal = koeff*T0*tau*(theta*Y0 + R)
 
-    
+
 end function
+
     
 subroutine calculate_chi_SZ(chi,f)
     

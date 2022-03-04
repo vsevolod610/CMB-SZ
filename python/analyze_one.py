@@ -13,7 +13,7 @@ from mcmc_analyze import MCcain_analyze, chainconsum_analize
 filename = '../fortran/MCchain.dat'
 MCcain_analyze(filename)
 filename = '../fortran/chainconsum.dat'
-estim = chainconsum_analize(filename, amputate=500)
+estim = chainconsum_analize(filename, amputate=300)
 estim = estim.get_summary()
 print(estim)
 
