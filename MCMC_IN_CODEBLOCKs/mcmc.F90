@@ -241,7 +241,7 @@ subroutine MCMCfit(calc_fit,calculate_chi)!, ind, min, max)
         start_time = MPI_WTIME(IERR)
         step_time = start_time
 
-        if(( i == 1 ) .and. ( myid == 0 )) call calcMC_stats(ind) ! calc stats for the first iteration
+        if(( i == 1 ) .and. ( myid == 0 )) call calcMC_stats !(ind) ! calc stats for the first iteration
         if(myid == 0) then      !  save MC(k)%chi values for the last iteration
             MC_prev_chi = 0
             do k = 1, num_MC
