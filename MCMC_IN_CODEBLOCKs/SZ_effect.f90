@@ -16,7 +16,8 @@ module SZ_data
     double precision sz_wave_test(9), sz_flux_test(9)
     !double precision sz_wave_test(1000), sz_flux_test(1000)
     double precision sz_obs_flux(5,3)  ! Observed fluxes end errors in 5 bands
-    double precision coeff1, coeff2                      ! coeffs h/k_b, k_b/mc^2
+    double precision coeff1, coeff2
+    double precision z_redshift                    ! coeffs h/k_b, k_b/mc^2
 
 end
 
@@ -191,6 +192,7 @@ subroutine SetFunction_SZ!(ind)
     print*, "Open the "//TRIM(ADJUSTL(nameSZdatafile))//" file"
     open(17, file=nameSZdatafile)
     read(17, *)
+    read(17, *) z_redshift
     read(17,*) num_of_obs
     print*, 'read SZ data in', num_of_obs, 'bands'
     do i = 1, num_of_obs
