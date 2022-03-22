@@ -8,9 +8,10 @@ subroutine OpenAnalysis(file_name)
     use synth_param
     !use ParamIteration
 
-    integer num, k, i, pos, ver, s, str_num,str,ioer
-    character*4 chara
-    character*20 buf,fmt1
+    integer num, k, i, pos, ver, s, str_num,str,ioer, n
+    character(len=8) :: charadd
+    character(len=4) :: chara
+    character*20 buf,fmt1, charadd2
     character*200 file_name
 
     open(17, file=file_name)
@@ -88,14 +89,19 @@ subroutine OpenAnalysis(file_name)
                 read(17,'(1i10)') num_MC               ! NUMB OF WALKERS
                 read(17,'(1i10)') add_prior            ! use prior
                 str = str + 4
-                syn(1)%name(1) = 'T0'
-                syn(1)%name(2) = 'Te'
-                syn(1)%name(3) = 'beta'
-                syn(1)%name(4) = 'tau'
+                !syn(1)%name(1) = 'T0'
+                !syn(1)%name(2) = 'Te'
+                !syn(1)%name(3) = 'beta'
+                !syn(1)%name(4) = 'tau'
                 do k = 1,  number_of_elements
-                    read(17,'(1i2,4f10.6)') syn(1)%vary(k),syn(1)%val(k), syn(1)%val_min(k), syn(1)%val_max(k), syn(1)%val_step(k)
+                    read(17,'(1i2,4f10.6,a5)')&
+                    syn(1)%vary(k),syn(1)%val(k),syn(1)%val_min(k),syn(1)%val_max(k),syn(1)%val_step(k),charadd
+
+                    n = index(charadd, ' ')
+                    syn(1)%name(k) = charadd(1:n-1)
+                    !charadd2 = TRIM(TRIM(ADJUSTL(syn(1)%name(k))))
                     str = str + 1
-                    print*, k,syn(1)%name(k),syn(1)%val(k), syn(1)%val_min(k), syn(1)%val_max(k)
+                    print*, k,syn(1)%name(k), syn(1)%val(k), syn(1)%val_min(k), syn(1)%val_max(k)
                 end do
             end if
     enddo
@@ -122,10 +128,11 @@ subroutine SetPrior
     use H2_data
     use ParamIteration
 
+    logical :: flag
     character*50 str
     character(len=50), dimension(6) :: args
     character(len=5) :: charind
-    character(len=100) :: namepriorfile
+    character(len=100) :: namepriorfile, charadd1, charadd2
     integer el_num
 
 
@@ -158,12 +165,16 @@ subroutine SetPrior
         do l=1,6
             k = index(str(k_s:), ' ')
             args(l) = str(k_s:k_s+k-2)
+            print *, args(l)
             k_s = k_s + k
         enddo
         read(args(1),'(i2)') prior(i)%mode
         if (prior(i)%mode == 1) then ! set prior for phys_conds
             read(args(2),'(i2)') el_num
-            if (TRIM(ADJUSTL(syn(1)%name(el_num))) == TRIM(ADJUSTL(args(3)))) then
+            charadd1 = TRIM(ADJUSTL(syn(1)%name(el_num)))
+            charadd2 = TRIM(ADJUSTL(args(3)))
+            flag = charadd1 == charadd2
+            if (flag) then
                 prior(i)%ind = el_num
                 read(args(4),*) prior(i)%c
                 if (prior(i)%c .eq. 100.0) then   ! set box prior

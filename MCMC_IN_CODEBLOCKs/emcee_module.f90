@@ -1,11 +1,8 @@
-
-
-
 module synth_param
     save
     type synth_parameters
         integer number_of_elements
-        character*8 name(10)
+        character(len=10), dimension(10) :: name
         double precision val(10), val_min(10), val_max(10), val_step(10)
         double precision chi
         integer :: var_ind(10), vary(10)

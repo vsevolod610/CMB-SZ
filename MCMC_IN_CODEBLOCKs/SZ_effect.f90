@@ -16,8 +16,8 @@ module SZ_data
     double precision sz_wave_test(9), sz_flux_test(9)
     !double precision sz_wave_test(1000), sz_flux_test(1000)
     double precision sz_obs_flux(5,3)  ! Observed fluxes end errors in 5 bands
-    double precision coeff1, coeff2
-    double precision z_redshift                    ! coeffs h/k_b, k_b/mc^2
+    double precision coeff1, coeff2  ! coeffs h/k_b, k_b/mc^2
+    double precision z_redshift
 
 end
 
@@ -226,18 +226,18 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
 
 
     integer i,j
-    double precision R, T0, Te, beta, tau, nu , heta, alpha,z        ! Model parameters
+    double precision R, T0, Te, beta, tau, nu , heta, alpha,z, Tz        ! Model parameters
     double precision x, xx, theta
     double precision Int_s, s, ss
     double precision T0_test, Tau_test, theta_test, x_test, beta_test, s_test, xx_test, ss_test
     double precision, allocatable :: bandarray_l(:), bandarray_f(:)
 
-    alpha  = syn(1)%val(1)
-    T0 = 2.7255 !T0  = syn(1)%val(1) ! in K
-    Te = syn(1)%val(2)  ! in Kev
-    beta = syn(1)%val(3) ! vz/c
-    tau = syn(1)%val(4) ! optical depth
-    z = 0.0518
+    T0 = syn(1)%val(1)
+    Tz = syn(1)%val(2)!T0 = 2.7255 !T0  = syn(1)%val(1) ! in K
+    Te = syn(1)%val(3)  ! in Kev
+    beta = syn(1)%val(4) ! vz/c
+    tau = syn(1)%val(5) ! optical depth
+    z = z_redshift
     theta  = coeff2*Te
 
     !###################################    set sz_flux
@@ -276,13 +276,13 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
         end select
 
         Int_s = 0.0
-        x = coeff1*sz_wave(i)/T0
-        sz_flux(i) = sz_signal(T0, tau=tau, theta=theta, x=x, beta=beta, alpha_var=alpha, z_var=z)
+        !x = coeff1*sz_wave(i)/T0
+        !sz_flux(i) = sz_signal(T0, tau=tau, theta=theta, x=x, beta=beta, alpha_var=alpha, z_var=z)
         do j = 1, size(bandarray_f)-1
-            x = coeff1*bandarray_l(j)/T0
-            xx = coeff1*bandarray_l(j + 1)/T0
-            s = sz_signal(tau=tau, theta=theta, x=x, beta=beta, alpha_var=alpha, z_var=z)
-            ss = sz_signal(tau=tau, theta=theta, x=xx, beta=beta, alpha_var=alpha, z_var=z)
+            x = coeff1 * bandarray_l(j) * (1 + z)/Tz
+            xx = coeff1 * bandarray_l(j + 1) * (1 + z)/Tz
+            s = sz_signal(T0_var=T0, tau=tau, theta=theta, x=x, beta=beta)
+            ss = sz_signal(T0_var=T0, tau=tau, theta=theta, x=xx, beta=beta)
             Int_s = Int_s +  0.5 * (bandarray_f(j)*s + bandarray_f(j + 1)*ss )*(bandarray_l(j+1)-bandarray_l(j))
         end do
         sz_flux(i) = Int_s
@@ -378,9 +378,8 @@ double precision function sz_signal(T0_var, tau, theta, x, beta, alpha_var, z_va
         z = 0
     end if
 
-
-    !z = 0.0518
     xxx = x * (1 + z)**alpha!################################### Changeble
+
 
     X0 = xxx * (dexp(xxx) + 1.0) / (dexp(xxx) - 1.0)
     S = 2.0 * xxx / (dexp(- xxx / 2.0) * (dexp(xxx) - 1.0))
