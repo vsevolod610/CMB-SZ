@@ -2,7 +2,7 @@ import csv
 import numpy as np
 
 with open('data.csv', newline='') as File:
-    reader = csv.reader(File, delimiter=';')
+    reader = csv.reader(File, delimiter=',')
     rows = [row for row in reader]
     rows = np.array(rows[1:])
     methods = list(rows[:, 0])
