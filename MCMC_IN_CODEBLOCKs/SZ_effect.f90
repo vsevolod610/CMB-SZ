@@ -225,20 +225,43 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     END INTERFACE
 
 
-    integer i,j
-    double precision R, T0, Te, beta, tau, nu , heta, alpha,z, Tz        ! Model parameters
+    integer i, j, n
+    double precision R, T0, Te, beta, tau, nu , heta, alpha, z, Tz        ! Model parameters
     double precision x, xx, theta
     double precision Int_s, s, ss
     double precision T0_test, Tau_test, theta_test, x_test, beta_test, s_test, xx_test, ss_test
     double precision, allocatable :: bandarray_l(:), bandarray_f(:)
+    character (len=100) :: charadd1
 
-    T0 = syn(1)%val(1)
-    Tz = syn(1)%val(2)!T0 = 2.7255 !T0  = syn(1)%val(1) ! in K
-    Te = syn(1)%val(3)  ! in Kev
-    beta = syn(1)%val(4) ! vz/c
-    tau = syn(1)%val(5) ! optical depth
-    z = z_redshift
+    alpha = 0.0
+    Tz = -1.0
+
+    do n = 1, number_of_elements
+        charadd1 = TRIM(ADJUSTL(syn(1)%name(n)))
+        select case(TRIM(ADJUSTL(charadd1)))
+            case('T0')
+                T0 = syn(1)%val(n)
+            case('Tz')
+                Tz = syn(1)%val(n)!T0 = 2.7255 !T0  = syn(1)%val(1) ! in K
+            case('Te')
+                Te = syn(1)%val(n)  ! in Kev
+            case('beta')
+                beta = syn(1)%val(n) ! vz/c
+            case('tau')
+                tau = syn(1)%val(n) ! optical depth
+            case('alpha')
+                alpha = syn(1)%val(n)
+        end select
+    end do
+
     theta  = coeff2*Te
+    z = z_redshift
+
+    if (Tz < -0.5) then
+        Tz = T0 * (1 + z)
+    end if
+
+
 
     !###################################    set sz_flux
 
@@ -281,8 +304,8 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
         do j = 1, size(bandarray_f)-1
             x = coeff1 * bandarray_l(j) * (1 + z)/Tz
             xx = coeff1 * bandarray_l(j + 1) * (1 + z)/Tz
-            s = sz_signal(T0_var=T0, tau=tau, theta=theta, x=x, beta=beta)
-            ss = sz_signal(T0_var=T0, tau=tau, theta=theta, x=xx, beta=beta)
+            s = sz_signal(T0_var=T0, tau=tau, theta=theta, x=x, beta=beta, alpha_var=alpha)
+            ss = sz_signal(T0_var=T0, tau=tau, theta=theta, x=xx, beta=beta, alpha_var=alpha)
             Int_s = Int_s +  0.5 * (bandarray_f(j)*s + bandarray_f(j + 1)*ss )*(bandarray_l(j+1)-bandarray_l(j))
         end do
         sz_flux(i) = Int_s

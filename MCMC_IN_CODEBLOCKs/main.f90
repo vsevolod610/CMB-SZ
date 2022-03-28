@@ -4,9 +4,9 @@ program main
     character *100 buf
     !integer min, max, ind
     mini = 1!28
-    maxi = 2
+    maxi = 77
     ind = 0
-    buf = 'mcmc' !Ntimes'
+    buf = 'mcmcNtimes'
     if (buf=='mcmc') then
         ind = 0
         mini = 0
