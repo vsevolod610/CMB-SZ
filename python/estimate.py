@@ -64,12 +64,14 @@ print(summary)
 
 # chainconsum pic
 fig = c.plotter.plot(display=False, legend=False, figsize=(6, 6))
+fig.savefig('T_0 dist.pdf', bbox_inches='tight')
 # MCchain pic
 fig, ax = plt.subplots(figsize=(10, 7), sharex=True)
 samples = sampler.get_chain()
 ax.plot(samples[:, :, 0], "k", alpha=0.3)
 ax.set_xlabel(r'steps', fontsize=12)
 ax.set_ylabel(r'$T_0$', fontsize=12)
+fig.savefig('MCchain.pdf', bbox_inches='tight')
 # data pic
 fig, ax = plt.subplots(figsize=(8, 8))
 ax.errorbar(n, y, np.transpose(yerr), capsize=3.5, mew=1.5, fmt='.k', alpha=0.5)                 
@@ -79,9 +81,11 @@ ax.fill_between(x, summary[0] + 0 * x, summary[2] + 0 * x,
             facecolor='b', alpha=0.3, color='b', linewidth=2, linestyle='-')
 ax.set_xlabel(r'number of cluster', fontsize=12)
 ax.set_ylabel(r'$T_0$', fontsize=12)
+fig.savefig('Data.pdf', bbox_inches='tight')
 # chi2 pic
 fig, ax = plt.subplots(figsize=(8, 8))
 T = np.linspace(2.5, 3., 100)
 ax.plot(T, [-2 * log_prob(t) for t in T])
 ax.set_xlabel(r'$T_0$', fontsize=12)
 ax.set_ylabel(r'$\chi^2$', fontsize=12)
+fig.savefig('Chi2.pdf', bbox_inches='tight')

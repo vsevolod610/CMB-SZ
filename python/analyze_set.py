@@ -13,14 +13,14 @@ from mcmc_analyze import MCcain_analyze, chainconsum_analize
 N = 77
 
 for n in range(1, N + 1):
-    filename = '../fortran/OUT/MCchain{}.dat'.format(n)
+    filename = '../MCMC_IN_CODEBLOCKs/OUT/MCchain{}.dat'.format(n)
     picname = '../Result/MCcain_analyze{}.png'.format(n)
     MCcain_analyze(filename, picname=picname)
     print('MCcain : ', n)
 
 with open("../Result/Result.txt", 'w') as File:
     for n in range(1, N + 1):
-        filename = '../fortran/OUT/chainconsum{}.dat'.format(n)
+        filename = '../MCMC_IN_CODEBLOCKs/OUT/chainconsum{}.dat'.format(n)
         picname = '../Result/chainconsum_analyze{}.png'.format(n)
         estim = chainconsum_analize(filename, amputate=500, picname=picname)
         estim = estim.get_summary()[r'$T_0$']
