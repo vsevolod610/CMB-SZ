@@ -1,6 +1,9 @@
 .*
 __*
 python/data_latex.txt
+python/plot.png
+python/Results_1.txt
+python/Results_2.txt
 fortran/OUT/*
 fortran/SZdatas/*.txt
 fortran/priors/*.dat
