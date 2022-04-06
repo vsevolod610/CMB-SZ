@@ -218,23 +218,24 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     !real (kind = 8), external :: sz_signal
     !double precision :: sz_signal
     INTERFACE
-        double precision FUNCTION sz_signal(T0_var, tau, theta, x, beta, alpha_var, z_var)
-            double precision, optional, intent (in) :: alpha_var, T0_var, z_var
-            double precision, intent (in) :: theta, x, beta, tau
+        double precision FUNCTION sz_signal(A, theta, x, beta)
+            !double precision, optional, intent (in) :: alpha_var, T0_var, z_var
+            double precision, intent (in) :: A, theta, x, beta
         END FUNCTION  sz_signal
     END INTERFACE
 
 
     integer i, j, n
-    double precision R, T0, Te, beta, tau, nu , heta, alpha, z, Tz        ! Model parameters
+    double precision R, T0, Te, beta, tau, alpha, z, Tz, A        ! Model parameters
     double precision x, xx, theta
     double precision Int_s, s, ss
-    double precision T0_test, Tau_test, theta_test, x_test, beta_test, s_test, xx_test, ss_test
+    double precision coeff3
     double precision, allocatable :: bandarray_l(:), bandarray_f(:)
     character (len=100) :: charadd1
 
     alpha = 0.0
     Tz = -1.0
+    A = -50.0
 
     do n = 1, number_of_elements
         charadd1 = TRIM(ADJUSTL(syn(1)%name(n)))
@@ -251,6 +252,8 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
                 tau = syn(1)%val(n) ! optical depth
             case('alpha')
                 alpha = syn(1)%val(n)
+            case('A')
+                A = syn(1)%val(n)
         end select
     end do
 
@@ -258,10 +261,14 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     z = z_redshift
 
     if (Tz < -0.5) then
-        Tz = T0 * (1 + z)
+        Tz = T0 * (1 + z) ** (1 - alpha)
     end if
 
+    coeff3 = coeff1 * (1 + z)/Tz
 
+    if (A < -1.0) then
+        A = T0 * tau
+    end if
 
     !###################################    set sz_flux
 
@@ -302,10 +309,10 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
         !x = coeff1*sz_wave(i)/T0
         !sz_flux(i) = sz_signal(T0, tau=tau, theta=theta, x=x, beta=beta, alpha_var=alpha, z_var=z)
         do j = 1, size(bandarray_f)-1
-            x = coeff1 * bandarray_l(j) * (1 + z)/Tz
-            xx = coeff1 * bandarray_l(j + 1) * (1 + z)/Tz
-            s = sz_signal(T0_var=T0, tau=tau, theta=theta, x=x, beta=beta, alpha_var=alpha)
-            ss = sz_signal(T0_var=T0, tau=tau, theta=theta, x=xx, beta=beta, alpha_var=alpha)
+            x =  bandarray_l(j) * coeff3
+            xx = bandarray_l(j + 1) * coeff3
+            s = sz_signal(A=A, theta=theta, x=x, beta=beta)
+            ss = sz_signal(A=A, theta=theta, x=xx, beta=beta)
             Int_s = Int_s +  0.5 * (bandarray_f(j)*s + bandarray_f(j + 1)*ss )*(bandarray_l(j+1)-bandarray_l(j))
         end do
         sz_flux(i) = Int_s
@@ -376,32 +383,32 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
 
     end subroutine
 
-double precision function sz_signal(T0_var, tau, theta, x, beta, alpha_var, z_var) !################################### Changeble
+double precision function sz_signal(A, theta, x, beta) !################################### Changeble
 
-    double precision z, koeff, T0, alpha, xxx
-    double precision, optional, intent (in) :: alpha_var, T0_var, z_var
-    double precision, intent (in) :: theta, x, beta, tau
+    double precision z, koeff, alpha, xxx
+    !double precision, optional, intent (in) :: alpha_var, T0_var, z_var
+    double precision, intent (in) :: A, theta, x, beta
     double precision X0, S, Y0, Y1, Y2, Y3, Y4, C1, C2, P0, P1, R
 
-    if (present(alpha_var)) then
-        alpha = alpha_var
-    else
-        alpha = 0
-    end if
+    !if (present(alpha_var)) then
+    !    alpha = alpha_var
+    !else
+    !    alpha = 0
+    !end if
 
-    if (present(T0_var)) then
-        T0 = T0_var
-    else
-        T0 = 2.7255
-    end if
+    !if (present(T0_var)) then
+    !    T0 = T0_var
+    !else
+    !    T0 = 2.7255
+    !end if
 
-    if (present(z_var)) then
-        z = z_var
-    else
-        z = 0
-    end if
+    !if (present(z_var)) then
+    !    z = z_var
+    !else
+    !    z = 0
+    !end if
 
-    xxx = x * (1 + z)**alpha!################################### Changeble
+    xxx = x !* (1 + z)**alpha!################################### Changeble
 
 
     X0 = xxx * (dexp(xxx) + 1.0) / (dexp(xxx) - 1.0)
@@ -448,8 +455,8 @@ double precision function sz_signal(T0_var, tau, theta, x, beta, alpha_var, z_va
     R = theta ** 2 * Y1 + theta ** 3 * Y2 + theta ** 4 * Y3 - beta * (1.0 + theta * C1 + theta ** 2 * C2)
 
     koeff = 1.0e+006                    ! signal in MicroK ??
-
-    sz_signal = koeff*T0*tau*(theta*Y0 + R)
+    !T0*tau
+    sz_signal = koeff * A * (theta*Y0 + R)
 
 
 end function

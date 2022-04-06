@@ -1,7 +1,7 @@
 program main
     use ParamIteration
 
-    character *100 buf
+    character*100 buf
     !integer min, max, ind
     mini = 1!28
     maxi = 77
