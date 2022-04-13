@@ -33,8 +33,8 @@ MCMC_IN_CODEBLOCKs/**/
 MCMC_IN_CODEBLOCKs/MCMC_IN_CODEBLOCKs.layout
 MCMC_IN_CODEBLOCKs/MCMC_IN_CODEBLOCKs.depend
 MCMC_IN_CODEBLOCKs/MCMC_IN_CODEBLOCKs.cbp
-onlyf90files.zip
-onlyf90files/*
 MCMC_IN_CODEBLOCKs/startSZ.sss
 MCMC_IN_CODEBLOCKs/prior.dat
 MCMC_IN_CODEBLOCKs/SZ_data.txt
+onlyf90files.zip
+onlyf90files/*
