@@ -97,14 +97,15 @@ subroutine OpenAnalysis(file_name)
                     read(17,'(1i2,4f10.6,a5)')&
                     syn(1)%vary(k),syn(1)%val(k),syn(1)%val_min(k),syn(1)%val_max(k),syn(1)%val_step(k),charadd
 
-                56475    n = index(charadd, ' ')
-                    if (n == 1) then
-                        charadd = charadd(2:len(charadd))
-                        GO TO (56475), 1
-                    else
-                        syn(1)%name(k) = charadd(1:n-1)
-                    end if
+                !56475    n = index(charadd, ' ')
+                !    if (n == 1) then
+                !        charadd = charadd(2:len(charadd))
+                !        GO TO (56475), 1
+                !    else
+                !        syn(1)%name(k) = charadd(1:n-1)
+                !    end if
                     !charadd2 = TRIM(TRIM(ADJUSTL(syn(1)%name(k))))
+                    syn(1)%name(k) = TRIM(ADJUSTL(charadd))
                     str = str + 1
                     print*, k,syn(1)%name(k), syn(1)%val(k), syn(1)%val_min(k), syn(1)%val_max(k)
                 end do
