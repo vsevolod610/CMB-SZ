@@ -1,0 +1,25 @@
+#!/bin/bash
+scriptlist="main.f90 \
+additional.f90 \
+emcee_module.f90 \
+Main_Code.F90 \
+mcmc.F90 \
+modules.f90 \
+OpenAnalysis.f90 \
+plot_figure.f90 \
+SetFunction_CI.f90 \
+SetFunction_CO.f90 \
+SetFunctionH2.f90 \
+SetFunction_HD.f90 \
+SetFunctionHD.f90 \
+SZ_effect.f90 \
+uv_intensity.f90"
+
+
+cd /home/ilya/Documents/SSW_NIR/CMB/some\ code/TzInAmplitude/MCMCcodeForLinux
+#ls
+
+mpifort $scriptlist
+#mpirun -np 4 ./a.out $ind >> echo.dat 
+
+
