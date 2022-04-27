@@ -47,10 +47,10 @@ subroutine MCMCfit(calc_fit,calculate_chi)!, ind, min, max)
     print*, 'start mpi'
 
 
-	if ((ind == 0) .or. (ind == mini)) then
+	if ((ind == 0) .or. (ind == mini)) then !.and. (numOfIter == 1)) 
         call MPI_INIT( ierr )
     end if
-
+    
     call MPI_COMM_RANK( MPI_COMM_WORLD, myid, IERR )
 	call MPI_COMM_SIZE( MPI_COMM_WORLD, numprocs, IERR )
 

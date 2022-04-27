@@ -236,6 +236,7 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     alpha = 0.0
     Tz = -1.0
     A = -50.0
+    T0 = -10.0
 
     do n = 1, number_of_elements
         charadd1 = TRIM(ADJUSTL(syn(1)%name(n)))
@@ -267,7 +268,11 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     coeff3 = coeff1 * (1 + z)/Tz
 
     if (A < -1.0) then
-        A = T0 * tau
+        if (T0 < 5.0) then
+            A = Tz / ((1 + z) ** (1 - alpha)) * tau
+        else
+            A = T0 * tau
+        end if
     end if
 
     !###################################    set sz_flux

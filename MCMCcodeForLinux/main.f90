@@ -2,6 +2,18 @@ program main
     use ParamIteration
 
     character*100 buf
+    character (len=5) :: chararg
+    
+    IF(COMMAND_ARGUMENT_COUNT() == 0) THEN
+        numOfIter = 1
+    ELSE
+        CALL GET_COMMAND_ARGUMENT(1,chararg) 
+    ENDIF
+    
+    READ(chararg,*) numOfIter
+    PRINT *, 'numOfIter=', numOfIter
+    PRINT *, 'lenArg', COMMAND_ARGUMENT_COUNT()
+    
     !integer min, max, ind
     mini = 1!28
     maxi = 77

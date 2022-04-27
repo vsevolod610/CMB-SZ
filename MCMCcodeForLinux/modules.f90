@@ -109,6 +109,7 @@ module ParamIteration
     integer :: ind = 0
     integer :: maxi = 0
     integer :: mini = 0
+    integer :: numOfIter = 1
 end module
 
 
