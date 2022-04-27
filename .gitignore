@@ -53,3 +53,5 @@ MCMCcodeForLinux/**/
 MCMCcodeForLinux/startSZ.sss
 MCMCcodeForLinux/prior.dat
 MCMCcodeForLinux/SZ_data.txt
+MCMCcodeForLinux/*.mod
+MCMCcodeForLinux/a.out
