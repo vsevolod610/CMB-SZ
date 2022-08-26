@@ -7,6 +7,8 @@ Set SZfunction
 import numpy as np
 import matplotlib.pyplot as plt
 
+from data import x, y, yerr
+
 h = 2 * 3.141 * 1.05e-27
 c = 3e10
 k = 1.38e-16
@@ -68,15 +70,6 @@ def SZfunction(T0, kTe, beta, Tau, nu, rel_corrs=True):
 
 if __name__ == "__main__":
     # example
-    example_data = np.array([
-            [-8.44e+04,  1.90e+04,  1.90e+04],
-            [-7.05e+04,  5.70e+03,  6.33e+03],
-            [-4.45e+04,  4.43e+03,  4.43e+03],
-            [-6.47e+03,  5.70e+03,  6.97e+03],
-            [ 1.01e+05,  3.04e+04,  3.04e+04],])
-    x = np.array([70, 100, 143, 217, 353], dtype=float)
-    y = example_data[:, 0]
-    yerr = example_data[:, [1, 2]]
     exampe_params = [2.7255, 6.9, 0.0, 1.4]
     #T0, Te, beta, Tau = exampe_params
 

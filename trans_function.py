@@ -9,8 +9,8 @@ from astropy.io import fits
 
 
 #Paths
-path_to_LFI = './LFI_RIMO_R3.31.fits'
-path_to_HFI = './HFI_RIMO_R3.00.fits'
+path_to_LFI = './data/LFI_RIMO_R3.31.fits'
+path_to_HFI = './data/HFI_RIMO_R3.00.fits'
 
 filtrs = [70, 100, 143, 217, 353]
 spec_trans = dict.fromkeys(filtrs)
