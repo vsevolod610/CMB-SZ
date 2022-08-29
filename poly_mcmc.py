@@ -23,8 +23,7 @@ path_pic_fit = './data/N/pic_fit/pic_fit{}.png'
 
 
 start = 1
-#stop = N
-stop = 3
+stop = N
 
 def read_result(path_result):
     res = []
