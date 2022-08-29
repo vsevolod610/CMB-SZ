@@ -1,2 +1,9 @@
 __pycache__
 data/N/*
+!data/N/pic*
+!data/N/priors
+!data/N/SZdata
+data/N/pic*/*
+data/N/priors/*
+data/N/SZdata/*
+!**/.gitkeep
