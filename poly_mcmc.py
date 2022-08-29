@@ -10,8 +10,9 @@ from chainconsumer import ChainConsumer
 
 from data import read_SZ_data, read_prior
 from data import params_names, ndim, nsteps, nwalkers, init, prior_data
-from mcmc import SZmcmc, pic_chain, pic_fit
 from data_create import N, path_to_NSZ_data, path_to_Npriors
+from model import gauss_model
+from mcmc import mcmc_kern, pic_chain, pic_fit
 
 
 # Path to result.txt
@@ -21,7 +22,9 @@ path_pic_consumer = './data/N/pic_consumer/pic_consumer{}.png'
 path_pic_fit = './data/N/pic_fit/pic_fit{}.png'
 
 
-#N = 1000
+start = 1
+#stop = N
+stop = 3
 
 def read_result(path_result):
     res = []
@@ -40,14 +43,14 @@ def read_result(path_result):
 
 if __name__ == "__main__":
     # N cluster analysis
-    for i in range(1, N + 1):
+    for i in range(start, stop + 1):
         # data
         x, y, yerr = read_SZ_data(path_to_NSZ_data.format(i))
         prior_data['gauss'] = read_prior(path_to_Npriors.format(i))
 
         # mcmc
         print(i)
-        sampler = SZmcmc(x, y, yerr, nwalkers, nsteps, ndim, init, prior_data)
+        sampler = mcmc_kern(gauss_model, nwalkers, nsteps, ndim, init, x, y, yerr, prior_data)
         amputete = int(0.5 * nsteps)
 
         flat_sample = sampler.chain[:, amputete:, :].reshape((-1, ndim))

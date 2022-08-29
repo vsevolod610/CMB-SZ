@@ -42,11 +42,11 @@ def prior(params, prior_data):
     return prior_value
 
 
-def log_probability(params, x, y, yerr, prior_data):
+def log_probability(params, model, x, y, yerr, prior_data):
     prior_value = prior(params, prior_data)
     if not np.isfinite(prior_value):
         return -np.inf
-    m = gauss_model(*params)
+    m = model(*params)
     N = len(y)
     sigma2 = np.zeros(N)
     for i in range(N):
@@ -56,7 +56,7 @@ def log_probability(params, x, y, yerr, prior_data):
     return lp_value
 
 
-def SZmcmc(x, y, yerr, nwalkers, nsteps, ndim, init, prior_data):
+def mcmc_kern(model, nwalkers, nsteps, ndim, init, x, y, yerr, prior_data):
     # MCMC: settings
     pos = init[:, 0] + init[:, 1] * np.random.randn(nwalkers, ndim)
 
@@ -69,7 +69,7 @@ def SZmcmc(x, y, yerr, nwalkers, nsteps, ndim, init, prior_data):
     # MCMC: create chain
     with Pool() as pool:
         sampler = emcee.EnsembleSampler(nwalkers, ndim, 
-                log_probability, args=(x, y, yerr, prior_data), pool=pool)
+                log_probability, args=(model, x, y, yerr, prior_data), pool=pool)
         sampler.run_mcmc(pos, nsteps, progress=True)
 
     return sampler
@@ -92,7 +92,7 @@ def pic_fit(sampler, x, y, yerr, prior_data):
     samples = sampler.get_chain()
     sample_last = samples[-1, :, :]
     params_chi = max(sample_last, 
-            key=lambda s: log_probability(s, x, y, yerr, prior_data))
+            key=lambda s: log_probability(s, gauss_model, x, y, yerr, prior_data))
 
     for w in sample_last:
         ax.plot(x, SZmodel(*w, x), 'b', alpha=0.09)
@@ -109,7 +109,7 @@ def pic_fit(sampler, x, y, yerr, prior_data):
 
 if __name__ == "__main__":
     # MCMC: analysis
-    sampler = SZmcmc(x, y, yerr, nwalkers, nsteps, ndim, init, prior_data)
+    sampler = mcmc_kern(gauss_model, nwalkers, nsteps, ndim, init, x, y, yerr, prior_data)
     amputete = int(0.5 * nsteps)
     flat_sample = sampler.chain[:, amputete:, :].reshape((-1, ndim))
     c = ChainConsumer()
