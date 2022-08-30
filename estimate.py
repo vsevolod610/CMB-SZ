@@ -19,7 +19,7 @@ def model(T0, z):
     return T0 + 0 * z
 
 
-def log_probability(params, x, y, yerr):
+def log_probability(params, model, x, y, yerr):
     m = model(*params, x)
     N = len(y)
     sigma2 = np.zeros(N)
@@ -30,9 +30,9 @@ def log_probability(params, x, y, yerr):
 
 
 # setting of mcmc
-nwalkers = 100
-nsteps = 200
-amputete = 100
+nwalkers = 200
+nsteps = 400
+amputete = 200
 
 ndim = 1
 names_of_params = [r'T0']
@@ -40,7 +40,8 @@ pos = [2.72] +  0.5 * np.random.randn(nwalkers, ndim)
 
 # mcmc mechanism
 with Pool() as pool:
-    sampler = emcee.EnsembleSampler(nwalkers, ndim, log_probability, args=(x, y, yerr), pool=pool)
+    sampler = emcee.EnsembleSampler(
+            nwalkers, ndim, log_probability, args=(model, x, y, yerr), pool=pool)
     sampler.run_mcmc(pos, nsteps, progress=True)
 
 flat_sample = sampler.chain[:, amputete : , :].reshape((-1, ndim))

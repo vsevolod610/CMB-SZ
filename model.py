@@ -17,7 +17,7 @@ def SZmodel(T0, Te, beta, Tau, nu):
     return [SZfunction(T0, Te, beta, Tau, nu_i) for nu_i in nu]
 
 
-def spec_model(T0, Te, beta, Tau):
+def spec_model(T0, Te, beta, Tau, nu=0):
     m = []
     for wave in filtrs:
         nu = spec_trans[wave]['nu']
@@ -27,7 +27,7 @@ def spec_model(T0, Te, beta, Tau):
     return np.array(m)
 
 
-def gauss_model(T0, Te, beta, Tau):
+def gauss_model(T0, Te, beta, Tau, nu=0):
     m = []
     for wave in filtrs:
         mu = gauss_trans[wave]['mu']

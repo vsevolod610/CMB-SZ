@@ -20,7 +20,7 @@ def read_SZ_data(path):
     y = data[:, 0]
     yerr = data[:, [1, 2]]
 
-    return x, y, yerr
+    return x, y, yerr, z
 
 
 def read_prior(path):
@@ -60,16 +60,17 @@ params_names_latex = [r'$T_0$', r'$T_e$', r'$\beta$', r'$\mathfrac{T}']
 ndim = len(params_names)
 
 # Set data
-x, y, yerr = read_SZ_data(path_to_SZ_data)
+x, y, yerr, z = read_SZ_data(path_to_SZ_data)
+nsteps, nwalkers, data = read_startSZ(path_to_startSZ)
 prior_data = dict()
 prior_data['gauss'] = read_prior(path_to_prior)
-nsteps, nwalkers, data = read_startSZ(path_to_startSZ)
 prior_data['box'] = data[:, [1,2]]
 init = data[:, [0, 3]]
 
 if __name__ == "__main__":
     # SZ data
     print("\nSZ data:")
+    print(" z = {}".format(z))
     N = len(x)
     s = " {:>5}: {:>8}  {:>+8} {:>8}"
     print(*[s.format(x[i], y[i], *[1,-1]*yerr[i]) for i in range(N)], sep = '\n')

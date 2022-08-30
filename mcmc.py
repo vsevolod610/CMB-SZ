@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 """
 MCMC realize
 """
@@ -46,7 +46,13 @@ def log_probability(params, model, x, y, yerr, prior_data):
     prior_value = prior(params, prior_data)
     if not np.isfinite(prior_value):
         return -np.inf
-    m = model(*params)
+
+    const = []
+    if type(prior_data) == dict:
+        if 'const' in prior_data:
+            const = list(prior_data['const'].values())
+
+    m = model(*params, *const, x)
     N = len(y)
     sigma2 = np.zeros(N)
     for i in range(N):
@@ -87,19 +93,24 @@ def pic_chain(sampler):
     return fig
 
 
-def pic_fit(sampler, x, y, yerr, prior_data):
+def pic_fit(sampler, model, x, y, yerr, prior_data):
     fig, ax = plt.subplots(figsize=(8, 8))
     samples = sampler.get_chain()
     sample_last = samples[-1, :, :]
     params_chi = max(sample_last, 
-            key=lambda s: log_probability(s, gauss_model, x, y, yerr, prior_data))
+            key=lambda s: log_probability(s, model, x, y, yerr, prior_data))
+
+    const = []
+    if type(prior_data) == dict:
+        if 'const' in prior_data:
+            const = list(prior_data['const'].values())
 
     for w in sample_last:
-        ax.plot(x, SZmodel(*w, x), 'b', alpha=0.09)
+        ax.plot(x, model(*w, *const, x), 'b', alpha=0.09)
     ax.errorbar(x, y, yerr.T, label='data', 
             capsize=3.5, mew=1.5, fmt='.k', alpha=0.5)
     ax.plot(x, 0 * x, 'k')
-    ax.plot(x, SZmodel(*params_chi, x), 'r', label='best fit')
+    ax.plot(x, model(*params_chi, *const, x), 'r', label='best fit')
 
     ax.set_xlabel(r"$\nu$, GHz")
     ax.set_ylabel(r"SZ signal $\mu$K")
@@ -122,6 +133,6 @@ if __name__ == "__main__":
     # Pics
     fig = pic_chain(sampler)
     fig = c.plotter.plot(display=False, legend=False, figsize=(6, 6))
-    fig = pic_fit(sampler, x, y, yerr, prior_data)
+    fig = pic_fit(sampler, SZmodel, x, y, yerr, prior_data)
 
     plt.show()

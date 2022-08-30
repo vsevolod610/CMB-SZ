@@ -11,7 +11,7 @@ from chainconsumer import ChainConsumer
 from data import read_SZ_data, read_prior
 from data import params_names, ndim, nsteps, nwalkers, init, prior_data
 from data_create import N, path_to_NSZ_data, path_to_Npriors
-from model import gauss_model
+from model import SZmodel, gauss_model
 from mcmc import mcmc_kern, pic_chain, pic_fit
 
 
@@ -44,12 +44,13 @@ if __name__ == "__main__":
     # N cluster analysis
     for i in range(start, stop + 1):
         # data
-        x, y, yerr = read_SZ_data(path_to_NSZ_data.format(i))
+        x, y, yerr, z = read_SZ_data(path_to_NSZ_data.format(i))
         prior_data['gauss'] = read_prior(path_to_Npriors.format(i))
 
         # mcmc
         print(i)
-        sampler = mcmc_kern(gauss_model, nwalkers, nsteps, ndim, init, x, y, yerr, prior_data)
+        sampler = mcmc_kern(
+                gauss_model, nwalkers, nsteps, ndim, init, x, y, yerr, prior_data)
         amputete = int(0.5 * nsteps)
 
         flat_sample = sampler.chain[:, amputete:, :].reshape((-1, ndim))
@@ -61,9 +62,9 @@ if __name__ == "__main__":
         if not None in summary['T0']:
             T0m, T0, T0p = summary['T0']
             t0 = [T0, T0p - T0, T0 - T0m]
-            s = "{:>2}     {:<10.6} {:<10.6} {:<10.6}".format(i, *t0)
+            s = "{:>4}     {:<10.6} {:<10.6} {:<10.6}".format(i, *t0)
         else:
-            s = "{:>2}     {:>30}".format(i, 'None')
+            s = "{:>4}     {:>30}".format(i, 'None')
 
         with open(path_result, 'a') as file:
             file.write(s + "\n")
@@ -75,7 +76,7 @@ if __name__ == "__main__":
         fig = c.plotter.plot(display=False, legend=False, figsize=(6, 6))
         fig.savefig(path_pic_consumer.format(i))
 
-        fig = pic_fit(sampler, x, y, yerr, prior_data)
+        fig = pic_fit(sampler, SZmodel, x, y, yerr, prior_data)
         fig.savefig(path_pic_fit.format(i))
 
         # garved collector

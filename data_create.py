@@ -45,7 +45,8 @@ for i in range(N):
         File.write('\n{}\n'.format(len(filtrs)))
         sz = dict(zip(filtrs, gauss_model(T0, Te[i], beta[i], Tau[i])))
         for wave in filtrs:
-            sz_sigma = np.abs(sz[wave] * np.random.normal(sz_relerr[wave], sz_relerr[wave] / 5, 2))
+            sz_sigma = np.abs(sz[wave] * 
+                    np.random.normal(sz_relerr[wave], sz_relerr[wave] / 5, 2))
             s = '{: .2e}  {:.2e}  {:.2e}\n'.format(sz[wave], sz_sigma[0], sz_sigma[1])
             File.write(s)
     
