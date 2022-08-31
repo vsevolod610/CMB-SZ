@@ -9,10 +9,10 @@ import emcee
 from multiprocessing import Pool
 from chainconsumer import ChainConsumer
 
-from poly_mcmc import path_result, read_result
+from poly_mcmcT0 import path_result, read_result
 
 
-x, y, yerr = read_result(path_result)
+n, x, y, yerr = read_result(path_result)
 
 
 def model(T0, z):

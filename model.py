@@ -10,7 +10,7 @@ from scipy import integrate
 
 from data import x, y, yerr
 from trans_function import filtrs, spec_trans, gauss_trans, gauss
-from SZfunction import SZfunction
+from SZfunction import SZfunction, SZalternative
 
 
 def SZmodel(T0, Te, beta, Tau, nu):
@@ -39,6 +39,18 @@ def gauss_model(T0, Te, beta, Tau, nu=0):
     return np.array(m)
 
 
+def gauss_alternative(Tz, Te, beta, Tau, z, nu=0):
+    m = []
+    for wave in filtrs:
+        mu = gauss_trans[wave]['mu']
+        sigma2 = gauss_trans[wave]['sigma2']
+        f = lambda nu: SZalternative(Tz, Te, beta, Tau, z, nu) * gauss(nu, mu, sigma2)
+        nu_start = mu - 4 * np.sqrt(sigma2)
+        nu_stop = mu + 4 * np.sqrt(sigma2)
+        m.append(integrate.quad(f, nu_start, nu_stop, epsabs=1e+3,epsrel=1e-2, limit=2)[0])
+    return np.array(m)
+
+
 if __name__ == "__main__":
     # example
     exampe_params = [2.7255, 6.9, 0.0, 1.4]
@@ -59,7 +71,8 @@ if __name__ == "__main__":
     yline = SZmodel(*exampe_params, xline)
 
     ax.plot(x, 0 * x, 'k')
-    ax.errorbar(x, y, yerr.T, capsize=3.5, mew=1.5, fmt='.k', alpha=0.5, label='data')
+    ax.errorbar(x, y, yerr.T, label='data', 
+            capsize=3.5, mew=1.5, fmt='.k', alpha=0.5)
     ax.plot(xline, yline, label='model')
     ax.plot(x, spec_sz, 'o', label='with clear trans-function')
     ax.plot(x, gauss_sz, 'o', label='with gauss trans-function')
