@@ -234,7 +234,7 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     character (len=100) :: charadd1
 
     alpha = 0.0
-    Tz = -1.0
+    Tz = -10.0
     A = -50.0
 
     do n = 1, number_of_elements
@@ -260,13 +260,13 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     theta  = coeff2*Te
     z = z_redshift
 
-    if (Tz < -0.5) then
+    if (Tz < -5.0) then
         Tz = T0 * (1 + z) ** (1 - alpha)
     end if
 
     coeff3 = coeff1 * (1 + z)/Tz
 
-    if (A < -1.0) then
+    if (A < -10.0) then
         A = T0 * tau
     end if
 
