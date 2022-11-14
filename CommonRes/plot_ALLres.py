@@ -72,7 +72,7 @@ ax.plot(ind, y_2, '--b')
 T0_plank = 2.7255
 T0_plank_erorr = 0.0006
 
-ax.plot(x, T0_plank + x * 0, '--k', label=r"$T_0$_Plank")
+ax.plot(x, T0_plank + x * 0, '--k', label=r"$T_0$ COBE = $2.7255\pm0.0006$")
 ax.fill_between(x, x * 0 + T0_plank + T0_plank_erorr, x * 0 + T0_plank - T0_plank_erorr , alpha=0.2, color='k', linewidth=1, linestyle='-')
 
 
