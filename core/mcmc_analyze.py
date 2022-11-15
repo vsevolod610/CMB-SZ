@@ -46,9 +46,13 @@ def mcmc_analyze(paths, nwalkers_force=None, nsteps_force=None, pic=False):
 
     if pic:
         # pics
-        fig, ax = pic_chain(sampler, params_names=None)
-        fig = c.plotter.plot(display=False, legend=False, figsize=(6, 6))
-        fig, ax = pic_fit(sampler, model, x, y, yerr, prior_data)
+        fig0, ax = pic_chain(sampler, params_names=None)
+        fig1 = c.plotter.plot(display=False, legend=False, figsize=(6, 6))
+        fig2, ax = pic_fit(sampler, model, x, y, yerr, prior_data)
+        if type(pic) is list:
+            fig0.savefig(pic[0])
+            fig1.savefig(pic[1])
+            fig2.savefig(pic[2])
 
     return z, T0_fit, T0_sp, T0_sm
 
