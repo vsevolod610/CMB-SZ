@@ -73,7 +73,7 @@ def startSZ_read(path):
         ndim = len(data)
         prior_box = dict(zip(np.arange(ndim),prior_box))
 
-    return nsteps, nwalkers, init, prior_box
+    return nwalkers, nsteps, init, prior_box
 
 #   # Example
 #   # Paths to files
@@ -88,7 +88,7 @@ def startSZ_read(path):
 
 #   # Set data
 #   x, y, yerr, z = SZ_data_read(path_to_SZ_data)
-#   nsteps, nwalkers, init, prior_box = startSZ_read(path_to_startSZ)
+#   nwalkers, nsteps, init, prior_box = startSZ_read(path_to_startSZ)
 #   prior_data = dict()
 #   prior_data['box'] = prior_box
 #   prior_data['gauss'] = prior_read(path_to_prior)

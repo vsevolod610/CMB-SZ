@@ -55,7 +55,8 @@ if __name__ == "__main__":
                  path_startSZ,
                  path_prior.format(i + 1)]
 
-        nwalkers, nsteps = 100, 100
+        #nwalkers, nsteps = 100, 100
+        nwalkers, nsteps = 'Read', 'Read'
         z, *T0_params= mcmc_analyze(paths, nwalkers, nsteps, pic=False)
         result_write(z, T0_params, path_result)
         print(i + 1, z, T0_params)

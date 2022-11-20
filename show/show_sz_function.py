@@ -3,8 +3,6 @@
 Show: SZ function
 comment: добавить исследование неучитывамых параметров
 """
-from show_data import x, y, yerr
-
 import sys
 
 # setting path
@@ -14,6 +12,7 @@ sys.path.append('../core')
 import numpy as np
 import matplotlib.pyplot as plt
 
+from show_data import x, y, yerr
 from model import sz_model
 
 if __name__ == "__main__":

@@ -2,8 +2,6 @@
 """
 Show: models
 """
-from show_data import x, y, yerr
-
 import sys
 
 # setting path
@@ -14,6 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 from scipy import integrate
 
+from show_data import x, y, yerr
 from trans_function import filtrs
 from model import sz_model, trans_model, gauss_model
 

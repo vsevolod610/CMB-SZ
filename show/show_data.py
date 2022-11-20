@@ -21,7 +21,7 @@ path_to_prior = '../data/prior.dat'
 
 #data
 x, y, yerr, z = SZ_data_read(path_to_SZ_data)
-nsteps, nwalkers, init, prior_box = startSZ_read(path_to_startSZ)
+nwalkers, nsteps, init, prior_box = startSZ_read(path_to_startSZ)
 prior_gauss = prior_read(path_to_prior)
 prior_data = dict()
 prior_data['box'] = prior_box
