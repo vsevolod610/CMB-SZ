@@ -41,7 +41,7 @@ def prior_read(path):
     with open(path) as file:
         for k, line in enumerate(file):
             if k < 1: continue 
-            param = int(line.split()[1])
+            param = int(line.split()[1]) - 1 # if 2 then Te
             prior_gauss[param] = np.array(line.split()[3:6], dtype=float)
 
     return prior_gauss
