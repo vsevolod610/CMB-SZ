@@ -11,7 +11,10 @@ sys.path.append('../core')
 import numpy as np
 import matplotlib.pyplot as plt
 
-from mcmc_analyze import mcmc_analyze
+from mcmc_analyze import SZ_mcmc
+
+method = 'T0'
+#method = 'Tz'
 
 # data
 path_SZ_data = '../data/SZ_data.txt'
@@ -24,8 +27,8 @@ path_pic_fit = '../data/pic_fit'
 
 paths = [path_SZ_data, path_startSZ, path_prior]
 path_pics = [path_pic_chain, path_pic_consum, path_pic_fit]
-z, T0_fit, T0_sp, T0_sm = mcmc_analyze(paths, pic=path_pics)
+z, *T0_params = SZ_mcmc(method, paths, pics=path_pics)
 
-print(T0_fit, T0_sp, T0_sm)
+print(*T0_params)
 
 plt.show()

@@ -40,12 +40,15 @@ def result_write(z, T0_params, path):
         file.write(s + "\n")
 
 
+method = 'T0'
+#method = 'Tz'
+
 # paths
 path_SZ_data = '../data/N/szdata/szdata{}.txt'
 path_startSZ = '../data/startSZ.sss'
 path_prior = '../data/N/priors/prior{}.dat'
 
-path_result = '../data/N/result.txt'
+path_result = '../data/N/result-{}.txt'.format(method)
 
 N = 20
 
@@ -57,7 +60,8 @@ if __name__ == "__main__":
 
         #nwalkers, nsteps = 100, 100
         nwalkers, nsteps = 'Read', 'Read'
-        z, *T0_params= mcmc_analyze(paths, nwalkers, nsteps, pic=False)
+
+        z, *T0_params= SZ_mcmc(method, paths, nwalkers, nsteps, pic=False)
         result_write(z, T0_params, path_result)
         print(i + 1, z, T0_params)
 

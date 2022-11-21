@@ -2,3 +2,4 @@ __pycache__
 data/N/**/*
 !data/N/**/
 !**/.gitkeep
+data/*.png
