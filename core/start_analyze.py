@@ -53,7 +53,7 @@ path_pics = ['../data/N/pic_chain/pic_chain-{}',
              '../data/N/pic_consumer/pic_consumer-{}',
              '../data/N/pic_fit/pic_fit-{}']
 
-N = 20
+N = 200
 
 if __name__ == "__main__":
     for i in range(N):

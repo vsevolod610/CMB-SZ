@@ -18,13 +18,13 @@ path_to_NSZ_data = '../data/N/szdata/szdata{}.txt'
 path_to_Npriors = '../data/N/priors/prior{}.dat'
 
 # constants
-N = 20
+N = 200
 T0 = 2.7255 # K
 Te_min = 1 # keV
 Te_max = 10 # keV
 beta_min = - 0.5 * 1/300
 beta_max = 0.5 * 1/300
-Tau_min = 0.1
+Tau_min = 0.5
 Tau_max = 2
 sz_rerr = np.array([0.22, 0.08, 0.1, 0.98, 0.30])
 z_mu = 0.0
