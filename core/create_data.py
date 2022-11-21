@@ -18,7 +18,7 @@ path_to_NSZ_data = '../data/N/szdata/szdata{}.txt'
 path_to_Npriors = '../data/N/priors/prior{}.dat'
 
 # constants
-N = 200
+N = 20
 T0 = 2.7255 # K
 Te_min = 1 # keV
 Te_max = 10 # keV

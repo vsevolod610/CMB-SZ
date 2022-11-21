@@ -12,7 +12,7 @@ comment: добавить сохранение картинок
 import numpy as np
 import matplotlib.pyplot as plt
 
-from mcmc_analyze import mcmc_analyze
+from mcmc_analyze import SZ_mcmc
 
 
 def result_read(path):
@@ -49,6 +49,9 @@ path_startSZ = '../data/startSZ.sss'
 path_prior = '../data/N/priors/prior{}.dat'
 
 path_result = '../data/N/result-{}.txt'.format(method)
+path_pics = ['../data/N/pic_chain/pic_chain-{}',
+             '../data/N/pic_consumer/pic_consumer-{}',
+             '../data/N/pic_fit/pic_fit-{}']
 
 N = 20
 
@@ -61,7 +64,8 @@ if __name__ == "__main__":
         #nwalkers, nsteps = 100, 100
         nwalkers, nsteps = 'Read', 'Read'
 
-        z, *T0_params= SZ_mcmc(method, paths, nwalkers, nsteps, pic=False)
+        pics = [s.format(i + 1) for s in path_pics]
+        z, *T0_params = SZ_mcmc(method, paths, nwalkers, nsteps, pics=pics)
         result_write(z, T0_params, path_result)
         print(i + 1, z, T0_params)
 
