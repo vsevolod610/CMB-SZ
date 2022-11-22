@@ -1,0 +1,4 @@
+label          T0_bottom   T0_mean    T0_top      T0z_bottom   T0z_mean     T0z_top
+1000clstr      2.7275      2.7321     2.7387      2.7410       2.7600       2.7760
+1000_python    2.6610      2.7290     2.7960      -            -            -  
+1000_python2   2.6430      2.6940     2.7460      -            -            -
