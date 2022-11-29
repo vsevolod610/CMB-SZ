@@ -186,7 +186,8 @@ subroutine SetFunction_SZ!(ind)
         nameSZdatafile = 'SZ_data.txt'
     else
         write(charind,'(1I5)') ind
-        nameSZdatafile = 'SZdatas/SZ_data'//TRIM(ADJUSTL(charind))//'.txt'
+        !nameSZdatafile = 'SZdatas/SZ_data'//TRIM(ADJUSTL(charind))//'.txt'
+        nameSZdatafile = 'SZdatas/szdata'//TRIM(ADJUSTL(charind))//'.txt'
     end if
 
     print*, "Open the "//TRIM(ADJUSTL(nameSZdatafile))//" file"
