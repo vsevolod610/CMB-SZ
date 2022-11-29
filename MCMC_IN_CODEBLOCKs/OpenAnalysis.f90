@@ -13,7 +13,13 @@ subroutine OpenAnalysis(file_name)
     character(len=4) :: chara
     character*20 buf,fmt1, charadd2
     character*200 file_name
-
+    logical Flag
+    integer helpind 
+    
+    helpind = 0
+    
+    Flag = .true.
+    
     open(17, file=file_name)
     call READ_EOF(17, str_num)
 
@@ -105,7 +111,14 @@ subroutine OpenAnalysis(file_name)
                 !        syn(1)%name(k) = charadd(1:n-1)
                 !    end if
                     !charadd2 = TRIM(TRIM(ADJUSTL(syn(1)%name(k))))
-                    syn(1)%name(k) = TRIM(ADJUSTL(charadd))
+                    
+                    do while (Flag)
+                        helpind = helpind + 1
+                        if (charadd(helpind:helpind) == '!' .or. (helpind == len(charadd))) then
+                            Flag = .false.
+                        end if
+                    enddo
+                    syn(1)%name(k) = TRIM(ADJUSTL(charadd(1:helpind-1)))
                     str = str + 1
                     print*, k,syn(1)%name(k), syn(1)%val(k), syn(1)%val_min(k), syn(1)%val_max(k)
                 end do
