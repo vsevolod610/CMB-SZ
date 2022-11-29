@@ -42,6 +42,8 @@ MCMC_IN_CODEBLOCKs/errRUN.dat
 MCMC_IN_CODEBLOCKs/Main.out
 MCMC_IN_CODEBLOCKs/a.out
 MCMC_IN_CODEBLOCKs/*.mod
+MCMC_IN_CODEBLOCKs/Main
+MCMC_IN_CODEBLOCKs/DebugFile
 onlyf90files.zip
 onlyf90files/*
 MCMCcodeForLinux/OUT/*

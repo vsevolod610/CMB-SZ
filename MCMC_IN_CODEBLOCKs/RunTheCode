@@ -1,0 +1,9 @@
+#!/bin/bash
+START=$(date +%s)
+mpirun -np 4 ./Main.out #2> errRUN.dat > echo.dat
+END=$(date +%s)
+DIFF=$(($END-$START))
+
+echo "It took $DIFF seconds"
+
+

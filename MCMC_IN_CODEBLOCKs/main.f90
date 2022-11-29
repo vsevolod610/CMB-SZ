@@ -1,10 +1,11 @@
 program main
     use ParamIteration
 
+    !break main__
     character*100 buf
     !integer min, max, ind
-    mini = 1!28
-    maxi = 77
+    mini = 1 !28
+    maxi = 200
     ind = 0
     buf = 'mcmcNtimes'
     if (buf=='mcmc') then
