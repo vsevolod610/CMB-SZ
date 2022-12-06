@@ -2,9 +2,9 @@
 """
 Show: Spectral transmission functions
 """
-import sys
 
 # setting path
+import sys
 sys.path.append('../core')
 
 import numpy as np

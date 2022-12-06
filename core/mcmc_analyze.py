@@ -3,6 +3,7 @@
 Analyze clusters
 """
 
+import gc
 import numpy as np
 import matplotlib.pyplot as plt
 from chainconsumer import ChainConsumer
@@ -38,6 +39,21 @@ def mcmc_analyze(model, mcmc_data, nwalkers=100, nsteps=100, amputate=0.5,
             fig0.savefig(pics[0])
             fig1.savefig(pics[1])
             fig2.savefig(pics[2])
+
+            # garved collector
+            plt.clf()
+            plt.close()
+            plt.close(fig0)
+            plt.close(fig1)
+            plt.close(fig2)
+            plt.close('all')
+            del sampler
+            del flat_sample
+            del c
+            del fig0
+            del fig1
+            del fig2
+            gc.collect()
 
     return summary
 

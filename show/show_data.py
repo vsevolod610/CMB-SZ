@@ -2,9 +2,9 @@
 """
 Show: example data
 """
-import sys
 
 # setting path
+import sys
 sys.path.append('../core')
 
 

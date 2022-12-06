@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Read Data
-comment: формат файлов SZ_data и prior устарел
-         не стоит здесь определять params_names
-         стоит определиться что сначала nsteps или nwalkers
+comment: формат файлов SZ_data и prior устарел, сначала nsteps или nwalkers?
 """
 
 import numpy as np
@@ -74,23 +72,4 @@ def startSZ_read(path):
         prior_box = dict(zip(np.arange(ndim),prior_box))
 
     return nwalkers, nsteps, init, prior_box
-
-#   # Example
-#   # Paths to files
-#   path_to_SZ_data = "./data/SZ_data.txt"
-#   path_to_prior = "./data/prior.dat"
-#   path_to_startSZ = "./data/startSZ.sss"
-
-#   # Names
-#   params_names = [r'T0', r'Te', r'beta', r'Tau']
-#   params_names_latex = [r'$T_0$', r'$T_e$', r'$\beta$', r'$\mathfrac{T}']
-#   ndim = len(params_names)
-
-#   # Set data
-#   x, y, yerr, z = SZ_data_read(path_to_SZ_data)
-#   nwalkers, nsteps, init, prior_box = startSZ_read(path_to_startSZ)
-#   prior_data = dict()
-#   prior_data['box'] = prior_box
-#   prior_data['gauss'] = prior_read(path_to_prior)
-#   #ndim = len(init)
 

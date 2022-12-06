@@ -4,7 +4,6 @@ SZfunction with trans-function
 comment: x=None сомнительная практика
 """
 
-
 import numpy as np
 import matplotlib.pyplot as plt 
 from scipy import integrate

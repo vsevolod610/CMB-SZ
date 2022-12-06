@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Analyze example cluster
-comment: добавить сохранение картинок
 """
-#import sys
-
-## setting path
-#sys.path.append('./core')
-
 
 import numpy as np
 import matplotlib.pyplot as plt

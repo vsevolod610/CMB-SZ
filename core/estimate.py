@@ -29,8 +29,8 @@ if method == 'Tz':
     model = modelTz
 
 init = np.array([[2.7255], [0.2]]).T
-nwalkers = 100
-nsteps = 100
+nwalkers = 200
+nsteps = 200
 amputete = int(0.2 * nsteps)
 ndim = len(init)
 

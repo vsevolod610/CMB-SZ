@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 Show: SZ function
-comment: добавить исследование неучитывамых параметров
+comment: добавить исследование неучитывамых порядков
 """
-import sys
 
 # setting path
+import sys
 sys.path.append('../core')
 
 
