@@ -6,7 +6,7 @@ Analyze example cluster
 import numpy as np
 import matplotlib.pyplot as plt
 
-from mcmc_analyze import SZ_mcmc
+from SZ_analyze import SZ_mcmc
 
 
 def result_read(path):

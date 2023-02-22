@@ -11,7 +11,7 @@ sys.path.append('../core')
 import numpy as np
 import matplotlib.pyplot as plt
 
-from mcmc_analyze import SZ_mcmc
+from SZ_analyze import SZ_mcmc
 
 method = 'T0'
 #method = 'Tz'

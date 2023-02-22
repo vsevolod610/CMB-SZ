@@ -24,7 +24,7 @@ You need install `python` (`python3`) and python-packages below:
     set paramenters in `./data/startSZ.sss`
 2. Run `python ./core/start_analyze.py`
     and look for the result in `./data/N/pic_*`
-3. To obtain common $$T_0$$ estimation run `python ./core/estimate.py`
+3. To obtain common $T_0$ estimation run `python ./core/estimate.py`
 
 ##### To generate artificial data
 1. Run `python ./core/create_data.py`

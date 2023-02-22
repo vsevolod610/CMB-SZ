@@ -46,8 +46,8 @@ def gauss_model(T0, Te, beta, Tau, x=None):
     for wave in filtrs:
         mu = trans_gauss[wave]['mu']
         sigma2 = trans_gauss[wave]['sigma2']
-        f = lambda nu: (SZfunction(T0, theta, beta, Tau, coef1 * nu / T0) 
-                        * gauss(nu, mu, sigma2))
+        f = lambda nu: (SZfunction(T0, theta, beta, Tau, coef1 * nu / T0, 
+                                   rel_corrs=True) * gauss(nu, mu, sigma2))
         nu_start = mu - 4 * np.sqrt(sigma2)
         nu_stop = mu + 4 * np.sqrt(sigma2)
         m.append(integrate.quad(f, nu_start, nu_stop, 

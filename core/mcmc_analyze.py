@@ -1,97 +1,92 @@
 # -*- coding: utf-8 -*-
 """
-Analyze clusters
+MCMC analysys
+    - добавить отладочные штуки: рисовать chi2
+    - ndim = len(samples[0,0,:]) - так не годится определять ndim
+    - params_names -> parameters
 """
 
-import gc
 import numpy as np
 import matplotlib.pyplot as plt
+
 from chainconsumer import ChainConsumer
 
-from model import gauss_model, alt_model
-from mcmc_kern import mcmc_kern, pic_chain, pic_fit
-from data import SZ_data_read, startSZ_read, prior_read
+from mcmc_kern import log_probability
 
 
-def mcmc_analyze(model, mcmc_data, nwalkers=100, nsteps=100, amputate=0.5,
-                 prnt=False, pics=False):
-    #data
-    init, x, y, yerr, prior_data = mcmc_data
-    amputete_step = int(amputate * nsteps)
-    ndim = len(init)
+def mcmc_analyze(sampler, amputate, params_names=None, prnt=False, pic=False):
+    samples = sampler.get_chain()
+    ndim = len(samples[0,0,:])
 
-    # mcmc
-    sampler = mcmc_kern(model, nwalkers, nsteps, 
-                        init, x, y, yerr, prior_data)
-    flat_sample = sampler.chain[:, amputete_step : , :].reshape((-1, ndim))
+    # mcmc analyze
+    flat_sample = sampler.chain[:, amputate : , :].reshape((-1, ndim))
     c = ChainConsumer()
-    c.add_chain(flat_sample)
-    summary = c.analysis.get_summary()
-    if prnt:
-        print(summary)
+    c.add_chain(flat_sample, parameters=params_names)
 
-    # pics
-    if pics:
-        fig0, ax = pic_chain(sampler, params_names=None)
-        fig1 = c.plotter.plot(display=False, legend=False, figsize=(6, 6))
-        fig2, ax = pic_fit(sampler, model, x, y, yerr, prior_data)
-        if type(pics) is list:
-            fig0.savefig(pics[0])
-            fig1.savefig(pics[1])
-            fig2.savefig(pics[2])
+    summary = c.analysis.get_summary(parameters=params_names)
 
-            # garved collector
-            plt.clf()
-            plt.close()
-            plt.close(fig0)
-            plt.close(fig1)
-            plt.close(fig2)
-            plt.close('all')
-            del sampler
-            del flat_sample
-            del c
-            del fig0
-            del fig1
-            del fig2
-            gc.collect()
+    # print
+    if prnt is True:
+        s = [" {:>4}: {}".format(k, summary[k]) for k in summary.keys()]
+        print("\nMCMC results:", *s, sep='\n')
+
+    # Pics
+    if pic is True:
+        fig = c.plotter.plot(display=False, legend=False, figsize=(6, 6))
 
     return summary
 
 
-def SZ_mcmc(method, paths, nwalkers='Read', nsteps='Read',
-                 amputate=0.5, pics=False):
-    #data
-    path_to_SZ_data, path_to_startSZ, path_to_prior = paths
-    x, y, yerr, z = SZ_data_read(path_to_SZ_data)
+# Pics
 
-    nwalkers_r, nsteps_r, init, prior_box = startSZ_read(path_to_startSZ)
-    if nwalkers == 'Read': nwalkers = nwalkers_r
-    if nsteps == 'Read': nsteps = nsteps_r
+def pic_chain(sampler, params_names=None):
+    samples = sampler.get_chain()
+    ndim = len(samples[0,0,:])
+    if params_names is None:
+        params_names = np.arange(ndim)
 
-    prior_gauss = prior_read(path_to_prior)
-    prior_data = dict()
-    prior_data['box'] = prior_box
-    prior_data['gauss'] = prior_gauss
+    fig, ax = plt.subplots(nrows=ndim, figsize=(10, 7), sharex=True)
+    samples = sampler.get_chain()
 
-
-    # method
-    if method == 'T0':
-        model = gauss_model
-    if method == 'Tz':
-        model = alt_model
-        prior_data['const'] = {0: z}
-
-    # mcmc analyze
-    mcmc_data = init, x, y, yerr, prior_data
-    summary = mcmc_analyze(model, mcmc_data, nwalkers, nsteps, pics=pics)
-    summary = summary['0']
-    
-    # summary
-    T0_fit  = summary[1]
-    if summary[0] is None or summary[2] is None:
-        T0_sp, T0_sm = None, None
+    # plot(chain)
+    if ndim == 1:
+        ax.plot(samples[:, :, 0], "k", alpha=0.3)
+        ax.set_ylabel(params_names[0], fontsize=12)
+        ax.set_xlabel(r'steps', fontsize=12)
     else:
-        T0_sp, T0_sm = (summary[2] - T0_fit), (T0_fit - summary[0])
+        for i, row in enumerate(ax, start=0):
+            row.plot(samples[:, :, i], "k", alpha=0.3)
+            row.set_ylabel(params_names[i], fontsize=12)
+        row.set_xlabel(r'steps', fontsize=12)
+    return fig, ax
 
-    return z, T0_fit, T0_sp, T0_sm
+
+def pic_fit(sampler, model, x, y, yerr=None, prior_data=None):
+    fig, ax = plt.subplots(figsize=(8, 8))
+    samples = sampler.get_chain()
+    sample_last = samples[-1, :, :]
+    params_chi = max(sample_last,
+            key=lambda s: log_probability(s, model, x, y, yerr, prior_data))
+
+    const = []
+    if type(prior_data) == dict:
+        if 'const' in prior_data:
+            const = list(prior_data['const'].values())
+
+    # plot(set of fit)
+    for w in sample_last:
+        ax.plot(x, model(*w, *const, x), 'b', alpha=0.09)
+
+    # plot(data)
+    if np.shape(yerr) == ():
+        ax.plot(x, y, '.k', alpha=0.5, label='data')
+    else:
+        ax.errorbar(x, y, yerr.T, label='data',
+                capsize=3.5, mew=1.5, fmt='.k', alpha=0.5)
+
+    # plot(best fit)
+    ax.plot(x, model(*params_chi, *const, x), 'r', label='best fit')
+
+    ax.legend(frameon=False)
+    return fig, ax
 
