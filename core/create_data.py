@@ -49,7 +49,7 @@ for i in range(N):
             sz * np.random.normal(sz_rerr, sz_rerr / 5, (2, len(filtrs))))
 
     # symetric errors
-    sz_sigma1 = sz * np.random.normal(sz_rerr, sz_rerr / 5, len(filtrs))
+    sz_sigma1 = np.abs(sz * np.random.normal(sz_rerr, sz_rerr / 5, len(filtrs)))
     sz_sigma = np.array([sz_sigma1, sz_sigma1])
 
     sz_data = np.array([sz, *sz_sigma]).T
