@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Analyze clusters
+comment: надобы переместить файлы mcmc_kern и mcmc_analyze в папку core/mcmc
 """
 
 import gc

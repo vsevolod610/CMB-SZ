@@ -2,6 +2,7 @@
 """
 SZfunction with trans-function
 comment: x=None сомнительная практика
+         поменять названия моделей
 """
 
 import numpy as np
@@ -24,9 +25,14 @@ coef2 = (1e3 * 1.6e-12) / (m * c ** 2)
 def sz_model(T0, Te, beta, Tau, nu, rel_corrs=True):
     theta = coef2 * Te
     x = coef1 * nu / T0
-    sz = [SZfunction(T0, theta, beta, Tau, x_i, rel_corrs) for x_i in x]
+    sz = SZfunction(T0, theta, beta, Tau, x) 
     return np.array(sz)
 
+def lazy_model(T0, Te, beta, Tau, nu):
+    theta = coef2 * Te
+    x = coef1 * nu / T0
+    sz = SZfunction(T0, theta, beta, Tau, x, rel_corrs=False) 
+    return np.array(sz)
 
 def trans_model(T0, Te, beta, Tau, x=None):
     theta = coef2 * Te
@@ -35,7 +41,7 @@ def trans_model(T0, Te, beta, Tau, x=None):
         nu = trans_data[wave]['nu']
         tr = trans_data[wave]['tr']
         x = coef1 * nu / T0
-        sz = np.array([SZfunction(T0, theta, beta, Tau, x_i) for x_i in x])
+        sz = SZfunction(T0, theta, beta, Tau, x) 
         m.append(np.trapz(sz * tr, nu))
     return np.array(m)
 
