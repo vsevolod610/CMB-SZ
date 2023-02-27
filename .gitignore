@@ -22,6 +22,8 @@ fortran1/MCMC_IN_CODEBLOCKs.layout
 fortran1/MCMC_IN_CODEBLOCKs.depend
 fortran1/MCMC_IN_CODEBLOCKs.cbp
 fortran1/startSZ.sss
+fortran1/startSZA_Tz.sss
+fortran1/startSZ_Tz.sss
 fortran1/prior.dat
 fortran1/SZ_data.txt
 fortran1/echo.dat
