@@ -16,10 +16,17 @@ OpenAnalysis.f90 \
 plot_figure.f90"
 
 
-cd ./MCMCcodeForLinux
+if [ -n "$1" ]
+then 
+echo $1
+else 
+echo "2"
+fi
+
+#cd ./MCMCcodeForLinux
 
 
-mpifort $scriptlist
+#mpifort $scriptlist
 
  
 
