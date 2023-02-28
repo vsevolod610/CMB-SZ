@@ -315,7 +315,7 @@ subroutine calcMC_stats !(ind)
             if(iter > iter_border) then
                 do i=max(1, iter-19), iter
                     do k=1, num_MC
-                        write(FormatChar, "(A, I0, A)") '(1I4,', num_of_var+1, 'f20.10)'
+                        write(FormatChar, "(A, I0, A)") '(1I4,', num_of_var+1, 'f40.10)'
                         write (667,FormatChar) iter, MCchain(i)%chi(k), (MCchain(i)%par(k,j), j=1,num_of_var)
 !                         write (667,'(1I4,<num_of_var>f20.10)') iter, (MCchain(i)%par(k,j), j=1,num_of_var)
                     end do
@@ -329,7 +329,7 @@ subroutine calcMC_stats !(ind)
         open(667, file="MC_final.dat")
         do k=1, num_MC
             !if (write_data == 1) write (667,'(<num_of_var+1>f20.10)') MCchain(iter)%chi(k), (MCchain(iter)%par(k,i), i=1,num_of_var) !, MCchain(iter)%auto(k)
-            write(FormatChar, "(A, I0, A)") '(', num_of_var, 'f20.10)'
+            write(FormatChar, "(A, I0, A)") '(', num_of_var, 'f40.10)'
             write (667,FormatChar)  (MCchain(iter)%par(k,i), i=3,num_of_var) !, MCchain(iter)%auto(k)
         enddo
         close(667)
