@@ -197,7 +197,16 @@ subroutine SetFunction_SZ!(ind)
     read(17,*) num_of_obs
     print*, 'read SZ data in', num_of_obs, 'bands'
     do i = 1, num_of_obs
-        read(17,'(3e10.2)') (sz_obs_flux(i,j), j = 1,3)  ! x, x+err, x-err
+        read(17,'(3e10.2)') (sz_obs_flux(i,j), j = 1,3)  
+        
+        !read(17,'(3e10.2)') sz_obs_flux(i,1), sz_obs_flux(i,2), sz_obs_flux(i,3) ! x, x+err, x-err
+        
+        !sz_obs_flux(i,2) = sz_obs_flux(i,2) / 2
+        !sz_obs_flux(i,3) = sz_obs_flux(i,3) / 2
+        
+        !sz_obs_flux(i,2) = sz_obs_flux(i,2) / 4
+        !sz_obs_flux(i,3) = sz_obs_flux(i,3) / 4
+        
         print*, sz_obs_flux(i,1), sz_obs_flux(i,2),sz_obs_flux(i,3)
         !# end do или enddo ?
     end do
@@ -237,6 +246,8 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     alpha = 0.0
     Tz = -10.0
     A = -50.0
+    T0 = -10.0
+    tau = -10.0
 
     do n = 1, number_of_elements
         charadd1 = TRIM(ADJUSTL(syn(1)%name(n)))
@@ -261,12 +272,25 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
     theta  = coeff2*Te
     z = z_redshift
 
+    
+    !if (T0 < -5.0) then
+    !    T0 = 2.7255
+    !end if
+    
+    
     if (Tz < -5.0) then
         Tz = T0 * (1 + z) ** (1 - alpha)
     end if
 
     coeff3 = coeff1 * (1 + z)/Tz
+    
+    !if ((A < -10.0) .and. (T0 < -5.0) .and. (Tz > -5.0)) then
+    !    A = Tz * tau / (1 + z) ** (1 - alpha)
+    !end if
+    
+    
 
+    
     if (A < -10.0) then
         A = T0 * tau
     end if
