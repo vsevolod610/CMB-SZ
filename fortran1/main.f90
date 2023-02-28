@@ -5,7 +5,7 @@ program main
     character*100 buf
     !integer min, max, ind
     mini = 1 !28
-    maxi = 200
+    maxi = 1000
     ind = 0
     buf = 'mcmcNtimes'
     if (buf=='mcmc') then
