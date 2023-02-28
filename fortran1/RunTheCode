@@ -1,9 +1,18 @@
 #!/bin/bash
+
+mv OUT/ ../OUT
+mkdir OUT/
+
 START=$(date +%s)
+
+if [ -n $1 ] 
+then
+mpirun -np "$1" ./Main.out #2> errRUN.dat > echo.dat
+else
 mpirun -np 4 ./Main.out #2> errRUN.dat > echo.dat
+fi
+
 END=$(date +%s)
 DIFF=$(($END-$START))
 
 echo "It took $DIFF seconds"
-
-
