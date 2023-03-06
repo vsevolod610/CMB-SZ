@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 from chainconsumer import ChainConsumer
 
 from model import gauss_model, alt_model
-from mcmc_kern import mcmc_kern
-from mcmc_analyze import mcmc_analyze, pic_chain, pic_fit
+from mcmc.kern import mcmc_kern
+from mcmc.analyze import mcmc_analyze, pic_chain, pic_fit
 from data import SZ_data_read, startSZ_read, prior_read
 
 
