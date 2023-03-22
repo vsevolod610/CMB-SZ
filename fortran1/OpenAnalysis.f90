@@ -122,6 +122,29 @@ subroutine OpenAnalysis(file_name)
                     str = str + 1
                     print*, k,syn(1)%name(k), syn(1)%val(k), syn(1)%val_min(k), syn(1)%val_max(k)
                 end do
+            else if (TRIM(ADJUSTL(buf)) .eq. 'syn_Line') then
+                read(17,'(1i10)') number_of_elements
+                read(17,'(1i10)') iter_MC              ! NUMB OF ITERATIONS
+                read(17,'(1i10)') num_MC               ! NUMB OF WALKERS
+                read(17,'(1i10)') add_prior            ! use prior
+                str = str + 4
+                do k = 1,  number_of_elements
+                    read(17,'(1i2,4f10.6,a5)')&
+                    syn(1)%vary(k),syn(1)%val(k),syn(1)%val_min(k),syn(1)%val_max(k),syn(1)%val_step(k),charadd
+                    
+                    do while (Flag)
+                        helpind = helpind + 1
+                        if (charadd(helpind:helpind) == '!' .or. (helpind == len(charadd))) then
+                            Flag = .false.
+                        end if
+                    enddo
+                    syn(1)%name(k) = TRIM(ADJUSTL(charadd(1:helpind-1)))
+                    str = str + 1
+                    print*, k,syn(1)%name(k), syn(1)%val(k), syn(1)%val_min(k), syn(1)%val_max(k)
+                
+                end do
+                
+                
             end if
     enddo
     close(17)

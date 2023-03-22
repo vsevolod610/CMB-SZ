@@ -21,6 +21,17 @@ module SZ_data
 
 end
 
+module Line_data
+    save
+    integer num_of_points
+    double precision, allocatable ::  line_y(:)  ! line_x(:),
+    !double precision sz_wave_test(9), sz_flux_test(9)
+    !double precision sz_wave_test(1000), sz_flux_test(1000)
+    double precision, allocatable ::  line_obs_x(:), line_obs_y(:,:)  ! Observed fluxes end errors in 5 bands
+    !double precision coeff1, coeff2  ! coeffs h/k_b, k_b/mc^2
+    !double precision z_redshift
+
+end
 
 subroutine SetFunction_SZ!(ind)
     use SZ_data
@@ -284,66 +295,80 @@ subroutine calc_fit_SZ          ! procedure to calculate sz_signal
 
     coeff3 = coeff1 * (1 + z)/Tz
     
-    !if ((A < -10.0) .and. (T0 < -5.0) .and. (Tz > -5.0)) then
-    !    A = Tz * tau / (1 + z) ** (1 - alpha)
-    !end if
+    if ((A < -10.0) .and. (tau > -5.0) .and. (Tz > -5.0)) then
+        A = Tz * tau / (1 + z) ** (1 - alpha)
+    else if ((A < -10.0) .and. (tau > -5.0)) then
+        A = T0 * tau
+    end if
     
     
 
     
-    if (A < -10.0) then
-        A = T0 * tau
-    end if
+    !if (A < -10.0) then
+    !    
+    !end if
 
     !###################################    set sz_flux
 
     !# 70
     !i = 1
 
-
+    
+    
     do i = 1, 5
-        select case (i)
-            case (1)
-                allocate (bandarray_f(size(band70_f)))
-                bandarray_f(:)= band70_f(:)
-                allocate (bandarray_l(size(band70_l)))
-                bandarray_l(:) = band70_l(:)
-            case (2)
-                allocate (bandarray_f(size(band100_f)))
-                bandarray_f(:) = band100_f(:)
-                allocate (bandarray_l(size(band100_l)))
-                bandarray_l(:) = band100_l(:)
-            case (3)
-                allocate (bandarray_f(size(band143_f)))
-                bandarray_f(:) = band143_f(:)
-                allocate (bandarray_l(size(band143_l)))
-                bandarray_l(:) = band143_l(:)
-            case (4)
-                allocate (bandarray_f(size(band217_f)))
-                bandarray_f(:) = band217_f(:)
-                allocate (bandarray_l(size(band217_l)))
-                bandarray_l(:) = band217_l(:)
-            case (5)
-                allocate (bandarray_f(size(band353_f)))
-                bandarray_f(:) = band353_f(:)
-                allocate (bandarray_l(size(band353_l)))
-                bandarray_l(:) = band353_l(:)
-        end select
-
-        Int_s = 0.0
-        !x = coeff1*sz_wave(i)/T0
-        !sz_flux(i) = sz_signal(T0, tau=tau, theta=theta, x=x, beta=beta, alpha_var=alpha, z_var=z)
-        do j = 1, size(bandarray_f)-1
-            x =  bandarray_l(j) * coeff3
-            xx = bandarray_l(j + 1) * coeff3
-            s = sz_signal(A=A, theta=theta, x=x, beta=beta)
-            ss = sz_signal(A=A, theta=theta, x=xx, beta=beta)
-            Int_s = Int_s +  0.5 * (bandarray_f(j)*s + bandarray_f(j + 1)*ss )*(bandarray_l(j+1)-bandarray_l(j))
-        end do
-        sz_flux(i) = Int_s
-
-        deallocate (bandarray_f)
-        deallocate (bandarray_l)
+        
+        
+        if (.false.) then
+            select case (i)
+                case (1)
+                    allocate (bandarray_f(size(band70_f)))
+                    bandarray_f(:)= band70_f(:)
+                    allocate (bandarray_l(size(band70_l)))
+                    bandarray_l(:) = band70_l(:)
+                case (2)
+                    allocate (bandarray_f(size(band100_f)))
+                    bandarray_f(:) = band100_f(:)
+                    allocate (bandarray_l(size(band100_l)))
+                    bandarray_l(:) = band100_l(:)
+                case (3)
+                    allocate (bandarray_f(size(band143_f)))
+                    bandarray_f(:) = band143_f(:)
+                    allocate (bandarray_l(size(band143_l)))
+                    bandarray_l(:) = band143_l(:)
+                case (4)
+                    allocate (bandarray_f(size(band217_f)))
+                    bandarray_f(:) = band217_f(:)
+                    allocate (bandarray_l(size(band217_l)))
+                    bandarray_l(:) = band217_l(:)
+                case (5)
+                    allocate (bandarray_f(size(band353_f)))
+                    bandarray_f(:) = band353_f(:)
+                    allocate (bandarray_l(size(band353_l)))
+                    bandarray_l(:) = band353_l(:)
+            end select
+        
+        
+            Int_s = 0.0
+            !x = coeff1*sz_wave(i)/T0
+            !sz_flux(i) = sz_signal(T0, tau=tau, theta=theta, x=x, beta=beta, alpha_var=alpha, z_var=z)
+            do j = 1, size(bandarray_f)-1
+                x =  bandarray_l(j) * coeff3
+                xx = bandarray_l(j + 1) * coeff3
+                s = sz_signal(A=A, theta=theta, x=x, beta=beta)
+                ss = sz_signal(A=A, theta=theta, x=xx, beta=beta)
+                Int_s = Int_s +  0.5 * (bandarray_f(j)*s + bandarray_f(j + 1)*ss )*(bandarray_l(j+1)-bandarray_l(j))
+            end do
+            sz_flux(i) = Int_s
+            deallocate (bandarray_f)
+            deallocate (bandarray_l)
+        else
+            x = sz_wave(i) * coeff3
+            sz_flux(i) = sz_signal(A=A, theta=theta, x=x, beta=beta)    
+        endif
+        
+        
+        
+        
     end do
 
 
@@ -437,27 +462,37 @@ double precision function sz_signal(A, theta, x, beta) !########################
 
 
     X0 = xxx * (dexp(xxx) + 1.0) / (dexp(xxx) - 1.0)
-    S = 2.0 * xxx / (dexp(- xxx / 2.0) * (dexp(xxx) - 1.0))
-    Y0 = xxx * (dexp(xxx)+1.0)/(dexp(xxx)-1.0) - 4.0
-    Y1 = - 10.0 + 47.0 / 2.0 * X0 - 42.0 / 5.0 * X0 ** 2 + 7.0 / 10.0 * X0 ** 3 + S ** 2 * (- 21.0 / 5.0 + 7.0 / 5.0 * X0)
+    
+    !Y0 = xxx * (dexp(xxx)+1.0)/(dexp(xxx)-1.0) - 4.0
+    Y0 = X0 - 4.0
+    
+    !Временно закоменченое::
+    !S = 2.0 * xxx / (dexp(- xxx / 2.0) * (dexp(xxx) - 1.0))
+    !Y1 = - 10.0 + 47.0 / 2.0 * X0 - 42.0 / 5.0 * X0 ** 2 + 7.0 / 10.0 * X0 ** 3 + S ** 2 * (- 21.0 / 5.0 + 7.0 / 5.0 * X0)
 
-    Y2 = - 15.0 / 2.0 + 1023.0 / 8.0 * X0 - 868.0 / 5.0 * X0 ** 2 + 329.0 / 5.0 * X0 ** 3 - &
-        44.0 / 5.0 * X0 ** 4 + 11.0 / 30.0 * X0 ** 5 + S ** 2 * (- 434.0 / 5.0 + 658.0 / 5.0 * X0 - &
-        242.0 / 5.0 * X0 ** 2 + 143.0 / 30.0 * X0 ** 3) + S ** 4 * ( - 44.0 / 5.0 + 187.0 / 60.0 * X0)
+    !Y2 = - 15.0 / 2.0 + 1023.0 / 8.0 * X0 - 868.0 / 5.0 * X0 ** 2 + 329.0 / 5.0 * X0 ** 3 - &
+    !    44.0 / 5.0 * X0 ** 4 + 11.0 / 30.0 * X0 ** 5 + S ** 2 * (- 434.0 / 5.0 + 658.0 / 5.0 * X0 - &
+    !    242.0 / 5.0 * X0 ** 2 + 143.0 / 30.0 * X0 ** 3) + S ** 4 * ( - 44.0 / 5.0 + 187.0 / 60.0 * X0)
 
-    Y3 = 15.0 / 2.0 + 2505.0 / 8.0 * X0 - 7098.0 / 5.0 * X0 ** 2 + 14253.0 / 10.0 * X0 ** 3 - &
-        18594.0 / 35.0 * X0 ** 4 + 12059.0 / 140.0 * X0 ** 5 - 128.0 / 21.0 * X0 ** 6 + 16.0 / 105.0 * X0 ** 7 + &
+    !Y3 = 15.0 / 2.0 + 2505.0 / 8.0 * X0 - 7098.0 / 5.0 * X0 ** 2 + 14253.0 / 10.0 * X0 ** 3 - &
+    !    18594.0 / 35.0 * X0 ** 4 + 12059.0 / 140.0 * X0 ** 5 - 128.0 / 21.0 * X0 ** 6 + 16.0 / 105.0 * X0 ** 7 + &
 
-    S ** 2 * (- 7098.0 / 10.0 + 14253.0 / 5.0 * X0 - 102267.0 / 35.0 * X0 ** 2 + 156767.0 / 140.0 * X0 ** 3 - &
-        1216.0 / 7.0 * X0 ** 4 + 64.0 / 7.0 * X0 ** 5) + S ** 4 * (- 18594.0 / 35.0 + 205003.0 / 280.0 * X0 - &
-        1920.0 / 7.0 * X0 ** 2 + 1024.0 / 35.0 * X0 ** 3) + S ** 6 * (- 544.0 / 21.0 + 992.0 / 105.0 * X0)
+    !S ** 2 * (- 7098.0 / 10.0 + 14253.0 / 5.0 * X0 - 102267.0 / 35.0 * X0 ** 2 + 156767.0 / 140.0 * X0 ** 3 - &
+    !    1216.0 / 7.0 * X0 ** 4 + 64.0 / 7.0 * X0 ** 5) + S ** 4 * (- 18594.0 / 35.0 + 205003.0 / 280.0 * X0 - &
+    !    1920.0 / 7.0 * X0 ** 2 + 1024.0 / 35.0 * X0 ** 3) + S ** 6 * (- 544.0 / 21.0 + 992.0 / 105.0 * X0)
+    
+    !C1 = 10.0 - 47.0 / 5.0 * X0 + 7.0 / 5.0 * X0 ** 2 + 7.0 / 10.0 * S ** 2
+
+    !C2 = 25.0 - 1117.0 / 10.0 * X0 + 847.0 / 10.0 * X0 ** 2 - 183.0 / 10.0 * X0 ** 3 + 11.0 / 10.0 * X0 ** 4 + &
+
+    !S ** 2 * (847.0 / 20.0 - 183.0 / 5.0 * X0 + 121.0 / 20.0 * X0 ** 2) + 11.0 / 10.0 * S ** 4
+    !R = theta ** 2 * Y1 + theta ** 3 * Y2 + theta ** 4 * Y3 - beta * (1.0 + theta * C1 + theta ** 2 * C2)
+    !--------end
+    
+    
     !Y4 = - 135.0 / 32.0 + 30375.0 / 128.0 * X0 - 62391.0 / 10.0 * X0 ** 2 + 614727.0 / 40.0 * X0 ** 3 - 124389.0 / 10.0 * X0 ** 4 + 355703.0 / 80.0 * X0 ** 5 - 16568.0 / 21.0 * X0 ** 6 + 7516.0 / 105.0 * X0 ** 7 - 22.0 / 7.0 * X0 ** 8 + 11.0 / 210.0 * X0 ** 9 + S ** 2 * (- 62391.0 / 20.0 + 614727.0 / 20.0 * X0 - 1368279.0 / 20.0 * X0 ** 2 + 4624139.0 / 80.0 * X0 ** 3 - 157396.0 / 7.0 * X0 ** 4 + 30064.0 / 7.0 * X0 ** 5 - 2717.0 / 7.0 * X0 ** 6 + 2761.0 / 210.0 * X0 ** 7) + S ** 4 * (- 124389.0 / 10.0 + 6046951.0 / 160.0 * X0 - 248520.0 / 7.0 * X0 ** 2 + 481024.0 / 35.0 * X0 ** 3 - 15972.0 / 7.0 * X0 ** 4 + 18689.0 / 140.0 * X0 ** 5) + S ** 6 * (- 70414.0 / 21.0 + 465992.0 / 105.0 * X0 - 11792.0 / 7.0 * X0 ** 2 + 19778.0 / 105.0 * X0 ** 3) + S ** 8 * (- 682.0 / 7.0 + 7601.0 / 210.0 * X0)
 
-    C1 = 10.0 - 47.0 / 5.0 * X0 + 7.0 / 5.0 * X0 ** 2 + 7.0 / 10.0 * S ** 2
-
-    C2 = 25.0 - 1117.0 / 10.0 * X0 + 847.0 / 10.0 * X0 ** 2 - 183.0 / 10.0 * X0 ** 3 + 11.0 / 10.0 * X0 ** 4 + &
-
-    S ** 2 * (847.0 / 20.0 - 183.0 / 5.0 * X0 + 121.0 / 20.0 * X0 ** 2) + 11.0 / 10.0 * S ** 4
+    
 
     !1 = - 10.0 + 23.5 * X0 - 8.4 * X0 ** 2 + 0.7 * X0 ** 3 + S ** 2 * (- 4.2 + 1.4 * X0)
     !Y2 = - 7.5 + 127.875 * X0 - 173.6 * X0 ** 2 + 65.8 * X0 ** 3 - &
@@ -477,11 +512,11 @@ double precision function sz_signal(A, theta, x, beta) !########################
     !P0 = - 2.0 / 3.0 + 11.0 / 30.0 * X0
     !P1 = - 4.0 + 12.0 * X0 - 6.0 * X0 ** 2 + 19.0 / 30.0 * X0 ** 3 + S ** 2 * (- 3.0 + 19.0 / 15.0 * X0)
     !R = theta ** 2 * Y1 + theta ** 3 * Y2 + theta ** 4 * Y3 + theta ** 5 * Y4 + beta ** 2 * (1.0 / 3.0 * Y0 + theta * (5.0 / 6.0 * Y0 + 2.0 / 3.0 * Y1)) - beta * (1.0 + theta * C1 + theta ** 2 * C2) + beta ** 2 * (P0 + theta * P1)
-    R = theta ** 2 * Y1 + theta ** 3 * Y2 + theta ** 4 * Y3 - beta * (1.0 + theta * C1 + theta ** 2 * C2)
+    
 
     koeff = 1.0e+006                    ! signal in MicroK ??
     !T0*tau
-    sz_signal = koeff * A * (theta*Y0 + R)
+    sz_signal = koeff * A * (theta*Y0 - beta)!+ R)
 
 
 end function
@@ -514,4 +549,170 @@ subroutine calculate_chi_SZ(chi,f)
         chi = chi/syn(1)%free_parameters
     endif
 
-    end subroutine
+end subroutine
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+!THe next is not SZ analyze. It's fitting line.
+
+
+
+subroutine SetFunction_StrLine
+    use Line_data
+    use ParamIteration
+    
+    
+    integer i,j,k_s,k
+    character*500 buf, str
+    character(len=50), dimension(6) :: args
+    character(len=100) :: nameLinedatafile
+    character(len=5) :: charind
+    double precision x
+    
+    if (ind == 0) then
+        nameLinedatafile = 'Line_data.txt'
+    else
+        write(charind,'(1I5)') ind
+        !nameSZdatafile = 'SZdatas/SZ_data'//TRIM(ADJUSTL(charind))//'.txt'
+        nameLinedatafile = 'Ldatas/Line_data'//TRIM(ADJUSTL(charind))//'.txt'
+    end if
+
+    print*, "Open the "//TRIM(ADJUSTL(nameLinedatafile))//" file"
+    open(1767, file=nameLinedatafile)
+    read(1767, *) num_of_points
+    print*, 'read Line data in', num_of_points, 'bands'
+    
+    
+    
+    !if (allocated(line_x)) then
+    !    deallocate (line_x)
+	!end if
+    !allocate(line_x(num_of_points))
+    
+    if (allocated(line_y)) then
+        deallocate (line_y)
+	end if
+    allocate(line_y(num_of_points))
+    
+    if (allocated(line_obs_x)) then
+        deallocate (line_obs_x)
+	end if
+    allocate(line_obs_x(num_of_points))
+    
+    if (allocated( line_obs_y)) then
+        deallocate ( line_obs_y)
+	end if
+    allocate( line_obs_y(num_of_points, 3))
+
+    do i = 1, num_of_points
+        read(1767,'(4e10.2)') line_obs_x(i), (line_obs_y(i,j), j = 1,3)  
+      
+        
+        print*, line_obs_x(i), line_obs_y(i,1), line_obs_y(i,2), line_obs_y(i,3)
+        !# end do или enddo ?
+    end do
+    close(1767)
+end subroutine
+
+
+subroutine calc_fit_Line          ! procedure to calculate sz_signal
+
+    use Line_data
+    !use ParamIteration
+    !use collision_data
+    use synth_param
+
+
+    IMPLICIT NONE
+
+    !real (kind = 8), external :: sz_signal
+    !double precision :: sz_signal
+    INTERFACE
+        double precision FUNCTION y_signal(x, A, B)
+            !double precision, optional, intent (in) :: alpha_var, T0_var, z_var
+            double precision, intent (in) :: A, x, B
+        END FUNCTION  y_signal
+    END INTERFACE
+
+
+    integer i, j, n
+    double precision x, y, A, B
+    
+    character (len=100) :: charadd1
+
+    B = 0.0
+    A = 0.0
+    
+    
+    do n = 1, number_of_elements
+        charadd1 = TRIM(ADJUSTL(syn(1)%name(n)))
+        select case(TRIM(ADJUSTL(charadd1)))
+            case('A')
+                A = syn(1)%val(n)
+            case('B')
+                B = syn(1)%val(n)!T0 = 2.7255 !T0  = syn(1)%val(1) ! in K
+        end select
+    end do
+
+    do i = 1, num_of_points
+        
+        y = y_signal(line_obs_x(i), A, B)
+        line_y(i) = y
+
+    end do
+
+end subroutine
+
+
+
+double precision function y_signal(x, A, B) !################################### Changeble
+
+    
+    double precision, intent (in) :: x, A, B
+    
+    y_signal = A * x + B
+
+
+end function
+
+subroutine calculate_chi_Line(chi,f)
+
+    use Line_data
+    use synth_param
+
+    integer f
+    double precision chi,x
+
+    syn(1)%free_parameters = 0
+    chi = 0
+    if(num_of_points >1) then
+        do i = 1, num_of_points
+            x = line_obs_y(i,1) -  line_y(i)
+            if (x .ge. 0) then
+                chi = chi + x*x/(line_obs_y(i,2))**2
+            else
+                chi = chi + x*x/(line_obs_y(i,3))**2
+            end if
+        end do
+    end if
+    if(syn(1)%chi > 1) chi = syn(1)%chi
+    syn(1)%free_parameters = num_of_obs - num_of_var
+
+
+    if ((f == 2) .and. (syn(1)%free_parameters > 0)) then
+        chi = chi/syn(1)%free_parameters
+    endif
+
+end subroutine
