@@ -560,20 +560,28 @@ subroutine SynParall !(ind, min, max)
     use CO_data
 
     use SZ_data
+    use Line_data
     !integer ind, max
     character*200 file_name
 
 
     external calc_fit_CI,calculate_chi_CI,calc_fit_CO,calculate_chi_CO,&
     calc_fit_H2,calculate_chi_H2, calc_fit_all,calculate_chi_all,&
-    calc_fit_HD,calculate_chi_HD,calc_fit_SZ,calculate_chi_SZ
+    calc_fit_HD,calculate_chi_HD,calc_fit_SZ,calculate_chi_SZ,&
+    calc_fit_Line,calculate_chi_Line
     ! set probability function
     !call SetFunction_CO
     !call SetFunction_CI
     !call SetFunction_HD
+    
+    !The next lines were changed:
     call SetFunction_SZ !(ind)
-
+    !call SetFunction_StrLine
+    
+    
     file_name = TRIM(ADJUSTL('startSZ.sss'))
+    !file_name = TRIM(ADJUSTL('startLine.sss'))
     call OpenAnalysis(file_name)!, ind)
-    call MCMCfit(calc_fit_SZ,calculate_chi_SZ)!, ind, min, max)         ! start Monte Carlo Markov Chain calculation
+    call MCMCfit(calc_fit_SZ,calculate_chi_SZ)!, ind, min, max)  
+    !call MCMCfit(calc_fit_Line,calculate_chi_Line)       ! start Monte Carlo Markov Chain calculation
 end
