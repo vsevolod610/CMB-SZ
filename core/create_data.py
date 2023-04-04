@@ -13,6 +13,15 @@ from trans_function import filtrs
 
 np.random.seed(123)
 
+def norm(N, mu, sigma, left, right):
+    data = np.random.normal(mu, sigma, N)
+
+    for k, r in enumerate(data):
+        while not left <= r <= right:
+            r = np.random.normal(mu, sigma)
+        data[k] = r
+
+    return data
 # Paths
 path_to_NSZ_data = '../data/N/szdata/szdata{}.txt'
 path_to_Npriors = '../data/N/priors/prior{}.dat'
@@ -26,9 +35,13 @@ beta_min = - 0.5 * 1/300
 beta_max = 0.5 * 1/300
 Tau_min = 0.5
 Tau_max = 2
-sz_rerr = np.array([0.22, 0.08, 0.1, 0.98, 0.30])
+yerr_rel = np.array([0.4637668, 0.1400576, 0.0686723, 0.0610072, 0.2664959])
+yerr_rel_s = np.array([0.0906936, 0.0298204, 0.0195390, 0.0198462, 0.0810123])
+rscale, rscale_s = 0.9655, 0.4632
 z_mu = 0.0
 z_sigma = 0.3
+
+model = gauss_model
 
 # Generate params
 Te = np.random.uniform(Te_min, Te_max, N)
@@ -42,17 +55,18 @@ for i in range(N):
     comment = 'for freq. {} GHz | '.format(str(filtrs))
     comment += 'T0 = {}, kTe = {:.2}, beta = {:.1e}, Tau = {:.2}'
     comment = comment.format(T0, Te[i], beta[i], Tau[i])
-    sz = gauss_model(T0, Te[i], beta[i], Tau[i])
-
-    # asymetric errors
-    sz_sigma = np.abs(
-            sz * np.random.normal(sz_rerr, sz_rerr / 5, (2, len(filtrs))))
+    sz = model(T0, Te[i], beta[i], Tau[i])
 
     # symetric errors
-    sz_sigma1 = np.abs(sz * np.random.normal(sz_rerr, sz_rerr / 5, len(filtrs)))
+    #rscale_g = np.random.normal(rscale, rscale_s)
+    rscale_g = norm(1, rscale, rscale_s, 0.3, 1.3)
+    scale = max(sz) - min(sz)
+    yerr_rel_g = np.random.normal(yerr_rel, yerr_rel_s)
+    sz_sigma1 = np.abs(rscale_g * scale * yerr_rel_g)
     sz_sigma = np.array([sz_sigma1, sz_sigma1])
+    sz_g = np.random.normal(sz, 0.8 * sz_sigma1)
 
-    sz_data = np.array([sz, *sz_sigma]).T
+    sz_data = np.array([sz_g, *sz_sigma]).T
 
     SZ_data_write(path, z[i], sz_data, comment)
 
