@@ -8,8 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from chainconsumer import ChainConsumer
 
-from mcmc_kern import mcmc_kern
-from mcmc_analyze import pic_chain, pic_fit
+from mcmc.kern import mcmc_kern
+from mcmc.analyze import pic_chain, pic_fit
 from start_analyze import result_read, path_result, method
 
 

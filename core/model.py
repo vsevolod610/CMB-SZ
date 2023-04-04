@@ -21,6 +21,10 @@ coef2 = (1e3 * 1.6e-12) / (m * c ** 2)
 
 
 #NB! all model return array, not number
+# sz_model
+# lazy_model
+# trans_model
+# gauss_model
 
 def sz_model(T0, Te, beta, Tau, nu, rel_corrs=True):
     theta = coef2 * Te
