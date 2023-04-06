@@ -3,3 +3,4 @@ data/N/**/*
 !data/N/**/
 !**/.gitkeep
 data/*.png
+res/*

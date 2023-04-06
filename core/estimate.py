@@ -8,8 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from chainconsumer import ChainConsumer
 
-from mcmc.kern import mcmc_kern
-from mcmc.analyze import pic_chain, pic_fit
+from mcmc import mcmc
+#from mcmc.analyze import pic_chain, pic_fit
 from start_analyze import result_read, path_result, method
 
 
@@ -26,6 +26,8 @@ def modelTz(T0, z):
 
 if method == 'T0':
     model = modelT0
+if method == 'lazy':
+    model = modelT0
 if method == 'Tz':
     model = modelTz
 
@@ -35,21 +37,14 @@ nsteps = 200
 amputete = int(0.2 * nsteps)
 ndim = len(init)
 
+path_pics = ['../res/pic1.pdf', '../res/pic2.pdf', '../res/pic3.pdf']
+
 # mcmc for estimation
-sampler = mcmc_kern(model, nwalkers, nsteps, init, x, y, yerr)
-flat_sample = sampler.chain[:, amputete : , :].reshape((-1, ndim))
-c = ChainConsumer()
-c.add_chain(flat_sample)
-summary = c.analysis.get_summary()
-print("\nMCMC results:")
-print(*[" {:>4}: {}".format(k, summary[k]) for k in summary.keys()], sep='\n')
+summary = mcmc(data=(x, y, yerr),
+               model_params=(model, init, None, None),
+               settings=(nwalkers, nsteps, amputete),
+               prnt=False, show=False, save=path_pics)
 
-# Pics
-fig, ax = pic_chain(sampler)
-fig = c.plotter.plot(display=False, legend=False, figsize=(6, 6))
-fig, ax = pic_fit(sampler, model, x, y, yerr)
-
-plt.show()
-
-
-
+T0 = summary['0'][1]
+T0p, T0m = summary['0'][2] - T0, T0 - summary['0'][0]
+print('T0 = ', T0, ' +', T0p, ' -', T0m)
