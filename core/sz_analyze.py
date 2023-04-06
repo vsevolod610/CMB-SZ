@@ -14,7 +14,7 @@ from mcmc import mcmc
 
 
 def sz_analyze(method, paths, nwalkers='Read', nsteps='Read',
-                 amputate=0.5, pics=False):
+                 amputate=0.3, pics=False):
 
     #data
     path_to_SZ_data, path_to_startSZ, path_to_prior = paths

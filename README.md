@@ -26,5 +26,7 @@ You need install `python` (`python3`) and python-packages below:
     and look for the result in `./data/N/pic_*`
 3. To obtain common $T_0$ estimation run `python ./core/estimate.py`
 
+or just run `bash start.sh` from this directory!
+
 ##### To generate artificial data
 1. Run `python ./core/create_data.py`

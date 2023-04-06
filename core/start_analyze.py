@@ -6,7 +6,7 @@ Analyze example cluster
 import numpy as np
 import matplotlib.pyplot as plt
 
-from SZ_analyze import SZ_mcmc
+from sz_analyze import sz_analyze as SZ_mcmc
 
 
 def result_read(path):
@@ -34,7 +34,9 @@ def result_write(z, T0_params, path):
         file.write(s + "\n")
 
 
-method = 'T0'
+N = 3
+#method = 'T0'
+method = 'lazy'
 #method = 'Tz'
 
 # paths
@@ -47,7 +49,8 @@ path_pics = ['../data/N/pic_chain/pic_chain-{}',
              '../data/N/pic_consumer/pic_consumer-{}',
              '../data/N/pic_fit/pic_fit-{}']
 
-N = 200
+#nwalkers, nsteps = 100, 100
+nwalkers, nsteps = 'Read', 'Read'
 
 if __name__ == "__main__":
     for i in range(N):
@@ -55,12 +58,8 @@ if __name__ == "__main__":
                  path_startSZ,
                  path_prior.format(i + 1)]
 
-        #nwalkers, nsteps = 100, 100
-        nwalkers, nsteps = 'Read', 'Read'
-
         pics = [s.format(i + 1) for s in path_pics]
         z, *T0_params = SZ_mcmc(method, paths, nwalkers, nsteps, pics=pics)
         result_write(z, T0_params, path_result)
-        print(i + 1, z, T0_params)
+        print('\n', i + 1, z, T0_params, '\n')
 
-plt.show()
