@@ -27,6 +27,8 @@ if method == 'T0':
     model = modelT0
 if method == 'lazy':
     model = modelT0
+if method == 'simple':
+    model = modelT0
 if method == 'Tz':
     model = modelTz
 

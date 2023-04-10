@@ -35,6 +35,8 @@ def sz_analyze(method, paths, nwalkers='Read', nsteps='Read',
         model = gauss_model
     if method == 'lazy':
         model = lazy_model
+    if method == 'simple':
+        model = simple_model
     if method == 'Tz':
         model = alt_model
         prior_data['const'] = {0: z}

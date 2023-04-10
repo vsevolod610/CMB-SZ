@@ -19,6 +19,8 @@ if model_create_data is gauss_model:
     modelname_create_data = 'gauss_model'
 elif model_create_data is lazy_model:
     modelname_create_data = 'lazy_model'
+elif model_create_data is simple_model:
+    modelname_create_data = 'simple_model'
 else:
     modelname_create_data = 'error'
 

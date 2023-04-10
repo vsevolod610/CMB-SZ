@@ -132,7 +132,7 @@ def pic_fit(chain, model, data, prior_data=None):
 
     # plot(set of fit)
     for w in last_step:
-        ax.plot(x, model(*w, *const, x), 'b', alpha=0.09)
+        ax.plot(x, model(*w, *const, x), 'b', alpha=0.5)
 
     # plot(data)
     if np.shape(yerr) == ():

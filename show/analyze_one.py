@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt
 from sz_analyze import sz_analyze as SZ_mcmc
 
 #method = 'T0'
-method = 'lazy'
+#method = 'lazy'
+method = 'simple'
 #method = 'Tz'
 
 # data

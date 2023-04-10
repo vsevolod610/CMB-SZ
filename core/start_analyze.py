@@ -34,10 +34,12 @@ def result_write(z, T0_params, path):
         file.write(s + "\n")
 
 
-N = 3
+N = 200
 #method = 'T0'
-method = 'lazy'
+#method = 'lazy'
+method = 'simple'
 #method = 'Tz'
+
 
 # paths
 path_SZ_data = '../data/N/szdata/szdata{}.txt'

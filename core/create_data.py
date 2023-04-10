@@ -7,7 +7,7 @@ comment: Давайте в SZ data записывать и частоты
 import numpy as np
 
 from data import SZ_data_write, prior_write
-from model import gauss_model
+from model import *
 from trans_function import filtrs
 
 
@@ -41,7 +41,7 @@ rscale, rscale_s = 0.9655, 0.4632
 z_mu = 0.0
 z_sigma = 0.3
 
-model = gauss_model
+model = simple_model
 
 # Generate params
 Te = np.random.uniform(Te_min, Te_max, N)
@@ -55,7 +55,8 @@ for i in range(N):
     comment = 'for freq. {} GHz | '.format(str(filtrs))
     comment += 'T0 = {}, kTe = {:.2}, beta = {:.1e}, Tau = {:.2}'
     comment = comment.format(T0, Te[i], beta[i], Tau[i])
-    sz = model(T0, Te[i], beta[i], Tau[i])
+    #sz = model(T0, Te[i], beta[i], Tau[i])
+    sz = model(T0, Te[i])
 
     # symetric errors
     #rscale_g = np.random.normal(rscale, rscale_s)

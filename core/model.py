@@ -19,6 +19,7 @@ m = 0.91e-27
 coef1 = (h * 1e9) / k
 coef2 = (1e3 * 1.6e-12) / (m * c ** 2)
 
+nu_default = np.array([70.0, 100.0, 143.0, 217.0, 353.0])
 
 #NB! all model return array, not number
 # sz_model
@@ -36,6 +37,12 @@ def lazy_model(T0, Te, beta, Tau, nu):
     theta = coef2 * Te
     x = coef1 * nu / T0
     sz = SZfunction(T0, theta, beta, Tau, x, rel_corrs=False) 
+    return np.array(sz)
+
+def simple_model(T0, Te, nu=nu_default):
+    theta = coef2 * Te
+    x = coef1 * nu / T0
+    sz = SZfunction(T0, theta, 0.0, 1.0, x, rel_corrs=False) 
     return np.array(sz)
 
 def trans_model(T0, Te, beta, Tau, x=None):
