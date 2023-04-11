@@ -2,4 +2,4 @@ __pycache__
 data/set/**/*
 !data/set/**/
 !**/.gitkeep
-data/*.png
+data/one/*.png
