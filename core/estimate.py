@@ -38,7 +38,7 @@ nsteps = 200
 amputete = int(0.2 * nsteps)
 ndim = len(init)
 
-path_pics = ['../res/pic1.pdf', '../res/pic2.pdf', '../res/pic3.pdf']
+path_pics = ['../data/set/res/pic1.pdf', '../data/set/res/pic2.pdf', '../data/set/res/pic3.pdf']
 
 # mcmc for estimation
 summary = mcmc(data=(x, y, yerr),

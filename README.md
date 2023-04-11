@@ -8,6 +8,7 @@ You need install `python` (`python3`) and python-packages below:
 - `chainconsumer`
 - `emcee`
 - `astropy`
+- `tdqm` (optionally)
 
 (You can install it with `pip`)
 

@@ -1,6 +1,5 @@
 __pycache__
-res/*
-data/N/**/*
-!data/N/**/
+data/set/**/*
+!data/set/**/
 !**/.gitkeep
 data/*.png

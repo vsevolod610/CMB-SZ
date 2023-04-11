@@ -19,13 +19,13 @@ method = 'simple'
 #method = 'Tz'
 
 # data
-path_SZ_data = '../data/SZ_data.txt'
+path_SZ_data = '../data/one/SZ_data.txt'
 path_startSZ = '../data/startSZ.sss'
-path_prior = '..//data/prior.dat'
+path_prior = '..//data/one/prior.dat'
 
-path_pic_chain = '../data/pic_chain'
-path_pic_consum = '../data/pic_consum'
-path_pic_fit = '../data/pic_fit'
+path_pic_chain = '../data/one/pic_chain'
+path_pic_consum = '../data/one/pic_consum'
+path_pic_fit = '../data/one/pic_fit'
 
 paths = [path_SZ_data, path_startSZ, path_prior]
 path_pics = [path_pic_chain, path_pic_consum, path_pic_fit]

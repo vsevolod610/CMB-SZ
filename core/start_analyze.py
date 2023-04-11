@@ -34,7 +34,7 @@ def result_write(z, T0_params, path):
         file.write(s + "\n")
 
 
-N = 200
+N = 20
 #method = 'T0'
 #method = 'lazy'
 method = 'simple'
@@ -42,14 +42,14 @@ method = 'simple'
 
 
 # paths
-path_SZ_data = '../data/N/szdata/szdata{}.txt'
+path_SZ_data = '../data/set/szdata/szdata{}.txt'
 path_startSZ = '../data/startSZ.sss'
-path_prior = '../data/N/priors/prior{}.dat'
+path_prior = '../data/set/priors/prior{}.dat'
 
-path_result = '../data/N/result-{}.txt'.format(method)
-path_pics = ['../data/N/pic_chain/pic_chain-{}',
-             '../data/N/pic_consumer/pic_consumer-{}',
-             '../data/N/pic_fit/pic_fit-{}']
+path_result = '../data/set/result-{}.txt'.format(method)
+path_pics = ['../data/set/pic_chain/pic_chain-{}',
+             '../data/set/pic_consumer/pic_consumer-{}',
+             '../data/set/pic_fit/pic_fit-{}']
 
 #nwalkers, nsteps = 100, 100
 nwalkers, nsteps = 'Read', 'Read'
