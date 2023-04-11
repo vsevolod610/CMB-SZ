@@ -89,12 +89,13 @@ def mcmc_run(data, model, settings, init, prior_data=None):
                                         pool=pool)
         sampler.run_mcmc(pos, nsteps, progress=True)
 
-    chain = sampler.get_chain()
+    #chain = sampler.get_chain()
     
-    return chain
+    return sampler
 
 
-def pic_chain(chain, amputate=None, params_names=None):
+def pic_chain(sampler, amputate=None, params_names=None):
+    chain = sampler.get_chain()
     _, _, ndim = np.shape(chain)
     if params_names is None:
         params_names = np.arange(ndim)
@@ -116,7 +117,8 @@ def pic_chain(chain, amputate=None, params_names=None):
     return fig
 
 
-def pic_fit(chain, model, data, prior_data=None):
+def pic_fit(sampler, model, data, prior_data=None):
+    chain = sampler.get_chain()
     # args managment
     x, y, yerr, *_ = *data, None 
 
@@ -148,7 +150,7 @@ def pic_fit(chain, model, data, prior_data=None):
     return fig
 
 
-def mcmc_analyze(chain, data, model, init, prior_data, amputate, params_names, 
+def mcmc_analyze(sampler, data, model, init, prior_data, amputate, params_names, 
                  **kwargs):
     # args management
     x, y, yerr, *_ = *data, None
@@ -159,7 +161,7 @@ def mcmc_analyze(chain, data, model, init, prior_data, amputate, params_names,
     show = kwargs['show'] if 'show' in kwargs else False
     save = kwargs['save'] if 'save' in kwargs else False
 
-    flat_chain = chain[amputate :, : , :].reshape((-1, ndim))
+    flat_chain = sampler.get_chain(discard=amputate, flat=True)
     c = ChainConsumer()
     c.add_chain(flat_chain, parameters=params_names)
     summary = c.analysis.get_summary()
@@ -172,8 +174,8 @@ def mcmc_analyze(chain, data, model, init, prior_data, amputate, params_names,
     # pics
     if show or save:
         fig0 = c.plotter.plot(legend=False, figsize=(6, 6))
-        fig1 = pic_chain(chain, amputate=amputate, params_names=params_names)
-        fig2 = pic_fit(chain, model, data, prior_data)
+        fig1 = pic_chain(sampler, amputate=amputate, params_names=params_names)
+        fig2 = pic_fit(sampler, model, data, prior_data)
 
         #fig1 = c.plotter.plot_walks(convolve=100, figsize=(6, 6))
         if save:
@@ -196,8 +198,8 @@ def mcmc(data, model_params, settings, **kwargs):
     model, init, prior_data, params_names, *_ = *model_params, None, None
     nwalkers, nsteps, amputate = settings
 
-    chain = mcmc_run(data, model, (nwalkers, nsteps), init, prior_data)
-    summary = mcmc_analyze(chain, data, model, init, prior_data, amputate, 
+    sampler = mcmc_run(data, model, (nwalkers, nsteps), init, prior_data)
+    summary = mcmc_analyze(sampler, data, model, init, prior_data, amputate, 
                            params_names, **kwargs)
 
     return summary
