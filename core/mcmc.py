@@ -60,6 +60,7 @@ def log_probability(params, model, data, prior_data=None):
         sigma2 = yerr ** 2
     if np.shape(yerr) == (N, 2):
         sigma2 = (m <= y) * yerr[:,0] + (m > y) * yerr[:,1]
+        sigma2 = sigma2 ** 2
 
     # lp
     lp_value = -0.5 * np.sum((y - m) ** 2 / sigma2)
