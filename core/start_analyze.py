@@ -33,7 +33,7 @@ def result_write(z, T0_params, path):
         file.write(s + "\n")
 
 
-N = 3
+N = 1000
 #method = 'T0'
 #method = 'lazy'
 method = 'simple'
