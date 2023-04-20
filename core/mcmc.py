@@ -87,8 +87,8 @@ def mcmc_run(data, model, settings, init, prior_data=None):
         pos[k] = param
 
     # mcmc mechanism
-    #with Pool(processes=4) as pool:
-    with Pool() as pool:
+    #with Pool() as pool:
+    with Pool(processes=4) as pool:
         sampler = emcee.EnsembleSampler(nwalkers, ndim, log_probability, 
                                         args=(model, data, prior_data), 
                                         pool=pool)
