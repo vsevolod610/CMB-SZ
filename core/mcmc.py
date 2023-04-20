@@ -6,6 +6,10 @@ MCMC all in one file
 import gc
 import emcee
 import numpy as np
+
+import matplotlib
+matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 from multiprocessing import Pool
 from chainconsumer import ChainConsumer
