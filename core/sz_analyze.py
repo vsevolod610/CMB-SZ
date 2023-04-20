@@ -5,7 +5,6 @@ Analyze cluster
 
 import gc
 import numpy as np
-import matplotlib.pyplot as plt
 from chainconsumer import ChainConsumer
 
 from model import *

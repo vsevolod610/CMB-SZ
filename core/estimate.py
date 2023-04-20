@@ -5,7 +5,6 @@ comment: нодо бы перенести этот файл в корень
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 from chainconsumer import ChainConsumer
 
 from mcmc import mcmc

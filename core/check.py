@@ -36,7 +36,7 @@ from start_analyze import path_startSZ
 nwalkers_r, nsteps_r, init, prior_box = startSZ_read(path_startSZ)
 
 print("\n Nwalkers & Nsteps: \n", 
-      "nwalkers & nsteps from startSZ = %s, %s\n"%(nwalkers_r, nsteps_r),
+      "nwalkers & nsteps from startSZ.sss = %s, %s\n"%(nwalkers_r, nsteps_r),
       "nwalkers & nsteps from start_analyze.py = %s, %s\n"
       %(nwalkers_start_analyze, nsteps_start_analyze))
 

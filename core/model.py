@@ -6,7 +6,6 @@ comment: x=None сомнительная практика
 """
 
 import numpy as np
-import matplotlib.pyplot as plt 
 from scipy import integrate
 
 from trans_function import filtrs, trans_data, trans_gauss, gauss

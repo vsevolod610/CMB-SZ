@@ -4,7 +4,6 @@ Analyze example cluster
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 from sz_analyze import sz_analyze as SZ_mcmc
 
@@ -34,7 +33,7 @@ def result_write(z, T0_params, path):
         file.write(s + "\n")
 
 
-N = 20
+N = 3
 #method = 'T0'
 #method = 'lazy'
 method = 'simple'
