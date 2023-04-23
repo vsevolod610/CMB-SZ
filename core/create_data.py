@@ -42,13 +42,19 @@ rscale, rscale_s = 0.9655, 0.4632
 z_mu = 0.0
 z_sigma = 0.3
 
-model = simple_model
+#model = gauss_model
+model = sz_model
+#model = simple_model
 
 # Generate params
 Te = np.random.uniform(Te_min, Te_max, N)
 beta = np.random.uniform(beta_min, beta_max, N)
 Tau = np.random.uniform(Tau_min, Tau_max, N)
 z = np.abs(np.random.normal(z_mu, z_sigma, N))
+
+
+np.random.seed(5769)
+
 
 if __name__ == "__main__":
     # Write files: SZdata.txt
@@ -57,8 +63,8 @@ if __name__ == "__main__":
         comment = 'for freq. {} GHz | '.format(str(filtrs))
         comment += 'T0 = {}, kTe = {:.2}, beta = {:.1e}, Tau = {:.2}'
         comment = comment.format(T0, Te[i], beta[i], Tau[i])
-        #sz = model(T0, Te[i], beta[i], Tau[i])
-        sz = model(T0, Te[i])
+        sz = model(T0, Te[i], beta[i], Tau[i])
+        #sz = model(T0, Te[i])
 
         # symetric errors
         #rscale_g = np.random.normal(rscale, rscale_s)

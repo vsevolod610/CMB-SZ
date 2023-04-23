@@ -24,12 +24,15 @@ def modelTz(T0, z):
 
 if method == 'T0':
     model = modelT0
+if method == 'sz':
+    model = modelT0
 if method == 'lazy':
     model = modelT0
 if method == 'simple':
     model = modelT0
 if method == 'Tz':
     model = modelTz
+
 
 init = np.array([[2.7255], [0.2]]).T
 nwalkers = 200

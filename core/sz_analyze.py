@@ -32,6 +32,8 @@ def sz_analyze(method, paths, nwalkers='Read', nsteps='Read',
     # method
     if method == 'T0':
         model = gauss_model
+    if method == 'sz':
+        model = sz_model
     if method == 'lazy':
         model = lazy_model
     if method == 'simple':
