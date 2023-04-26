@@ -48,7 +48,7 @@ def prior_write(path, prior_gauss_data):
     with open(path, 'w') as file:
         file.write('{} ! Num of priors\n'.format(len(prior_gauss_data)))
         for param in list(prior_gauss_data):
-            s = '1 2 {} {:.2} {:.2} {:.2} ! 3 index of arg Te name of arg'
+            s = '1 2 {} {:.6} {:.6} {:.6} ! 3 index of arg Te name of arg'
             s = s.format(param, *prior_gauss_data[param])
             file.write(s)
 

@@ -32,6 +32,8 @@ if method == 'simple':
     model = modelT0
 if method == 'Tz':
     model = modelTz
+if method == 'sz_alt':
+    model = modelTz
 
 
 init = np.array([[2.7255], [0.2]]).T

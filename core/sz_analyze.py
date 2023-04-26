@@ -41,6 +41,9 @@ def sz_analyze(method, paths, nwalkers='Read', nsteps='Read',
     if method == 'Tz':
         model = alt_model
         prior_data['const'] = {0: z}
+    if method == 'alt_sz':
+        model = alt_sz_model
+        prior_data['const'] = {0: z}
 
     # mcmc analyze
     summary = mcmc(data=(x, y, yerr), 

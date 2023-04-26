@@ -86,3 +86,10 @@ def alt_model(Tz, Te, beta, Tau, z, x=None):
         m.append(integrate.quad(f, nu_start, nu_stop, 
                                 epsabs=1e+3,epsrel=1e-2, limit=2)[0])
     return np.array(m)
+
+def alt_sz_model(Tz, Te, beta, Tau, z, nu=nu_default):
+    T0 = 2.7255
+    theta = coef2 * Te
+    x = coef1 * nu / Tz * (1 + z)
+    sz = SZfunction(T0, theta, beta, Tau, x) 
+    return np.array(sz)

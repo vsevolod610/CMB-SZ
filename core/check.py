@@ -17,7 +17,7 @@ from model import *
 
 if model_create_data is gauss_model:
     modelname_create_data = 'gauss_model'
-if model_create_data is sz_model:
+elif model_create_data is sz_model:
     modelname_create_data = 'sz_model'
 elif model_create_data is lazy_model:
     modelname_create_data = 'lazy_model'
