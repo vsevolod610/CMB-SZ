@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 MCMC all in one file
+wtf: pic_fit errbar see errors like s_, s+, I see errors like s+, s-
 """ 
 
 import gc
@@ -145,7 +146,7 @@ def pic_fit(sampler, model, data, prior_data=None):
     if np.shape(yerr) == ():
         ax.plot(x, y, '.k', alpha=0.5, label='data')
     else:
-        ax.errorbar(x, y, yerr.T, label='data', 
+        ax.errorbar(x, y, [yerr[:,1], yerr[:,0]], label='data', 
                     capsize=3.5, mew=1.5, fmt='.k', alpha=0.5)
 
     # plot(best fit)

@@ -32,7 +32,7 @@ if method == 'simple':
     model = modelT0
 if method == 'Tz':
     model = modelTz
-if method == 'sz_alt':
+if method == 'alt_sz':
     model = modelTz
 
 
