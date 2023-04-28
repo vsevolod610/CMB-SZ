@@ -9,6 +9,7 @@ import numpy as np
 from data import SZ_data_write, prior_write
 from model import *
 from trans_function import filtrs
+from start_analyze import N
 
 
 np.random.seed(123)
@@ -28,7 +29,7 @@ path_to_SZ_data = '../data/set/szdata/szdata{}.txt'
 path_to_priors = '../data/set/priors/prior{}.dat'
 
 # constants
-N = 1000
+#N = 1000
 T0 = 2.7255 # K
 Te_min = 1 # keV
 Te_max = 10 # keV

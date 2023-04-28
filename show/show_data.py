@@ -9,6 +9,7 @@ import sys
 sys.path.append('../core')
 
 
+import gc
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -43,6 +44,10 @@ def data_show(path, prnt=False, show=False, save=False):
 
     if save:
         fig.savefig(save, bbox_inches='tight')
+
+        # garved collector
+        plt.close('all')
+        gc.collect()
     if show:
         plt.show()
 
