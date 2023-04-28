@@ -35,12 +35,12 @@ def result_write(z, T0_params, path):
 
 N = 1000
 
-#method = 'T0'
+method = 'T0'
 #method = 'sz'
 #method = 'lazy'
 #method = 'simple'
 #method = 'Tz'
-method = 'alt_sz'
+#method = 'alt_sz'
 
 
 # paths

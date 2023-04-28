@@ -12,8 +12,8 @@ sys.path.append('../core')
 import numpy as np
 import matplotlib.pyplot as plt
 
-from show_data import x, y, yerr
 from model import sz_model
+from model import nu_default
 
 if __name__ == "__main__":
     # example
@@ -22,13 +22,11 @@ if __name__ == "__main__":
 
     # Picture
     fig, ax = plt.subplots(figsize=(8, 8))
-    xline = np.linspace(min(x), max(x), 100)
+    xline = np.linspace(min(nu_default), max(nu_default), 100)
     yline = sz_model(*exampe_params, xline)
     yline_norel = sz_model(*exampe_params, xline, rel_corrs=False)
 
-    ax.plot(x, 0 * x, 'k')
-    ax.errorbar(x, y, yerr.T, label='data', 
-            capsize=3.5, mew=1.5, fmt='.k', alpha=0.5)
+    ax.plot(xline, 0 * xline, '-k')
     ax.plot(xline, yline, label='model')
     ax.plot(xline, yline_norel, label='model without relativ corr.')
 

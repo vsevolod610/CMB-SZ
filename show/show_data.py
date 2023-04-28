@@ -15,19 +15,11 @@ import matplotlib.pyplot as plt
 from data import SZ_data_read, startSZ_read, prior_read
 
 
-def data_show(paths, prnt=False, show=False, save=False):
-    path_to_SZ_data, path_to_startSZ, path_to_prior = paths
+def data_show(path, prnt=False, show=False, save=False):
+    path_to_SZ_data = path
 
     #data
     x, y, yerr, z = SZ_data_read(path_to_SZ_data)
-    nwalkers, nsteps, init, prior_box = startSZ_read(path_to_startSZ)
-    prior_gauss = prior_read(path_to_prior)
-    prior_data = dict()
-    prior_data['box'] = prior_box
-    prior_data['gauss'] = prior_gauss
-
-    ndim = len(init)
-    params_names = list(map(str, np.arange(ndim)))
 
     if prnt:
         # SZ data
@@ -39,28 +31,9 @@ def data_show(paths, prnt=False, show=False, save=False):
         l = map(f, zip(x, y, *([1, -1] * yerr).T))
         print(*l, sep = '\n')
 
-        # Prior
-        print("\nPriors")
-        print("  box:")
-        s = "    {:<4}: [{:^6}, {:>5}]"
-        l = [s.format(params_names[i], *prior_data['box'][i]) for i in range(ndim)]
-        print(*l, sep='\n')
-
-        print("  gauss:")
-        names = list(prior_data['gauss'].keys())
-        s = "    {:<4}: {} {:>+3} -{:>3}"
-        l = [s.format(name, *prior_data['gauss'][name]) for name in names]
-        print(*l, sep='\n')
-
-        # Start
-        print("\nStart:")
-        s = "  {:<4}: {:>4} +- {:<5}"
-        l = [s.format(params_names[i], *init[i]) for i in range(ndim)]
-        print(*l, sep='\n')
-
     # Pic
     fig, ax = plt.subplots(figsize=(8, 8))
-    ax.errorbar(x, y, yerr.T, label='data',
+    ax.errorbar(x, y, [yerr[:, 1], yerr[:, 0]], label='data',
             capsize=3.5, mew=1.5, fmt='.k', alpha=0.5)
     ax.plot(x, 0 * y, 'k')
 
@@ -76,11 +49,7 @@ def data_show(paths, prnt=False, show=False, save=False):
 
 if __name__ == "__main__":
     # paths
-    path_to_SZ_data = '../data/SZ_data.txt'
-    path_to_startSZ = '../data/startSZ.sss'
-    path_to_prior = '../data/prior.dat'
-
-    paths = [path_to_SZ_data, path_to_startSZ, path_to_prior]
+    path_to_SZ_data = '../data/one/SZ_data.txt'
     path_save = './save.png'
 
-    data_show(paths, prnt=True, show=False, save=path_save)
+    data_show(path_to_SZ_data, prnt=True, show=True, save=False)

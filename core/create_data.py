@@ -42,8 +42,8 @@ rscale, rscale_s = 0.9655, 0.4632
 z_mu = 0.0
 z_sigma = 0.3
 
-#model = gauss_model
-model = sz_model
+model = gauss_model
+#model = sz_model
 #model = simple_model
 
 # Generate params

@@ -29,7 +29,7 @@ nu_default = np.array([70.0, 100.0, 143.0, 217.0, 353.0])
 def sz_model(T0, Te, beta, Tau, nu=nu_default, rel_corrs=True):
     theta = coef2 * Te
     x = coef1 * nu / T0
-    sz = SZfunction(T0, theta, beta, Tau, x) 
+    sz = SZfunction(T0, theta, beta, Tau, x, rel_corrs) 
     return np.array(sz)
 
 

@@ -12,8 +12,8 @@ import numpy as np
 import matplotlib.pyplot as plt 
 from scipy import integrate
 
-from show_data import x, y, yerr
 from trans_function import filtrs
+from data import SZ_data_read
 from model import sz_model, trans_model, gauss_model
 
 
@@ -21,6 +21,10 @@ if __name__ == "__main__":
     # example
     exampe_params = [2.7255, 6.9, 0.0, 1.4]
     #T0, Te, beta, Tau = exampe_params
+
+    #data
+    path_to_SZ_data = '../data/one/SZ_data.txt'
+    x, y, yerr, z = SZ_data_read(path_to_SZ_data)
 
     # models analisys
     sz = sz_model(*exampe_params, x)
