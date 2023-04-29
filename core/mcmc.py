@@ -3,7 +3,7 @@
 MCMC all in one file
 wtf: pic_fit errbar see errors like s_, s+, I see errors like s+, s-
 """ 
-
+import pickle
 import gc
 import emcee
 import numpy as np
@@ -166,12 +166,19 @@ def mcmc_analyze(sampler, data, model, init, prior_data, amputate, params_names,
     prnt = kwargs['prnt'] if 'prnt' in kwargs else False
     show = kwargs['show'] if 'show' in kwargs else False
     save = kwargs['save'] if 'save' in kwargs else False
-
+    pathCH = kwargs['pathCH'] if 'pathCH' in kwargs else False
+    
     flat_chain = sampler.get_chain(discard=amputate, flat=True)
     c = ChainConsumer()
     c.add_chain(flat_chain, parameters=params_names)
     summary = c.analysis.get_summary()
-
+    
+    
+    #save flat_chain
+    if pathCH:
+        with open(pathCH, 'wb') as f:
+            pickle.dump(flat_chain, f)        
+    
     # print
     if prnt:
         s = [" {:>4}: {}".format(k, summary[k]) for k in summary.keys()]
