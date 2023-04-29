@@ -53,6 +53,8 @@ path_pics = ['../data/set/pic_chain/pic_chain-{}',
              '../data/set/pic_consumer/pic_consumer-{}',
              '../data/set/pic_fit/pic_fit-{}']
 
+pathCH = '../data/set/OUT/chainconsum{}.pikle'
+
 #nwalkers, nsteps = 100, 100
 nwalkers, nsteps = 'Read', 'Read'
 
@@ -60,7 +62,8 @@ if __name__ == "__main__":
     for i in range(N):
         paths = [path_SZ_data.format(i + 1),
                  path_startSZ,
-                 path_prior.format(i + 1)]
+                 path_prior.format(i + 1),
+                 pathCH.format(i + 1)]
 
         pics = [s.format(i + 1) for s in path_pics]
         z, *T0_params = SZ_mcmc(method, paths, nwalkers, nsteps, pics=pics)
