@@ -167,11 +167,18 @@ def mcmc_analyze(sampler, data, model, init, prior_data, amputate, params_names,
     show = kwargs['show'] if 'show' in kwargs else False
     save = kwargs['save'] if 'save' in kwargs else False
     pathCH = kwargs['pathCH'] if 'pathCH' in kwargs else False
+    initParam = kwargs['initParam'] if 'initParam' in kwargs else None
     
     flat_chain = sampler.get_chain(discard=amputate, flat=True)
     c = ChainConsumer()
     c.add_chain(flat_chain, parameters=params_names)
     summary = c.analysis.get_summary()
+    
+    
+    if initParam is not None:
+        T0, Te, beta, tau = initParam
+    else:
+        T0, Te, beta, tau = 0.0, 0.0, -5.0, -5.0
     
     
     #save flat_chain
@@ -186,7 +193,7 @@ def mcmc_analyze(sampler, data, model, init, prior_data, amputate, params_names,
 
     # pics
     if show or save:
-        fig0 = c.plotter.plot(legend=False, figsize=(6, 6))
+        fig0 = c.plotter.plot(legend=False, figsize=(6, 6), truth=[T0, Te, beta, tau])
         fig1 = pic_chain(sampler, amputate=amputate, params_names=params_names)
         fig2 = pic_fit(sampler, model, data, prior_data)
 

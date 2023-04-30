@@ -10,18 +10,25 @@ import numpy as np
 def SZ_data_read(path):
     # DATA: import data from SZ_data.txt
     data = []
+    initParam = []
     with open(path) as file:
         for k, line in enumerate(file):
+            if k==0:
+                initParam_str = line.split('|')[-1]
+                initParam_str =  initParam_str.split(',')[-4:]
+                   
+                initParam = [i.split()[2] for i in initParam_str]
             if k == 1: z = float(line.split()[0])
             if k < 3: continue
             data.append(line.split()[:3])
         data = np.array(data, dtype=float)
 
+    initParam = np.array(initParam, dtype=float)
     x = np.array([70.0, 100.0, 143.0, 217.0, 353.0])
     y = data[:, 0]
     yerr = data[:, [1, 2]]
 
-    return x, y, yerr, z
+    return x, y, yerr, z, initParam
 
 def SZ_data_write(path, z, sz_data, comment=""):
     with open(path, 'w') as file:

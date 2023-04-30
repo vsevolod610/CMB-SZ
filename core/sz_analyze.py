@@ -19,7 +19,7 @@ def sz_analyze(method, paths, nwalkers='Read', nsteps='Read',
     #data
     path_to_SZ_data, path_to_startSZ, path_to_prior, pathCH = paths
 
-    x, y, yerr, z = SZ_data_read(path_to_SZ_data)
+    x, y, yerr, z, initParam = SZ_data_read(path_to_SZ_data)
     nwalkers_r, nsteps_r, init, prior_box = startSZ_read(path_to_startSZ)
     if nwalkers == 'Read': nwalkers = nwalkers_r
     if nsteps == 'Read': nsteps = nsteps_r
@@ -50,7 +50,7 @@ def sz_analyze(method, paths, nwalkers='Read', nsteps='Read',
     summary = mcmc(data=(x, y, yerr), 
                    model_params=(model, init, prior_data, None), 
                    settings=(nwalkers, nsteps, amputate_step), 
-                   prnt=True, show=False, save=pics) #, pathCH=pathCH)
+                   prnt=True, show=False, save=pics, initParam=initParam) #, pathCH=pathCH, )
     summary = summary['0']
     
     # summary
