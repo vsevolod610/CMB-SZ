@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Analyze cluster
+comment: при работе программы без сохранения PathCH передаются но не используются
 """
 
 import gc
