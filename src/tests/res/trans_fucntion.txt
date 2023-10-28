@@ -1,0 +1,13 @@
+Trans funtions:
+Wave  70 GHz: nu = [ 57.50 ...  82.50] of 251 dots
+Wave 100 GHz: nu = [ 80.95 ... 138.00] of 229 dots
+Wave 143 GHz: nu = [112.44 ... 193.50] of 186 dots
+Wave 217 GHz: nu = [178.06 ... 324.00] of 464 dots
+Wave 353 GHz: nu = [296.95 ... 462.00] of 651 dots
+
+ Gauss approximation:
+Wave  70 GHz: mu =  70.47, sigma =  5.65
+Wave 100 GHz: mu = 101.25, sigma =  9.67
+Wave 143 GHz: mu = 142.64, sigma = 13.85
+Wave 217 GHz: mu = 221.54, sigma = 20.13
+Wave 353 GHz: mu = 360.80, sigma = 31.09

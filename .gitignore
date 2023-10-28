@@ -1,6 +1,9 @@
 __pycache__
-data/set/**/*
-!data/set/**/
+src/main/input/szdata/*
+src/main/input/priors/*
+src/main/output/**/*
+src/test/pic/gen/*
 !**/.gitkeep
-!**/*.sh
-data/one/*.png
+*.tar.gz
+logs/log.txt
+trash/*

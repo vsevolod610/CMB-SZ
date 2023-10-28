@@ -1,5 +1,6 @@
-# CMB-SZ: python-only
+# CMB-SZ: `dev_seva`
 
+<!-- comment 
 ### Package dependeces
 You need install `python` (`python3`) and python-packages below:
 - `numpy` 
@@ -31,3 +32,8 @@ or just run `bash start.sh` from this directory!
 
 ##### To generate artificial data
 1. Run `python ./core/create_data.py`
+-->
+
+Подсказки:
+1. добавить alias для входа в виртуальное окружение (возможно дописать в start.sh)
+2. rsync
