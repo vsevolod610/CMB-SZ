@@ -17,8 +17,13 @@ coef2 = (1e3 * 1.6e-12) / (m * c ** 2)
 
 
 def sz_function(theta, beta, x, corrs=True):
-    X = x * (np.exp(x) + 1) / (np.exp(x) - 1)
-    S = x / np.sinh(x / 2)
+    if np.all(x): # (x != 0) or (0 not in x)
+        X = x * (np.exp(x) + 1) / (np.exp(x) - 1)
+        S = x / np.sinh(x / 2)
+    else: 
+        # x -> 0 => sin(x) / x = 1 but x5 slower
+        X = np.real(2 / np.sinc(1j * x / 2 / np.pi) * np.cosh(x / 2))
+        S = np.real(2 / np.sinc(1j * x / 2 / np.pi))
 
     # Withou relativistic corrections Y0
     Y0 = X - 4
