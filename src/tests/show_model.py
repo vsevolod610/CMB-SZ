@@ -19,25 +19,38 @@ from core_sz.model import model_112, model_100, model_110, model_111
 exampe_params = [2.7255, 6.9, 0.0, 1.4]
 
 
-# models analisys
-sz_100 = model_100(*exampe_params) # without corrs
-sz_110 = model_110(*exampe_params) # clear
-sz_111 = model_111(*exampe_params) # row trans
-sz_112 = model_112(*exampe_params) # gauss trans
-print(f"Waves = {filtrs} GHz")
-print("100: SZ clear (no corrs): ", *list(map(" {:5.0f},".format, sz_100)))
-print("110: SZ clear:            ", *list(map(" {:5.0f},".format, sz_110)))
-print("111: SZ row trans-func:   ", *list(map(" {:5.0f},".format, sz_111)))
-print("112: SZ gauss trans-func: ", *list(map(" {:5.0f},".format, sz_112)))
+def timer(func, args, N):
+    start = datetime.datetime.now()
+    for i in range(N):
+        res = func(*args)
+        del res
+    finish = datetime.datetime.now()
+    return (finish - start).total_seconds() / N
+
+
+def see(model, params, comment):
+    # models analisys
+    sz = model(*params)
+    sz_prnt = list(map(' {:5.0f},'.format, sz))
+
+    # timer
+    N = 1000 # times in timers
+    t = timer(model, exampe_params, N)
+
+    # do
+    print(f"{comment:<20}", *sz_prnt, f" <- {t:.6f} sec")
+    ax.plot(filtrs, sz, 'o-', label=comment)
+
 
 # Picture:
+print(f"Waves = {filtrs} GHz")
 fig, ax = plt.subplots(figsize=(8, 8))
 
 ax.axhline(y=0, color='k')
-ax.plot(filtrs, sz_100, 'o-', label="SZ clear (no corrs)")
-ax.plot(filtrs, sz_110, 'o-', label="SZ clear")
-ax.plot(filtrs, sz_111, 'o-', label="SZ row trans-func")
-ax.plot(filtrs, sz_112, 'o-', label="SZ gauss trans-func")
+see(model_100, exampe_params, comment="100: SZ (no corrs)")
+see(model_110, exampe_params, comment="110: SZ           ")
+see(model_111, exampe_params, comment="111: SZ + row     ")
+see(model_112, exampe_params, comment="112: SZ + gauss   ")
 
 ax.set_xlabel(r"$\nu$, GHz")
 ax.set_ylabel(r"SZ signal $\mu$K")
