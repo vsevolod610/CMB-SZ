@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 import paths # manage path imports by paths.py
 from core_sz.sz_mcmc import sz_analyze
-from core_sz.model import model_100 as model
+from core_sz.model import model_112 as model
 
 
 # Paths

@@ -7,7 +7,7 @@ Mcmc: analyze a cluster
 import numpy as np
 
 import paths # manage path imports by paths.py
-from core_sz.data import read_SZdata, read_prior, read_startSZ
+from .data import read_SZdata, read_prior, read_startSZ
 from core_mcmc.mcmc_quick import mcmc_quick
 
 

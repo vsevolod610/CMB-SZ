@@ -4,7 +4,7 @@ To-Do
 Programming:
 1. **config.py management**
     all paths in config.py
-2. **Exeptions**
+2. **Exceptions**
 3. **Logging**
 3. **Types**
 4. **REDME and Documentation**
@@ -26,5 +26,3 @@ Bags:
 Tastks:
 1. **full SZ-effect functon**
     term-analysis
-2. **test/show_model.py**
-    time

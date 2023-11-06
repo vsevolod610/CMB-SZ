@@ -66,5 +66,5 @@ if __name__ == "__main__":
 
         z, *T0_params = sz_analyze(model, path_input, pics=path_pics)
         write_result(z, T0_params, path_result)
-        print(f"\n {i:>{len(str(N))}}: {z=}, {T0_params}\n")
+        print(f"\n {i:>{len(str(N))}}: {z = }, {T0_params}\n")
 

@@ -4,11 +4,11 @@
 Read .fits files and set spectral-transmission functions
 """
 
-
-# Imports
+# Imports: built-in
 import numpy as np
 from astropy.io import fits
 
+# Imports: from project
 import paths # manage path imports by paths.py
 
 

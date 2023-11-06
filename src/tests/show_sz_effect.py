@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import paths # manage path imports by paths.py
-from core_sz.sz_effect import sz_effect
+from core_sz.sz_signal import sz_effect
 
 
 # example params: T0, Te, beta, Tau, Tz

@@ -9,7 +9,7 @@ import numpy as np
 
 import paths # manage path imports by paths.py
 from core_sz.data import write_SZdata, write_prior
-from core_sz.trans_function import filtrs
+from core_sz.trans.trans_data import filtrs
 from config import config
 
 

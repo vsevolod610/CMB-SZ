@@ -2,9 +2,10 @@ import paths # manage path imports by paths.py
 from core_sz.model import *
 
 N = 10
-case = "112"
+case = "100"
 
 models = {'000': model_000, 
+          '100': model_100, 
           '112': model_112, 
           '212': model_212 }
 

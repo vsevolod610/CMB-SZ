@@ -4,14 +4,13 @@
 Show: models
 """
 
-# Imports
+# Imports: built-in
 import datetime
 import numpy as np
 import matplotlib.pyplot as plt 
-from scipy import integrate
 
 import paths # manage path imports by paths.py
-from core_sz.trans_function import filtrs
+from core_sz.trans.trans_data import filtrs
 from core_sz.model import model_112, model_100, model_110, model_111
 
 
@@ -34,7 +33,7 @@ def see(model, params, comment):
     sz_prnt = list(map(' {:5.0f},'.format, sz))
 
     # timer
-    N = 1000 # times in timers
+    N = 100 # times in timers
     t = timer(model, exampe_params, N)
 
     # do
