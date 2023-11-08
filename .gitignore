@@ -2,8 +2,8 @@ __pycache__
 src/main/input/szdata/*
 src/main/input/priors/*
 src/main/output/**/*
-src/test/pic/**/*
-src/test/res/**/*
+src/tests/pics/*
+src/tests/res/**/*
 !**/.gitkeep
 *.tar.gz
 logs/log.txt

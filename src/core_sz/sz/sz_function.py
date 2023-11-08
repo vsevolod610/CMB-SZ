@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Set fuction of SZ-effect
+Set function of SZ-effect
 """
 
 # Imports: built-in

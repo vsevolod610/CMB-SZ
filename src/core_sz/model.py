@@ -16,7 +16,7 @@ from .sz_signal import sz_signal
 # ------------- test only -----------------
 
 
-def model_000(T0, Te, z=0): # very light test model
+def model_000(T0, Te, z=0, x=None): # very light test model
     beta = 0.00
     Tau = 1.0
     Tz = T0 * (1 + z)

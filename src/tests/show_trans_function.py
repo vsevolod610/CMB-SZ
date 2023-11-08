@@ -45,6 +45,6 @@ for wave in filtrs:
 
 ax.set_xlabel(r'$\nu$ GHz')
 ax.legend(frameon=False)
-fig.savefig('pics/trans_fuction.png', bbox_inches='tight')
+fig.savefig('pics/trans_function.png', bbox_inches='tight')
 plt.show()
 

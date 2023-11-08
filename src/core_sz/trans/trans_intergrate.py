@@ -45,9 +45,9 @@ def sptr_integrate_gauss(func):
 # Account tranmsission functions: mode: 'off', 'row', 'gauss'
 # NB! always return array, not number
 def trans_integrate(func, mode='off'):
-    if mode == 'off': return sptr_integrate_off(func)
-    elif mode == 'row': return sptr_integrate_row(func)
-    elif mode == 'gauss': return sptr_integrate_gauss(func)
-    else: raise NameError(f"{mode = } not in ('off', 'row', 'gauss')")
-
+    intergrate_func = {
+            'off': sptr_integrate_off,
+            'row': sptr_integrate_row,
+            'gauss': sptr_integrate_gauss}
+    return intergrate_func[mode](func)
 

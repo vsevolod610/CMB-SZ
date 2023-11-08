@@ -7,6 +7,7 @@ Intergrate sz-effect + spectral-transmission function
 # Imports: from project
 from .trans.trans_intergrate import trans_integrate
 from .sz.sz_function import sz_function
+from .sz.sz_full_function import sz_full_function
 
 
 # Constants
@@ -24,6 +25,15 @@ def sz_effect(T0, Te, beta, Tau, Tz, nu, z=None, corrs=True):
     theta = coef2 * Te
     x = (coef1 * nu * (1 + z) / Tz) if (z is not None) else (coef1 * nu / T0)
     return 1e+6 * T0 * Tau * sz_function(theta, beta, x, corrs)
+
+
+def sz_full_effect(T0, Te, beta, Tau, Tz, nu, z=None, mu=1):
+    # if z is None Tz not needed
+    theta = coef2 * Te
+    x = (coef1 * nu * (1 + z) / Tz) if (z is not None) else (coef1 * nu / T0)
+    print(f"{mu = }")
+    return 1e+6 * T0 * Tau * sz_full_function(theta, beta, mu, x)
+
 
 # sz-effect + spec. transmission
 def sz_signal(T0, Te, beta, Tau, Tz, z=0, corrs=True, mode='guass'):
