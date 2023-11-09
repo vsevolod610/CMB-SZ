@@ -31,7 +31,7 @@ def sz_full_effect(T0, Te, beta, Tau, Tz, nu, z=None, mu=1):
     # if z is None Tz not needed
     theta = coef2 * Te
     x = (coef1 * nu * (1 + z) / Tz) if (z is not None) else (coef1 * nu / T0)
-    print(f"{mu = }")
+    #print(f"{mu = }")
     return 1e+6 * T0 * Tau * sz_full_function(theta, beta, mu, x)
 
 

@@ -9,7 +9,7 @@ def sz_full_scalar(theta, beta_c, mu_c, x):
     '''
     mu = cos
     '''
-    print(f"full ... {x = }")
+    #print(f"full ... {x = }")
 
     # definitions
     gamma = lambda beta: (1 / np.sqrt(1 - beta ** 2))

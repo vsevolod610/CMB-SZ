@@ -7,7 +7,6 @@ Programming:
 2. **Exceptions**
 3. **Logging**
 3. **Types**
-4. **REDME and Documentation**
 5. **Tupples better Lists**
 6. **rewrite with OOP** `sz.model`, `sz.data`, `sz.run`
 
@@ -24,5 +23,7 @@ Bags:
     lost velocity
 
 Tastks:
-1. **full SZ-effect functon**
-    term-analysis
+1. **README.md & Documentation**
+2. **pyenv + bottoms**
+3. ?? *input("mode?") in config* ??
+
