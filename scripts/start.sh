@@ -8,7 +8,7 @@ cd $SRC/main
 #python check.py
 python config.py
 read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-echo "Start: $(date)" >> $ROOT/logs/log.txt
+echo "Start:  $(date)" >> $ROOT/logs/log.txt
 rm $SRC/main/output/result* 2> $NULL && echo "clear main/output/result is DONE!"
 python create_data.py || exit 1
 python start_analyze.py || exit 1

@@ -49,13 +49,12 @@ def model_112(T0, Te, beta, Tau, z=0, x=None): # default model
 # ----------- alternative -----------------
 
 
-def model_212(Tz, Te, beta, Tau, z, x=None): # default alternative model
-    T0 = 2.7255
-    return sz_signal(T0, Te, beta, Tau, Tz, z=z, corrs=True, mode='gauss')
-
-
 def model_210(Tz, Te, beta, Tau, z, x=None): # test alternative model
     T0 = 2.7255
     return sz_signal(T0, Te, beta, Tau, Tz, z=z, corrs=True, mode='off')
 
+
+def model_212(Tz, Te, beta, Tau, z, x=None): # default alternative model
+    T0 = 2.7255
+    return sz_signal(T0, Te, beta, Tau, Tz, z=z, corrs=True, mode='gauss')
 

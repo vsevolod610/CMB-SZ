@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 
 import paths # manage path imports by paths.py
 from core_sz.sz_mcmc import sz_analyze
-from core_sz.model import model_112 as model
+from core_sz.model import model_112 as model # depends on mode
 
 
 # Paths
 data_dir = paths.src + '/../data/example_cluster/'
 path_SZdata = data_dir + 'SZ_data.txt'
 path_prior = data_dir + 'prior.dat'
-path_startSZ = data_dir + 'startSZ.sss'
+path_startSZ = data_dir + 'startSZ.sss' # depends on mode
 
 path_pic_chain = 'pics/mcmc/pic_chain'
 path_pic_params = 'pics/mcmc/pic_params'

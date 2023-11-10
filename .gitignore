@@ -2,6 +2,7 @@ __pycache__
 src/main/input/szdata/*
 src/main/input/priors/*
 src/main/output/**/*
+!src/main/output/**/
 src/tests/pics/*
 src/tests/res/**/*
 !**/.gitkeep

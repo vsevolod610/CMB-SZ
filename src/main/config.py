@@ -4,10 +4,22 @@ from core_sz.model import *
 N = 10
 case = "100"
 
-models = {'000': model_000, 
-          '100': model_100, 
-          '112': model_112, 
-          '212': model_212 }
+models = {'000': model_000, # two params
+          '100': model_100, # no corrs
+          '110': model_110, # off trans
+          '111': model_111, # row trans
+          '112': model_112, # default
+          '212': model_210, # Alt: off trans
+          '212': model_212, # Alt: gauss
+          }
+
+
+if case[0] == '0': # case == '0..'
+    path_startSZ = paths.src + '/main/input/startSZ_0xx.sss'
+    params_names = [r"$T_0$, K", r"$T_e$, K"]
+
+    params_include = lambda T0, Te, beta, Tau, z=0: [T0, Te]
+    def modelT(T0, z): return T0 + (0 * z)
 
 
 if case[0] == '1': # case == '1..'
@@ -24,14 +36,6 @@ if case[0] == '2': # case == '2..'
 
     params_include = lambda T0, Te, beta, Tau, z: [T0 * (1 + z), Te, beta, Tau]
     def modelT(T0, z): return T0 * (1 + z)
-
-
-if case[0] == '0': # case == '0..'
-    path_startSZ = paths.src + '/main/input/startSZ_0xx.sss'
-    params_names = [r"$T_0$, K", r"$T_e$, K"]
-
-    params_include = lambda T0, Te, beta, Tau, z=0: [T0, Te]
-    def modelT(T0, z): return T0 + (0 * z)
 
 
 config = {
