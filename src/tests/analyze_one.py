@@ -18,9 +18,10 @@ path_SZdata = data_dir + 'SZ_data.txt'
 path_prior = data_dir + 'prior.dat'
 path_startSZ = data_dir + 'startSZ.sss' # depends on mode
 
-path_pic_chain = 'pics/mcmc/pic_chain'
-path_pic_params = 'pics/mcmc/pic_params'
-path_pic_fit = 'pics/mcmc/pic_fit'
+pic_dir = paths.src + 'tests/'
+path_pic_chain = pic_dir + 'pics/mcmc/pic_chain'
+path_pic_params = pic_dir + 'pics/mcmc/pic_params'
+path_pic_fit = pic_dir + 'pics/mcmc/pic_fit'
 
 paths_input = [path_SZdata, path_prior, path_startSZ]
 path_pics = [path_pic_chain, path_pic_params, path_pic_fit]

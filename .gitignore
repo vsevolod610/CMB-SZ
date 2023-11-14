@@ -5,6 +5,7 @@ src/main/output/**/*
 !src/main/output/**/
 src/tests/pics/*
 src/tests/res/**/*
+.venv/*
 !**/.gitkeep
 *.tar.gz
 logs/log.txt
