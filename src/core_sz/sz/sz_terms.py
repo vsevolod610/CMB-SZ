@@ -9,13 +9,17 @@ import numpy as np
 
 
 def XS(x):
+    X = x * (np.exp(x) + 1) / (np.exp(x) - 1)
+    S = x / np.sinh(x / 2)
+    '''
+    # zero-case handle, but -30% speed while check np.all
     if np.all(x): # (x != 0) or (0 not in x)
-        X = x * (np.exp(x) + 1) / (np.exp(x) - 1)
-        S = x / np.sinh(x / 2)
+        ...
     else: 
         # x -> 0 => sin(x) / x = 1 but x5 slower
         X = np.real(2 / np.sinc(1j * x / 2 / np.pi) * np.cosh(x / 2))
         S = np.real(2 / np.sinc(1j * x / 2 / np.pi))
+    '''
     return X, S
 
 
