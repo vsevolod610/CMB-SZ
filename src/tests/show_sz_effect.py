@@ -28,8 +28,8 @@ def show(yline, origin, comment):
 # Picture
 fig, ax = plt.subplots(figsize=(8, 8))
 xline = np.linspace(nu_min, nu_max, 100)
-yline0 = sz_effect(*exampe_params, xline, corrs=False)
-yline1 = sz_effect(*exampe_params, xline, corrs=True)
+yline0 = sz_effect(xline, *exampe_params, corrs=False)
+yline1 = sz_effect(xline, *exampe_params, corrs=True)
 
 # print
 show(yline0, yline1, comment="SZ effect (no corr)")
@@ -45,15 +45,15 @@ if input("Do You Want To evaluate SZ full-effect? [y/n] ") == "y":
 
     # data
     xline_full = np.linspace(nu_min, nu_max, 5)
-    yline2_0 = sz_full_effect(*exampe_params, xline_full, mu=mu2_0)
-    yline2_1 = sz_full_effect(*exampe_params, xline_full, mu=mu2_1)
+    yline2_0 = sz_full_effect(xline_full, *exampe_params, mu=mu2_0)
+    yline2_1 = sz_full_effect(xline_full, *exampe_params, mu=mu2_1)
 
     # Pictures
     ax.plot(xline_full, yline2_0, label=f"SZ full-effect (mu = {mu2_0})")
     ax.plot(xline_full, yline2_1, label=f"SZ full-effect (mu = {mu2_1})")
 
     # print
-    yline_origin = sz_effect(*exampe_params, xline_full, corrs=True)
+    yline_origin = sz_effect(xline_full, *exampe_params, corrs=True)
     show(yline2_0, yline_origin, comment=f"SZ full-effect (mu = {mu2_0})")
     show(yline2_1, yline_origin, comment=f"SZ full-effect (mu = {mu2_1})")
 

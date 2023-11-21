@@ -20,14 +20,14 @@ coef2 = (1e3 * 1.6e-12) / (m * c ** 2)
 
 
 # FIXME: z = None, z = 0
-def sz_effect(T0, Te, beta, Tau, Tz, nu, z=None, corrs=True):
+def sz_effect(nu, T0, Te, beta, Tau, Tz, z=None, corrs=True):
     # if z is None Tz not needed
     theta = coef2 * Te
     x = (coef1 * nu * (1 + z) / Tz) if (z is not None) else (coef1 * nu / T0)
     return 1e+6 * T0 * Tau * sz_function(theta, beta, x, corrs)
 
 
-def sz_full_effect(T0, Te, beta, Tau, Tz, nu, z=None, mu=1):
+def sz_full_effect(nu, T0, Te, beta, Tau, Tz, z=None, mu=1):
     # if z is None Tz not needed
     theta = coef2 * Te
     x = (coef1 * nu * (1 + z) / Tz) if (z is not None) else (coef1 * nu / T0)
@@ -37,6 +37,6 @@ def sz_full_effect(T0, Te, beta, Tau, Tz, nu, z=None, mu=1):
 
 # sz-effect + spec. transmission
 def sz_signal(T0, Te, beta, Tau, Tz, z=0, corrs=True, mode='guass'):
-    sz_func = lambda nu: sz_effect(T0, Te, beta, Tau, Tz, nu, z=z, corrs=corrs)
-    sz_signal = trans_integrate(sz_func, mode=mode)
+    args = (T0, Te, beta, Tau, Tz, z, corrs)
+    sz_signal = trans_integrate(sz_effect, args=args, mode=mode)
     return sz_signal
